@@ -2,727 +2,156 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Kickball League — Scores & Standings</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Steel City Kickball — Scores & Standings</title>
+
   <style>
-    :root{
-      --bg:#0b1220;
-      --card:#121a2b;
-      --muted:#8ea0c6;
-      --text:#e8eefc;
-      --accent:#ff7a18;
-      --line:rgba(255,255,255,0.10);
-      --good:#35d07f;
-      --bad:#ff4d4d;
-      --warn:#ffd166;
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f5f5f5;
     }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      background: radial-gradient(1000px 600px at 20% -10%, rgba(255,122,24,0.25), transparent 60%),
-                  radial-gradient(900px 500px at 110% 10%, rgba(86,120,255,0.22), transparent 60%),
-                  var(--bg);
-      color:var(--text);
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
     }
-    header{
-      padding: 28px 16px 14px;
-      max-width:1100px;
-      margin:0 auto;
-    }
-    .title{
-      display:flex;
-      gap:14px;
-      align-items:center;
-      flex-wrap:wrap;
-    }
-    .logo{
-      width:42px;height:42px;border-radius:14px;
-      background: linear-gradient(135deg, var(--accent), #ffb703);
-      box-shadow: 0 10px 30px rgba(255,122,24,.25);
-      display:grid;place-items:center;
-      font-weight:900;color:#121a2b;
-    }
-    h1{margin:0;font-size: 1.6rem;letter-spacing:.2px}
-    .sub{margin:6px 0 0;color:var(--muted);max-width:70ch;line-height:1.5}
-    nav{
-      max-width:1100px;margin: 12px auto 0;
-      padding: 0 16px 18px;
-      display:flex;gap:10px;flex-wrap:wrap;
-    }
-    nav a{
-      text-decoration:none;color:var(--text);
-      padding:9px 12px;border:1px solid var(--line);
-      border-radius:999px;background: rgba(255,255,255,0.04);
-      font-weight:600;font-size:.95rem;
-    }
-    nav a:hover{border-color: rgba(255,122,24,.45)}
-    main{max-width:1100px;margin:0 auto;padding: 0 16px 40px;}
-    .grid{
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:14px;
-    }
-    @media (max-width: 980px){
-      .grid{grid-template-columns:1fr}
-    }
-    .card{
-      background: rgba(18,26,43,0.92);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.25);
-    }
-    .card h2{
-      margin:0 0 10px;
-      font-size:1.1rem;
-    }
-    .row{
-      display:flex;gap:10px;flex-wrap:wrap;align-items:center;
-    }
-    .pill{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:8px 10px;border-radius:999px;border:1px solid var(--line);
-      background: rgba(255,255,255,0.03);
-      color: var(--muted);
-      font-size:.9rem;
-    }
-    .pill strong{color:var(--text)}
-    .btn{
-      cursor:pointer;
-      border:1px solid rgba(255,122,24,.35);
-      background: rgba(255,122,24,0.12);
-      color: var(--text);
-      padding: 10px 12px;
-      border-radius: 12px;
-      font-weight:700;
-      transition: .15s ease;
-    }
-    .btn:hover{transform: translateY(-1px); border-color: rgba(255,122,24,.65)}
-    .btn.ghost{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,0.03);
-      color: var(--text);
-    }
-    .btn.danger{
-      border-color: rgba(255,77,77,.55);
-      background: rgba(255,77,77,.12);
-    }
-    table{
-      width:100%;
+
+    #standingsTable, #gamesTable {
+      width: 100%;
       border-collapse: collapse;
-      overflow:hidden;
-      border-radius: 14px;
-      border:1px solid var(--line);
+      margin-top: 20px;
+      background: white;
     }
-    th, td{
-      padding: 10px 10px;
-      border-bottom: 1px solid var(--line);
-      text-align:left;
-      font-size:.95rem;
+
+    #standingsTable th, #standingsTable td,
+    #gamesTable th, #gamesTable td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
     }
-    th{
-      color: var(--muted);
-      font-weight:800;
-      background: rgba(255,255,255,0.03);
+
+    th {
+      background: #222;
+      color: white;
     }
-    tr:last-child td{border-bottom:none}
-    .rank{
-      width:42px;
-      font-weight:900;
+
+    .loading {
+      text-align: center;
+      font-size: 18px;
+      margin-top: 20px;
+      color: #444;
     }
-    .tag{
-      display:inline-flex;align-items:center;
-      padding: 3px 8px;border-radius:999px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,0.03);
-      color: var(--muted);
-      font-size: .8rem;
-      font-weight: 700;
-    }
-    .tag.good{border-color: rgba(53,208,127,.45); color: #bff3d6}
-    .tag.warn{border-color: rgba(255,209,102,.45); color: #fff0c2}
-    .tag.bad{border-color: rgba(255,77,77,.45); color: #ffd0d0}
-    .small{color:var(--muted);font-size:.92rem;line-height:1.5}
-    .form{
-      display:grid;
-      grid-template-columns: 1fr 120px 1fr 120px;
-      gap:10px;
-      margin-top: 10px;
-    }
-    @media (max-width: 720px){
-      .form{grid-template-columns: 1fr 1fr}
-    }
-    label{display:block;color:var(--muted);font-size:.85rem;margin: 2px 0 6px}
-    input, select{
-      width:100%;
-      padding:10px 10px;
-      border-radius: 12px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,0.03);
-      color: var(--text);
-      outline:none;
-    }
-    input::placeholder{color: rgba(142,160,198,.7)}
-    .divider{height:1px;background:var(--line);margin: 14px 0;}
-    .results-list{
-      display:flex;flex-direction:column;gap:10px;
-      margin-top: 10px;
-    }
-    .result-item{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,0.03);
-      padding: 10px 12px;
-      border-radius: 14px;
-      display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
-    }
-    .result-item strong{font-weight:900}
-    .meta{color:var(--muted);font-size:.86rem}
-    footer{
-      max-width:1100px;margin: 0 auto; padding: 0 16px 24px;
-      color: var(--muted); font-size: .9rem;
-    }
-    .notice{
-      border-left: 3px solid rgba(255,122,24,.8);
-      background: rgba(255,122,24,.08);
-      padding: 10px 12px;
-      border-radius: 10px;
-      color: #ffd8bf;
-      margin-top: 10px;
-    }
-    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
   </style>
 </head>
+
 <body>
-  <header>
-    <div class="title">
-      <div class="logo">KB</div>
-      <div>
-        <h1>Kickball League</h1>
-        <div class="sub">Standings and scores update automatically when you add final results. Works great for a 6‑team league.</div>
-      </div>
-    </div>
-  </header>
 
-  <nav>
-    <a href="#standings">Standings</a>
-    <a href="#scores">Scores</a>
-    <a href="#admin">Add Score (Admin)</a>
-  </nav>
+  <h1>Steel City Kickball — Scores & Standings</h1>
 
-  <main class="grid">
-    <!-- LEFT: Standings -->
-    <section id="standings" class="card">
-      <div class="row" style="justify-content:space-between;">
-        <h2 style="margin:0;">Standings</h2>
-        <div class="row">
-          <span class="pill">Teams: <strong id="teamCount">6</strong></span>
-          <span class="pill">Games logged: <strong id="gameCount">0</strong></span>
-        </div>
-      </div>
+  <div class="loading" id="loadingMessage">Loading latest scores…</div>
 
-      
-<div class="divider"></div>
+  <h2>Standings</h2>
+  <table id="standingsTable">
+    <tr>
+      <th>Team</th>
+      <th>Wins</th>
+      <th>Losses</th>
+    </tr>
+  </table>
 
-<table aria-label="Standings table">
-        <thead>
-          <tr>
-            <th class="rank">#</th>
-            <th>Team</th>
-            <th>GP</th>
-            <th>W</th>
-            <th>L</th>
-            <th>PF</th>
-            <th>PA</th>
-            <th>DIFF</th>
-            <th>PTS</th>
-            <th>Form</th>
-          </tr>
-        </thead>
-        <tbody id="standingsBody"></tbody>
-      </table>
+  <h2>Game Results</h2>
+  <table id="gamesTable">
+    <tr>
+      <th>Date</th>
+      <th>Home Team</th>
+      <th>Home Score</th>
+      <th>Away Team</th>
+      <th>Away Score</th>
+    </tr>
+  </table>
 
-      <div class="notice">
-        <strong>How ranking works:</strong> Points (W=2, L=0), then run differential (PF-PA), then Points For.
-        <div class="small" style="margin-top:6px;">You can adjust scoring rules in the code: <span class="mono">WIN_POINTS</span>, <span class="mono">LOSS_POINTS</span>.</div>
-      </div>
-    </section>
+  <script>
+    async function loadScoresFromSheet() {
+      const sheetUrl =
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vRjCOIOADqzgiT9RPU9tBGBkpvnL2DP7gXrjkMhwY0DWuNK65XLuBjKV-d1sVXRsQzAbAXBEauAwoT7/pub?output=csv";
 
-    <!-- RIGHT: Scores + Admin -->
-    <aside>
-      <section id="scores" class="card">
-        <div class="row" style="justify-content:space-between;">
-          <h2 style="margin:0;">Recent Scores</h2>
-          <button class="btn ghost" id="downloadBtn" type="button">Download Data (JSON)</button>
-        </div>
-        <div class="small">Scores below come from the site’s saved data (your browser). You can also export and move it later.</div>
+      try {
+        const response = await fetch(sheetUrl);
+        const csvText = await response.text();
 
-        <div class="results-list" id="resultsList"></div>
+        const rows = csvText
+          .trim()
+          .split("\n")
+          .map((r) => r.split(","));
 
-        <div class="divider"></div>
+        // Remove header row
+        const games = rows.slice(1).map((r) => ({
+          date: r[0],
+          homeTeam: r[1],
+          homeScore: Number(r[2]),
+          awayTeam: r[3],
+          awayScore: Number(r[4]),
+        }));
 
-        <div class="row" style="justify-content:space-between;">
-          <button class="btn ghost" id="seedBtn" type="button">Load Sample Games</button>
-          <button class="btn danger" id="resetBtn" type="button">Reset All Data</button>
-        </div>
-      </section>
+        updateStandings(games);
+        renderGames(games);
 
-      <section id="admin" class="card" style="margin-top:14px;">
-        <h2>Add a Final Score (Admin)</h2>
-        <div class="small">Enter a completed game. Standings update instantly.</div>
-
-        <div class="form">
-          <div>
-            <label for="homeTeam">Home Team</label>
-            <select id="homeTeam"></select>
-          </div>
-          <div>
-            <label for="homeScore">Home Score</label>
-            <input id="homeScore" type="number" min="0" placeholder="0" />
-          </div>
-          <div>
-            <label for="awayTeam">Away Team</label>
-            <select id="awayTeam"></select>
-          </div>
-          <div>
-            <label for="awayScore">Away Score</label>
-            <input id="awayScore" type="number" min="0" placeholder="0" />
-          </div>
-        </div>
-
-        <div class="row" style="margin-top:12px; justify-content:space-between;">
-          <div class="small">
-            Optional date (shown in results list):
-            <span class="mono" id="today"></span>
-          </div>
-          <button class="btn" id="addGameBtn" type="button">Add Game</button>
-        </div>
-
-        <div class="small" style="margin-top:10px;">
-          Tip: If you’d rather use a spreadsheet as your “source of truth,” you can embed a published Google Sheet on this page instead.
-        </div>
-      </section>
-    </aside>
-  </main>
-
-  <footer>
-    Built as a single-file site (HTML/CSS/JS). Host free on GitHub Pages by uploading this as <span class="mono">index.html</span>.
-  </footer>
-
-<script>
-/**
- * ====== CONFIG ======
- * Update these team names to match your league.
- */
-const TEAMS = [
-  "The Club",
-  "Gonzalez",
-  "Bonnies Babies",
-  "Just 4 Kicks",
-  "Warriors",
-  "Kickaholics"
-];
-
-// Points system (edit if you want different rules)
-const WIN_POINTS = 2;
-const LOSS_POINTS = 0;
-
-// Storage key
-const STORE_KEY = "kickball_league_games_v1";
-
-/**
- * Game format:
- * { id, dateISO, homeTeam, homeScore, awayTeam, awayScore }
- */
-
-// --------- Helpers ----------
-const $ = (id) => document.getElementById(id);
-const fmtDate = (iso) => {
-  try {
-    const d = new Date(iso);
-    return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "2-digit" });
-  } catch { return iso; }
-};
-
-function safeInt(v){
-  const n = Number(v);
-  return Number.isFinite(n) ? Math.max(0, Math.floor(n)) : 0;
-}
-
-function uid(){
-  return Math.random().toString(16).slice(2) + "-" + Date.now().toString(16);
-}
-
-function loadGames(){
-  const raw = localStorage.getItem(STORE_KEY);
-  if(!raw) return [];
-  try{
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  }catch{
-    return [];
-  }
-}
-
-function saveGames(games){
-  localStorage.setItem(STORE_KEY, JSON.stringify(games));
-}
-
-function download(filename, text) {
-  const el = document.createElement("a");
-  el.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text));
-  el.setAttribute("download", filename);
-  el.style.display = "none";
-  document.body.appendChild(el);
-  el.click();
-  document.body.removeChild(el);
-}
-
-// --------- Standings engine ----------
-function computeStandings(games){
-  // init
-  const map = new Map();
-  TEAMS.forEach(t => map.set(t, {
-    team: t, gp:0, w:0, l:0, pf:0, pa:0, diff:0, pts:0, form:[]
-  }));
-
-  // apply games
-  for(const g of games){
-    const h = map.get(g.homeTeam);
-    const a = map.get(g.awayTeam);
-    if(!h || !a) continue;
-
-    const hs = safeInt(g.homeScore);
-    const as = safeInt(g.awayScore);
-
-    h.gp++; a.gp++;
-    h.pf += hs; h.pa += as;
-    a.pf += as; a.pa += hs;
-
-    if(hs > as){
-      h.w++; a.l++;
-      h.pts += WIN_POINTS; a.pts += LOSS_POINTS;
-      h.form.unshift("W"); a.form.unshift("L");
-    }else if(as > hs){
-      a.w++; h.l++;
-      a.pts += WIN_POINTS; h.pts += LOSS_POINTS;
-      a.form.unshift("W"); h.form.unshift("L");
-    }else{
-      // Kickball ties are rare; treat tie as 1 point each if you want:
-      // h.pts += 1; a.pts += 1;
-      // h.form.unshift("T"); a.form.unshift("T");
-      // For now: treat tie as loss points to both (change if needed)
-      h.pts += LOSS_POINTS; a.pts += LOSS_POINTS;
-      h.form.unshift("T"); a.form.unshift("T");
+        document.getElementById("loadingMessage").style.display = "none";
+      } catch (error) {
+        document.getElementById("loadingMessage").innerText =
+          "Error loading Google Sheet data.";
+      }
     }
-  }
 
-  // finalize
-  const rows = Array.from(map.values()).map(r => {
-    r.diff = r.pf - r.pa;
-    r.form = r.form.slice(0,5); // last 5
-    return r;
-  });
+    function updateStandings(games) {
+      const standings = {};
 
-  // sort: pts desc, diff desc, pf desc, team asc
-  rows.sort((x,y) =>
-    (y.pts - x.pts) ||
-    (y.diff - x.diff) ||
-    (y.pf - x.pf) ||
-    x.team.localeCompare(y.team)
-  );
+      games.forEach((g) => {
+        if (!standings[g.homeTeam])
+          standings[g.homeTeam] = { wins: 0, losses: 0 };
+        if (!standings[g.awayTeam])
+          standings[g.awayTeam] = { wins: 0, losses: 0 };
 
-  return rows;
-}
+        if (g.homeScore > g.awayScore) {
+          standings[g.homeTeam].wins++;
+          standings[g.awayTeam].losses++;
+        } else {
+          standings[g.awayTeam].wins++;
+          standings[g.homeTeam].losses++;
+        }
+      });
 
-// --------- Rendering ----------
-function renderTeamSelects(){
-  const home = $("homeTeam");
-  const away = $("awayTeam");
-  home.innerHTML = "";
-  away.innerHTML = "";
-  for(const t of TEAMS){
-    const o1 = document.createElement("option");
-    o1.value = t; o1.textContent = t;
-    const o2 = document.createElement("option");
-    o2.value = t; o2.textContent = t;
-    home.appendChild(o1);
-    away.appendChild(o2);
-  }
-  // default away to second team if possible
-  if(TEAMS.length > 1) away.value = TEAMS[1];
-  $("teamCount").textContent = TEAMS.length.toString();
-}
+      const table = document.getElementById("standingsTable");
 
-function formTag(letter){
-  if(letter === "W") return `<span class="tag good">W</span>`;
-  if(letter === "L") return `<span class="tag bad">L</span>`;
-  return `<span class="tag warn">T</span>`;
-}
-
-function renderStandings(games){
-  const rows = computeStandings(games);
-  const body = $("standingsBody");
-  body.innerHTML = "";
-
-  rows.forEach((r, idx) => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td class="rank">${idx+1}</td>
-      <td><strong>${r.team}</strong></td>
-      <td>${r.gp}</td>
-      <td>${r.w}</td>
-      <td>${r.l}</td>
-      <td>${r.pf}</td>
-      <td>${r.pa}</td>
-      <td>${r.diff > 0 ? "+" + r.diff : r.diff}</td>
-      <td><strong>${r.pts}</strong></td>
-      <td>${r.form.map(formTag).join(" ") || `<span class="tag">—</span>`}</td>
-    `;
-    body.appendChild(tr);
-  });
-
-  $("gameCount").textContent = games.length.toString();
-}
-
-function renderResults(games){
-  const list = $("resultsList");
-  list.innerHTML = "";
-
-  if(games.length === 0){
-    const empty = document.createElement("div");
-    empty.className = "small";
-    empty.style.padding = "10px 2px";
-    empty.textContent = "No games logged yet. Use “Add Game” to enter your first score.";
-    list.appendChild(empty);
-    return;
-  }
-
-  // newest first
-  const sorted = [...games].sort((a,b) => (b.dateISO || "").localeCompare(a.dateISO || ""));
-
-  for(const g of sorted.slice(0, 20)){
-    const div = document.createElement("div");
-    div.className = "result-item";
-    const hs = safeInt(g.homeScore), as = safeInt(g.awayScore);
-    const winner =
-      hs > as ? g.homeTeam :
-      as > hs ? g.awayTeam : "Tie";
-
-    div.innerHTML = `
-      <div>
-        <div><strong>${g.homeTeam}</strong> ${hs} — ${as} <strong>${g.awayTeam}</strong></div>
-        <div class="meta">${fmtDate(g.dateISO)} · Winner: <span class="mono">${winner}</span></div>
-      </div>
-      <div class="row">
-        <button class="btn ghost" type="button" data-del="${g.id}">Delete</button>
-      </div>
-    `;
-    list.appendChild(div);
-  }
-
-  // wire delete buttons
-  list.querySelectorAll("[data-del]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const id = btn.getAttribute("data-del");
-      const next = games.filter(x => x.id !== id);
-      saveGames(next);
-      refresh();
-    });
-  });
-}
-
-function refresh(){
-  const games = loadGames();
-  renderStandings(games);
-  renderResults(games);
-}
-
-// --------- Actions ----------
-function addGame(){
-  const homeTeam = $("homeTeam").value;
-  const awayTeam = $("awayTeam").value;
-
-  if(homeTeam === awayTeam){
-    alert("Home Team and Away Team must be different.");
-    return;
-  }
-
-  const homeScore = safeInt($("homeScore").value);
-  const awayScore = safeInt($("awayScore").value);
-
-  const games = loadGames();
-  games.push({
-    id: uid(),
-    dateISO: new Date().toISOString(),
-    homeTeam, homeScore,
-    awayTeam, awayScore
-  });
-  saveGames(games);
-
-  $("homeScore").value = "";
-  $("awayScore").value = "";
-  refresh();
-}
-
-function seedSample(){
-  const now = Date.now();
-  const sample = [
-    { homeTeam: TEAMS[0], homeScore: 7, awayTeam: TEAMS[1], awayScore: 4 },
-    { homeTeam: TEAMS[2], homeScore: 3, awayTeam: TEAMS[3], awayScore: 6 },
-    { homeTeam: TEAMS[4], homeScore: 8, awayTeam: TEAMS[5], awayScore: 2 },
-    { homeTeam: TEAMS[0], homeScore: 5, awayTeam: TEAMS[2], awayScore: 5 }, // tie example
-    { homeTeam: TEAMS[1], homeScore: 1, awayTeam: TEAMS[3], awayScore: 9 },
-  ].map((g, i) => ({
-    id: uid(),
-    dateISO: new Date(now - (i * 86400000)).toISOString(),
-    ...g
-  }));
-
-  saveGames(sample);
-  refresh();
-}
-
-function resetAll(){
-  const ok = confirm("Reset all saved games and standings?");
-  if(!ok) return;
-  localStorage.removeItem(STORE_KEY);
-  loadStandingsFromSheet(); // ✅ refresh from Google Sheet now
-}
-
-// === Google Sheets -> Standings Table (CSV fetch) ===
-const SPREADSHEET_ID = "1EWLcno_oeJnTu1Yfo3GoZzIbfZaV_aUedEZdyBb5o44";
-const STANDINGS_GID = "1198303580";
-
-function standingsCsvUrl() {
-  return `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv&gid=${STANDINGS_GID}`;
-}
-
-function parseCsv(text) {
-  const rows = [];
-  let row = [], cell = "", inQuotes = false;
-
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i], n = text[i + 1];
-
-    if (c === '"') {
-      if (inQuotes && n === '"') { cell += '"'; i++; }
-      else { inQuotes = !inQuotes; }
-    } else if (c === "," && !inQuotes) {
-      row.push(cell); cell = "";
-    } else if ((c === "\n" || c === "\r") && !inQuotes) {
-      if (c === "\r" && n === "\n") i++;
-      row.push(cell);
-      if (row.some(v => v !== "")) rows.push(row);
-      row = []; cell = "";
-    } else {
-      cell += c;
+      Object.entries(standings).forEach(([team, record]) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${team}</td>
+          <td>${record.wins}</td>
+          <td>${record.losses}</td>
+        `;
+        table.appendChild(row);
+      });
     }
-  }
-  if (cell.length || row.length) { row.push(cell); rows.push(row); }
-  return rows;
-}
 
-function formTag(letter) {
-  const ch = (letter || "").toUpperCase();
-  if (ch === "W") return `<span class="tag good">W</span>`;
-  if (ch === "L") return `<span class="tag bad">L</span>`;
-  if (ch === "T") return `<span class="tag warn">T</span>`;
-  return `<span class="tag">—</span>`;
-}
+    function renderGames(games) {
+      const table = document.getElementById("gamesTable");
 
-function renderForm(formStr) {
-  if (!formStr) return `<span class="tag">—</span>`;
-  const letters = formStr.replace(/[^WLT]/gi, "").toUpperCase().slice(0, 5).split("");
-  return letters.map(formTag).join(" ");
-}
+      games.forEach((g) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${g.date}</td>
+          <td>${g.homeTeam}</td>
+          <td>${g.homeScore}</td>
+          <td>${g.awayTeam}</td>
+          <td>${g.awayScore}</td>
+        `;
+        table.appendChild(row);
+      });
+    }
 
-async function loadStandingsFromSheet() {
-  const url = standingsCsvUrl() + `&cacheBust=${Date.now()}`;
-
-  const res = await fetch(url, { cache: "no-store" });
-  if (!res.ok) throw new Error(`Could not fetch standings CSV (${res.status})`);
-
-  const csvText = await res.text();
-  const grid = parseCsv(csvText);
-  if (grid.length < 2) throw new Error("Standings CSV returned no data rows.");
-
-  const headers = grid[0].map(h => (h || "").trim().toLowerCase());
-  const col = (name) => headers.indexOf(name.toLowerCase());
-
-  const iTeam = col("team");
-  const iGP   = col("gp");
-  const iW    = col("w");
-  const iL    = col("l");
-  const iPF   = col("pf");
-  const iPA   = col("pa");
-  const iDIFF = col("diff");
-  const iPTS  = col("pts");
-  const iForm = col("form");
-
-  if (iTeam === -1) throw new Error("Couldn't find a 'Team' column in the sheet header row.");
-
-  const rows = grid.slice(1)
-    .filter(r => r[iTeam] && r[iTeam].trim() !== "")
-    .map(r => {
-      const pf = Number(r[iPF] || 0);
-      const pa = Number(r[iPA] || 0);
-      const diff = (iDIFF !== -1) ? Number(r[iDIFF] || 0) : (pf - pa);
-
-      return {
-        team: (r[iTeam] || "").trim(),
-        gp: Number(r[iGP] || 0),
-        w:  Number(r[iW]  || 0),
-        l:  Number(r[iL]  || 0),
-        pf, pa, diff,
-        pts: Number(r[iPTS] || 0),
-        form: (iForm !== -1 ? (r[iForm] || "").trim() : "")
-      };
-    });
-
-  rows.sort((a, b) =>
-    (b.pts - a.pts) ||
-    (b.diff - a.diff) ||
-    (b.pf - a.pf) ||
-    a.team.localeCompare(b.team)
-  );
-
-  const tbody = document.getElementById("standingsBody");
-  tbody.innerHTML = "";
-
-  rows.forEach((r, idx) => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td class="rank">${idx + 1}</td>
-      <td><strong>${r.team}</strong></td>
-      <td>${r.gp}</td>
-      <td>${r.w}</td>
-      <td>${r.l}</td>
-      <td>${r.pf}</td>
-      <td>${r.pa}</td>
-      <td>${r.diff > 0 ? "+" + r.diff : r.diff}</td>
-      <td><strong>${r.pts}</strong></td>
-      <td>${renderForm(r.form)}</td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
-
-function init(){
-  $("today").textContent = new Date().toLocaleDateString();
-  renderTeamSelects();
-  $("addGameBtn").addEventListener("click", addGame);
-  $("seedBtn").addEventListener("click", seedSample);
-  $("resetBtn").addEventListener("click", resetAll);
-  $("downloadBtn").addEventListener("click", () => {
-    const games = loadGames();
-    download("kickball-league-data.json", JSON.stringify({ teams: TEAMS, games }, null, 2));
-  });
-
-  loadStandingsFromSheet(); // ✅ load from Google Sheet
-}
-
-init();
-</script>
+    loadScoresFromSheet();
+  </script>
 </body>
 </html>
