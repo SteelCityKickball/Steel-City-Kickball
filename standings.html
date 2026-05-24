@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Steel City Kickball — Standings & Team Stats</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f5f5f5;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 0;
+      margin-bottom: 20px;
+    }
+    nav a {
+      text-decoration: none;
+      font-weight: bold;
+      color: #222;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 5px;
+    }
+    h2 {
+      margin-top: 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background: #fff;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background: #222;
+      color: #fff;
+    }
+    .loading {
+      text-align: center;
+      font-size: 18px;
+      margin-top: 20px;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ⭐ Navigation Bar -->
+<nav>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="schedule.html">Schedule</a></li>
+    <li><a href="standings.html">Standings</a></li>
+    <li><a href="teams.html">Teams</a></li>
+    <li><a href="waivers.html">Waivers</a></li>
+  </ul>
+</nav>
+
+<!-- Logo -->
+<div style="text-align:center;">
+  <img src="kickballLogo.jpg" alt="Steel City Kickball Logo" 
+       style="width:180px; margin-bottom:10px;">
+</div>
+
+<h1>Steel City Kickball</h1>
+<p style="text-align:center;margin-top:0;">Standings & Team Stats (from Weekly Stats sheet)</p>
+
+<div id="loadingMessage" class="loading">Loading latest stats…</div>
+
+<h2>Standings</h2>
+<table id="standingsTable">
+  <tr>
+    <th>Rank</th>
+    <th>Team</th>
+    <th>Wins</th>
+    <th>Losses</th>
+    <th>Win %</th>
+  </tr>
+</table>
+
+<h2>Full Team Stats</h2>
+<table id="statsTable">
+  <tr>
+    <th>Team</th>
+    <th>Games Played</th>
+    <th>Wins</th>
+    <th>Losses</th>
+    <th>Runs For</th>
+    <th>Runs Against</th>
+    <th>Run Diff</th>
+    <th>Win %</th>
+    <th>Rank</th>
+  </tr>
+</table>
+
+<script>
+  async function loadTeamStats() {
+    const sheetUrl =
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vRjCOIOADqzgiT9RPU9tBGBkpvnL2DP7gXrjkMhwY0DWuNK65XLuBjKV-d1sVXRsQzAbAXBEauAwoT7/pub?output=csv";
+
+    try {
+      const response = await fetch(sheetUrl);
+      const csvText = await response.text();
+
+      const rows = csvText
+        .trim()
+        .split("\n")
+        .map(r => r.split(","));
+
+      const dataRows = rows.slice(10);
+
+      const teams = [];
+
+      dataRows.forEach(r => {
+        const teamName = r[0]?.trim();
+        if (!teamName) return;
+
+        const team = {
+          team: teamName,
+          gp: Number(r[1] || 0),
+          wins: Number(r[2] || 0),
+          losses: Number(r[3] || 0),
+          runsFor: Number(r[5] || 0),
+          runsAgainst: Number(r[6] || 0),
+          runDiff: Number(r[7] || 0),
+          winPct: r[8] ? r[8] : "",
+          rank: Number(r[10] || 0)
+        };
+
+        teams.push(team);
+      });
+
+      renderStats(teams);
+      renderStandings(teams);
+
+      document.getElementById("loadingMessage").style.display = "none";
+    } catch (e) {
+      document.getElementById("loadingMessage").innerText =
+        "Error loading stats from Google Sheets.";
+    }
+  }
+
+  function renderStats(teams) {
+    const table = document.getElementById("statsTable");
+
+    teams.forEach(t => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${t.team}</td>
+        <td>${t.gp}</td>
+        <td>${t.wins}</td>
+        <td>${t.losses}</td>
+        <td>${t.runsFor}</td>
+        <td>${t.runsAgainst}</td>
+        <td>${t.runDiff}</td>
+        <td>${t.winPct}</td>
+        <td>${t.rank || ""}</td>
+      `;
+      table.appendChild(row);
+    });
+  }
+
+  function renderStandings(teams) {
+    const table = document.getElementById("standingsTable");
+
+    const sorted = [...teams].sort((a, b) => {
+      if (a.rank && b.rank) return a.rank - b.rank;
+      if (a.rank) return -1;
+      if (b.rank) return 1;
+      return b.wins - a.wins;
+    });
+
+    sorted.forEach(t => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${t.rank || ""}</td>
+        <td>${t.team}</td>
+        <td>${t.wins}</td>
+        <td>${t.losses}</td>
+        <td>${t.winPct}</td>
+      `;
+      table.appendChild(row);
+    });
+  }
+
+  loadTeamStats();
+</script>
+
+</body>
+</html>
