@@ -144,43 +144,43 @@
 
 <!-- AUTO-UPDATE SCRIPT -->
 <script>
+async function getLatestFromGitHub(path) {
+  const apiUrl = `https://api.github.com/repos/SteelCityKickball/Steel-City-Kickball/contents/${path}`;
+
+  const response = await fetch(apiUrl);
+  const files = await response.json();
+
+  // Filter image files
+  const images = files.filter(f =>
+    f.name.match(/\.(jpg|jpeg|png|gif)$/i)
+  );
+
+  // Sort newest first (alphabetical descending)
+  images.sort((a, b) => b.name.localeCompare(a.name));
+
+  return images;
+}
+
 async function loadImages() {
-  const folders = {
-    gotw: "images/gotw/",
-    mvp: "images/mvp/",
-    homepage: "images/homepage/"
-  };
-
-  async function getLatestImage(folder) {
-    const response = await fetch(folder);
-    const text = await response.text();
-    const matches = [...text.matchAll(/href=\"([^\\\"]+\\.(jpg|jpeg|png|gif))\"/gi)];
-    const files = matches.map(m => m[1]).sort().reverse();
-    return files[0] ? folder + files[0] : null;
-  }
-
-  async function getLatestThree(folder) {
-    const response = await fetch(folder);
-    const text = await response.text();
-    const matches = [...text.matchAll(/href=\"([^\\\"]+\\.(jpg|jpeg|png|gif))\"/gi)];
-    const files = matches.map(m => m[1]).sort().reverse();
-    return files.slice(0, 3).map(f => folder + f);
-  }
-
   // GOTW
-  const gotwImg = await getLatestImage(folders.gotw);
-  if (gotwImg) document.getElementById("gotw-img").src = gotwImg;
+  const gotw = await getLatestFromGitHub("images/gotw");
+  if (gotw.length > 0) {
+    document.getElementById("gotw-img").src = gotw[0].download_url;
+  }
 
   // MVP
-  const mvpImg = await getLatestImage(folders.mvp);
-  if (mvpImg) document.getElementById("mvp-img").src = mvpImg;
+  const mvp = await getLatestFromGitHub("images/mvp");
+  if (mvp.length > 0) {
+    document.getElementById("mvp-img").src = mvp[0].download_url;
+  }
 
-  // HOMEPAGE PHOTOS
-  const homepagePhotos = await getLatestThree(folders.homepage);
+  // HOMEPAGE PHOTOS (newest 3)
+  const homepage = await getLatestFromGitHub("images/homepage");
   const strip = document.getElementById("photo-strip");
-  homepagePhotos.forEach(src => {
+
+  homepage.slice(0, 3).forEach(file => {
     const img = document.createElement("img");
-    img.src = src;
+    img.src = file.download_url;
     strip.appendChild(img);
   });
 }
