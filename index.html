@@ -37,10 +37,13 @@
       background: linear-gradient(to bottom, #000 50%, #c00000 50%);
       padding: 60px 20px;
     }
-  .hero img {
+ .hero img {
   width: 60vw;
   max-width: 800px;
-  filter: drop-shadow(0 0 25px #ffcc00) drop-shadow(0 0 45px #ffcc00);
+  filter:
+    drop-shadow(0 -25px 35px rgba(255, 0, 0, 0.9))   /* red glow upward */
+    drop-shadow(0 25px 35px rgba(0, 0, 0, 1))        /* black shadow downward */
+    drop-shadow(0 0 15px rgba(255, 0, 0, 0.7));      /* soft red aura */
 }
     .hero h1 {
       color: #ffcc00;
