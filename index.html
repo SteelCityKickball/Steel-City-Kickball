@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Steel City Kickball — Home</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -32,18 +33,18 @@
       color: #ffcc00;
     }
 
- /* HERO SECTION */
-.hero {
-  background: linear-gradient(to bottom, #000 45%, #c00000 55%);
-  padding: 80px 20px;
-  text-align: center;
-}
+    /* HERO SECTION */
+    .hero {
+      background: linear-gradient(to bottom, #000 45%, #c00000 55%);
+      padding: 80px 20px;
+      text-align: center;
+    }
 
-/* SIZE THE LOGO IMAGE */
-.hero img {
-  width: 80vw;      /* makes the logo larger */
-  max-width: 1000px; /* caps size for big screens */
-}
+    /* SIZE THE LOGO IMAGE */
+    .hero img {
+      width: 80vw;
+      max-width: 1000px;
+    }
 
     /* PHOTO STRIP */
     .photo-strip {
@@ -87,6 +88,7 @@
     }
   </style>
 </head>
+
 <body>
 
 <nav>
@@ -101,15 +103,11 @@
 
 <!-- HERO SECTION -->
 <div class="hero">
-   <img src="Amazinglogo.png" alt="Steel City Kickball Logo">
+  <img src="Amazinglogo.png" alt="Steel City Kickball Logo">
 </div>
 
 <!-- PHOTO STRIP -->
-<div class="photo-strip">
-  <img src="images/facebook_1779668293325_7464469841367890269.jpg">
-  <img src="images/facebook_1779668315860_7464469935887853854.jpg">
-  <img src="images/facebook_1779668341039_7464470041494947661.jpg">
-</div>
+<div id="photo-strip" class="photo-strip"></div>
 
 <!-- ABOUT SECTION -->
 <div class="about">
