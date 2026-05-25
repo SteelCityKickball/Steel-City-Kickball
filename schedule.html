@@ -4,57 +4,99 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Steel City Kickball — Schedule</title>
+
   <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Same as archive page */
     body {
+      position: relative;
+      background: #000;
       font-family: Arial, sans-serif;
-      margin: 20px;
-      background: #f5f5f5;
+      color: white;
+      text-shadow: 1px 1px 2px black;
       text-align: center;
     }
+
+    /* Same background as archive, but bigger logo like waivers */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at center, rgba(140,0,0,0.55) 0%, rgba(0,0,0,0.90) 80%),
+        url("Amazinglogo.png") no-repeat center center fixed;
+      background-size: 90%;
+      opacity: 0.80;
+      filter: none;
+      z-index: 0;
+    }
+
+    /* Content sits above background */
+    .page-content {
+      position: relative;
+      z-index: 1;
+      padding: 20px;
+    }
+
     nav ul {
       list-style: none;
+      padding: 10px;
+      margin: 0;
       display: flex;
       justify-content: center;
       gap: 20px;
-      padding: 0;
-      margin-bottom: 20px;
+      background: rgba(0,0,0,0.8);
     }
+
     nav a {
+      color: white;
       text-decoration: none;
       font-weight: bold;
-      color: #222;
     }
+
     nav a:hover {
       text-decoration: underline;
     }
+
     table {
       margin: 20px auto;
       border-collapse: collapse;
       width: 90%;
       max-width: 900px;
-      background: #fff;
+      background: rgba(0,0,0,0.6);
       border-radius: 8px;
       overflow: hidden;
+      color: white;
     }
+
     th, td {
       padding: 12px;
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
     }
+
     th {
-      background: #222;
+      background: rgba(0,0,0,0.9);
       color: #fff;
     }
-    h2 {
-      margin-top: 40px;
+
+    h1, h2 {
+      margin-top: 30px;
     }
   </style>
 </head>
+
 <body>
+<div class="page-content">
 
 <nav>
   <ul>
     <li><a href="/Steel-City-Kickball/">Home</a></li>
-    <li><a href="schedule.html">Schedule</a></li>
+    <li><a href="schedule.html" class="active">Schedule</a></li>
     <li><a href="standings.html">Standings</a></li>
     <li><a href="teams.html">Teams</a></li>
     <li><a href="waivers.html">Waivers</a></li>
@@ -68,6 +110,8 @@
 
 <h2>Results</h2>
 <div id="results-container">No results yet.</div>
+
+</div>
 
 <script>
   const scheduleUrl =
