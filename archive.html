@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Photo Archive — Steel City Kickball</title>
 
-  <!-- ALL STYLES INCLUDED HERE -->
   <style>
-    /* Option C Background using your real logo */
+    /* Option C background using local Amazinglogo.png */
     body::before {
       content: "";
       position: fixed;
@@ -15,15 +14,13 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: url('https://raw.githubusercontent.com/SteelCityKickball/Steel-City-Kickball/main/Amazinglogo.png')
-                  no-repeat center center fixed;
+      background: url('Amazinglogo.png') no-repeat center center fixed;
       background-size: 70%;
-      opacity: 0.25;
+      opacity: 0.35;
       filter: brightness(0.3);
       z-index: -1;
     }
 
-    /* Ensure background shows */
     body {
       background: transparent !important;
       font-family: Arial, sans-serif;
@@ -33,7 +30,6 @@
       text-shadow: 1px 1px 2px black;
     }
 
-    /* Navigation */
     nav ul {
       list-style: none;
       padding: 10px;
@@ -53,7 +49,6 @@
       margin-left: 20px;
     }
 
-    /* ARCHIVE GRID STYLING */
     .archive-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -110,30 +105,24 @@ async function getLatestFromGitHub(path) {
 
 async function loadArchive() {
 
-  /* HOMEPAGE PHOTOS */
   const homepage = await getLatestFromGitHub("images/homepage");
   const homepageGrid = document.getElementById("archive-grid");
-
   homepage.forEach(file => {
     const img = document.createElement("img");
     img.src = file.download_url;
     homepageGrid.appendChild(img);
   });
 
-  /* GOTW ARCHIVE */
   const gotw = await getLatestFromGitHub("images/gotw-archive");
   const gotwGrid = document.getElementById("gotw-archive-grid");
-
   gotw.forEach(file => {
     const img = document.createElement("img");
     img.src = file.download_url;
     gotwGrid.appendChild(img);
   });
 
-  /* MVP ARCHIVE */
   const mvp = await getLatestFromGitHub("images/mvp-archive");
   const mvpGrid = document.getElementById("mvp-archive-grid");
-
   mvp.forEach(file => {
     const img = document.createElement("img");
     img.src = file.download_url;
