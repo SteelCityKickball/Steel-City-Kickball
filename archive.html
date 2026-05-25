@@ -69,7 +69,14 @@
 
 <h1>Photo Archive</h1>
 
+<h2>Homepage Photos</h2>
 <div id="archive-grid" class="archive-grid"></div>
+
+<h2>Game of the Week Archive</h2>
+<div id="gotw-archive-grid" class="archive-grid"></div>
+
+<h2>MVP Archive</h2>
+<div id="mvp-archive-grid" class="archive-grid"></div>
 
 <script>
 async function getLatestFromGitHub(path) {
@@ -86,19 +93,38 @@ async function getLatestFromGitHub(path) {
 }
 
 async function loadArchive() {
-  const photos = await getLatestFromGitHub("images/homepage");
-  const grid = document.getElementById("archive-grid");
 
-  photos.forEach(file => {
+  /* ⭐ HOMEPAGE PHOTOS ⭐ */
+  const homepage = await getLatestFromGitHub("images/homepage");
+  const homepageGrid = document.getElementById("archive-grid");
+
+  homepage.forEach(file => {
     const img = document.createElement("img");
     img.src = file.download_url;
-    grid.appendChild(img);
+    homepageGrid.appendChild(img);
+  });
+
+  /* ⭐ GOTW ARCHIVE ⭐ */
+  const gotw = await getLatestFromGitHub("images/gotw-archive");
+  const gotwGrid = document.getElementById("gotw-archive-grid");
+
+  gotw.forEach(file => {
+    const img = document.createElement("img");
+    img.src = file.download_url;
+    gotwGrid.appendChild(img);
+  });
+
+  /* ⭐ MVP ARCHIVE ⭐ */
+  const mvp = await getLatestFromGitHub("images/mvp-archive");
+  const mvpGrid = document.getElementById("mvp-archive-grid");
+
+  mvp.forEach(file => {
+    const img = document.createElement("img");
+    img.src = file.download_url;
+    mvpGrid.appendChild(img);
   });
 }
 
 loadArchive();
 </script>
-
-</body>
-</html>
 
