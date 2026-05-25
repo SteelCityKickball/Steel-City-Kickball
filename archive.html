@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Photo Archive — Steel City Kickball</title>
 
-  <!-- Load your main site styling -->
+  <!-- Main site styles -->
   <link rel="stylesheet" href="style.css">
 
   <!-- Option C background -->
@@ -66,7 +66,7 @@ async function getLatestFromGitHub(path) {
 
 async function loadArchive() {
 
-  /* ⭐ HOMEPAGE PHOTOS ⭐ */
+  // HOMEPAGE PHOTOS
   const homepage = await getLatestFromGitHub("images/homepage");
   const homepageGrid = document.getElementById("archive-grid");
 
@@ -76,7 +76,7 @@ async function loadArchive() {
     homepageGrid.appendChild(img);
   });
 
-  /* ⭐ GOTW ARCHIVE ⭐ */
+  // GOTW ARCHIVE
   const gotw = await getLatestFromGitHub("images/gotw-archive");
   const gotwGrid = document.getElementById("gotw-archive-grid");
 
@@ -86,7 +86,7 @@ async function loadArchive() {
     gotwGrid.appendChild(img);
   });
 
-  /* ⭐ MVP ARCHIVE ⭐ */
+  // MVP ARCHIVE
   const mvp = await getLatestFromGitHub("images/mvp-archive");
   const mvpGrid = document.getElementById("mvp-archive-grid");
 
