@@ -12,7 +12,6 @@
       padding: 0;
     }
 
-    /* Base theme (same as archive/schedule/waivers/teams) */
     body {
       position: relative;
       background: #000;
@@ -22,7 +21,6 @@
       text-align: center;
     }
 
-    /* Default background = league logo */
     body::before {
       content: "";
       position: fixed;
@@ -32,12 +30,10 @@
         url("Amazinglogo.png") no-repeat center center fixed;
       background-size: 90%;
       opacity: 0.80;
-      filter: none;
       z-index: 0;
       transition: background 0.6s ease-in-out;
     }
 
-    /* Content sits above background */
     .page-content {
       position: relative;
       z-index: 1;
@@ -115,10 +111,7 @@
 </div>
 
 <script>
-/* MVP AUTO‑BACKGROUND LOGIC
-   Pulls MVP team name from GitHub JSON and updates background logo
-*/
-
+/* MVP AUTO‑BACKGROUND LOGIC */
 async function updateBackgroundFromMVP() {
   try {
     const response = await fetch(
@@ -128,7 +121,7 @@ async function updateBackgroundFromMVP() {
     if (!response.ok) return;
 
     const data = await response.json();
-    const mvpTeam = data.team; // Example: "Warriors"
+    const mvpTeam = data.team;
 
     if (!mvpTeam) return;
 
@@ -147,14 +140,15 @@ async function updateBackgroundFromMVP() {
 
 updateBackgroundFromMVP();
 
-/* LOAD STANDINGS + STATS FROM GOOGLE SHEETS (your existing logic) */
+/* LOAD STANDINGS + STATS FROM GOOGLE SHEETS */
 
+/* Standings sheet */
 const standingsUrl =
- const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRjCOIOADqzgiT9RPU9tBGBkpvnL2DP7gXrjkMhwY0DWuNK65XLuBjKV-d1sVXRsQzAbAXBEauAwoT7/pub?output=csv";
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQnsrFD-xSe7RDLO_PEcX6RMQ5HBPC9S3JhQ1i-Tek6m0Z6ZE0HeunDZ5xWNNkd5vwjJGFaN1EFubR9/pub?output=csv";
 
+/* Team stats sheet (same as Bonnies Babies) */
 const statsUrl =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vRjCOIOADqzgiT9RPU9tBGBkpvnL2DP7gXrjkMhwY0DWuNK65XLuBjKV-d1sVXRsQzAbAXBEauAwoT7/pub?output=csv";
-R9/pub?output=csv";
 
 function parseCSV(text) {
   const rows = text.split(/\r?\n/).filter(r => r.trim() !== "");
