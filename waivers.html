@@ -5,6 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Steel City Kickball – Waivers</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+body {
+  position: relative;
+  background: #000;
+  font-family: Arial, sans-serif;
+  color: white;
+  text-shadow: 1px 1px 2px black;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at center, rgba(140,0,0,0.55) 0%, rgba(0,0,0,0.90) 80%),
+    url("Amazinglogo.png") no-repeat center center fixed;
+  background-size: 90%;  /* Bigger logo for waiver page */
+  opacity: 0.80;
+  filter: none;
+  z-index: 0;
+}
+
+main, nav, .button-container {
+  position: relative;
+  z-index: 1;
+}
+</style>
 </head>
 
 <body>
