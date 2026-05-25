@@ -4,18 +4,151 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gonzalez — Steel City Kickball</title>
+
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; text-align: center; }
-    nav ul { list-style: none; display: flex; justify-content: center; gap: 20px; padding: 0; margin-bottom: 20px; }
-    nav a { text-decoration: none; font-weight: bold; color: #222; }
-    nav a:hover { text-decoration: underline; }
-    .stats-box { background: #fff; padding: 20px; margin: 15px auto; max-width: 400px; border-radius: 8px; border: 1px solid #ccc; text-align: left; }
-    .stats-box h2 { text-align: center; margin-top: 0; }
-    .stat-row { display: flex; justify-content: space-between; margin: 4px 0; }
-    .loading { margin-top: 20px; color: #555; }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Dark glowing theme */
+    body {
+      position: relative;
+      background: #000;
+      font-family: Arial, sans-serif;
+      color: white;
+      text-shadow: 1px 1px 2px black;
+      text-align: center;
+    }
+
+    /* TEAM LOGO BACKGROUND */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at center, rgba(140,0,0,0.55) 0%, rgba(0,0,0,0.90) 80%),
+        url("../images/team-logos/gonzalez-logo.png") no-repeat center center fixed;
+      background-size: 120vmin; /* bigger, perfectly round */
+      opacity: 0.80;
+      z-index: 0;
+    }
+
+    .page-content {
+      position: relative;
+      z-index: 1;
+      padding: 20px;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 10px;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      background: rgba(0,0,0,0.8);
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    h1 {
+      margin-top: 30px;
+      font-size: 2.5rem;
+    }
+
+    /* Captain Section */
+    .captain-section {
+      margin: 40px auto;
+      max-width: 500px;
+      background: rgba(0,0,0,0.6);
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .captain-photo {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid white;
+      margin-bottom: 10px;
+    }
+
+    /* Roster Grid */
+    .roster-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .player-card {
+      background: rgba(0,0,0,0.6);
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .player-photo {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid white;
+      margin-bottom: 8px;
+    }
+
+    /* Stats Box */
+    .stats-box {
+      background: rgba(0,0,0,0.6);
+      padding: 20px;
+      margin: 30px auto;
+      max-width: 500px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.2);
+      text-align: left;
+    }
+
+    .stats-box h2 {
+      text-align: center;
+      margin-top: 0;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 4px 0;
+    }
+
+    /* Team Blurb */
+    .team-blurb {
+      max-width: 800px;
+      margin: 40px auto;
+      background: rgba(0,0,0,0.6);
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.2);
+      font-size: 1.2rem;
+      line-height: 1.6;
+    }
   </style>
 </head>
+
 <body>
+<div class="page-content">
 
 <nav>
   <ul>
@@ -28,11 +161,40 @@
 </nav>
 
 <h1>Gonzalez</h1>
-<p>Team stats are pulled live from the league stats sheet.</p>
 
+<!-- TEAM CAPTAIN -->
+<div class="captain-section">
+  <img src="../images/team-logos/gonzalez-logo.png" class="captain-photo" alt="Captain Photo" />
+  <h2>Team Captain: (Add Name)</h2>
+</div>
+
+<!-- TEAM ROSTER -->
+<h2>Roster</h2>
+<div class="roster-grid">
+  <!-- Example Player -->
+  <div class="player-card">
+    <img src="../images/players/example.png" class="player-photo" />
+    <h3>Player Name</h3>
+    <p>#00 • Position</p>
+  </div>
+
+  <!-- Add more players here -->
+</div>
+
+<!-- TEAM STATS (LIVE FROM GOOGLE SHEET) -->
 <div id="team-stats" class="stats-box">
   <h2>Season Stats</h2>
   <div id="stats-content" class="loading">Loading stats…</div>
+</div>
+
+<!-- TEAM BLURB -->
+<div class="team-blurb">
+  <p>
+    Write a short description about Gonzalez here — team personality, history,
+    strengths, or anything fun you want fans to know.
+  </p>
+</div>
+
 </div>
 
 <script>
@@ -74,4 +236,3 @@
 
 </body>
 </html>
-
