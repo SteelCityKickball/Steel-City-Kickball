@@ -6,7 +6,7 @@
   <title>Photo Archive — Steel City Kickball</title>
 
   <style>
-    /* Option C background using local Amazinglogo.png */
+    /* Option C — darkened logo with red‑black gradient */
     body::before {
       content: "";
       position: fixed;
@@ -14,7 +14,9 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: url('Amazinglogo.png') no-repeat center center fixed;
+      background:
+        radial-gradient(circle at center, rgba(120,0,0,0.8) 0%, rgba(0,0,0,0.95) 80%),
+        url('Amazinglogo.png') no-repeat center center fixed;
       background-size: 70%;
       opacity: 0.35;
       filter: brightness(0.3);
@@ -104,7 +106,6 @@ async function getLatestFromGitHub(path) {
 }
 
 async function loadArchive() {
-
   const homepage = await getLatestFromGitHub("images/homepage");
   const homepageGrid = document.getElementById("archive-grid");
   homepage.forEach(file => {
