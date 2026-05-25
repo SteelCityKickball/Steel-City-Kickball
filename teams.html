@@ -4,40 +4,85 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Steel City Kickball — Teams</title>
+
   <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Same as archive/schedule/waivers */
     body {
+      position: relative;
+      background: #000;
       font-family: Arial, sans-serif;
-      margin: 20px;
-      background: #f5f5f5;
+      color: white;
+      text-shadow: 1px 1px 2px black;
       text-align: center;
     }
+
+    /* Background with bigger logo */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at center, rgba(140,0,0,0.55) 0%, rgba(0,0,0,0.90) 80%),
+        url("Amazinglogo.png") no-repeat center center fixed;
+      background-size: 90%;
+      opacity: 0.80;
+      filter: none;
+      z-index: 0;
+    }
+
+    /* Content sits above background */
+    .page-content {
+      position: relative;
+      z-index: 1;
+      padding: 20px;
+    }
+
     nav ul {
       list-style: none;
+      padding: 10px;
+      margin: 0;
       display: flex;
       justify-content: center;
       gap: 20px;
-      padding: 0;
-      margin-bottom: 20px;
+      background: rgba(0,0,0,0.8);
     }
+
     nav a {
+      color: white;
       text-decoration: none;
       font-weight: bold;
-      color: #222;
     }
+
     nav a:hover {
       text-decoration: underline;
     }
+
+    h1 {
+      margin-top: 30px;
+    }
+
+    /* Team cards styled for dark theme */
     .team-card {
-      background: #fff;
+      background: rgba(0,0,0,0.6);
       padding: 20px;
       margin: 15px auto;
       width: 300px;
       border-radius: 8px;
-      border: 1px solid #ccc;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: white;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
     }
+
     .team-card h3 {
       margin: 0 0 10px 0;
     }
+
     .team-card a {
       display: inline-block;
       margin-top: 10px;
@@ -47,19 +92,22 @@
       text-decoration: none;
       border-radius: 5px;
     }
+
     .team-card a:hover {
       background: #444;
     }
   </style>
 </head>
+
 <body>
+<div class="page-content">
 
 <nav>
   <ul>
     <li><a href="/Steel-City-Kickball/">Home</a></li>
     <li><a href="schedule.html">Schedule</a></li>
     <li><a href="standings.html">Standings</a></li>
-    <li><a href="teams.html">Teams</a></li>
+    <li><a href="teams.html" class="active">Teams</a></li>
     <li><a href="waivers.html">Waivers</a></li>
   </ul>
 </nav>
@@ -69,33 +117,34 @@
 
 <div class="team-card">
   <h3>Bonnies Babies</h3>
-  <a href="teams/bonnies-babies.html">View Team Page</a>
+  <a href="#">View Team Page</a>
 </div>
 
 <div class="team-card">
   <h3>J4K</h3>
-  <a href="teams/j4k.html">View Team Page</a>
+  <a href="#">View Team Page</a>
 </div>
 
 <div class="team-card">
   <h3>Warriors</h3>
-  <a href="teams/warriors.html">View Team Page</a>
+  <a href="#">View Team Page</a>
 </div>
 
 <div class="team-card">
   <h3>Gonzalez</h3>
-  <a href="teams/gonzalez.html">View Team Page</a>
+  <a href="#">View Team Page</a>
 </div>
 
 <div class="team-card">
   <h3>The Club</h3>
-  <a href="teams/the-club.html">View Team Page</a>
+  <a href="#">View Team Page</a>
 </div>
 
 <div class="team-card">
   <h3>Kickaholics</h3>
-  <a href="teams/kickaholics.html">View Team Page</a>
+  <a href="#">View Team Page</a>
 </div>
 
+</div>
 </body>
 </html>
