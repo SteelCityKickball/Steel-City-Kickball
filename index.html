@@ -7,26 +7,74 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 20px;
+      margin: 0;
       background: #f5f5f5;
       text-align: center;
     }
+
+    /* NAV BAR */
     nav ul {
       list-style: none;
       display: flex;
       justify-content: center;
       gap: 20px;
-      padding: 0;
-      margin-bottom: 20px;
+      padding: 20px 0;
+      margin: 0;
+      background: #000;
     }
     nav a {
       text-decoration: none;
       font-weight: bold;
-      color: #222;
+      color: #fff;
+      font-size: 18px;
     }
     nav a:hover {
-      text-decoration: underline;
+      color: #ffcc00;
     }
+
+    /* HERO SECTION */
+    .hero {
+      background: #000;
+      padding: 40px 20px;
+    }
+    .hero img {
+      width: 200px;
+      max-width: 80%;
+    }
+    .hero h1 {
+      color: #ffcc00;
+      margin-top: 20px;
+      font-size: 36px;
+      letter-spacing: 1px;
+    }
+
+    /* PHOTO STRIP */
+    .photo-strip {
+      display: flex;
+      overflow-x: auto;
+      gap: 15px;
+      padding: 20px;
+      background: #fff;
+    }
+    .photo-strip img {
+      height: 200px;
+      border-radius: 10px;
+      object-fit: cover;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    /* ABOUT SECTION */
+    .about {
+      padding: 40px 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+    .about p {
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    /* BUTTON */
     .button {
       display: inline-block;
       padding: 12px 20px;
@@ -50,18 +98,30 @@
     <li><a href="schedule.html">Schedule</a></li>
     <li><a href="standings.html">Standings</a></li>
     <li><a href="teams.html">Teams</a></li>
-    <li><a href="waivers.html">Waivers</a></li>
+    <li><a href="waiver.html">Waivers</a></li>
   </ul>
 </nav>
 
-<div>
-  <img src="kickballLogo.jpg" alt="Steel City Kickball Logo" 
-       style="width:180px; margin-bottom:10px;">
+<!-- HERO SECTION -->
+<div class="hero">
+  <img src="kickballLogo.jpg" alt="Steel City Kickball Logo">
+  <h1>Steel City Kickball</h1>
 </div>
 
-<h1>Steel City Kickball</h1>
-<p>Welcome to the official home of Steel City Kickball!  
-Check out standings, schedules, teams, and player resources.</p>
+<!-- PHOTO STRIP -->
+<div class="photo-strip">
+  <img src="images/facebook_1779668293325_7464469841367890269.jpg">
+  <img src="images/facebook_1779668315860_7464469935887853854.jpg">
+  <img src="images/facebook_1779668341039_7464470041494947661.jpg">
+</div>
+
+<!-- ABOUT SECTION -->
+<div class="about">
+  <p>
+    Welcome to the official home of Steel City Kickball!  
+    Check out standings, schedules, teams, and player resources.
+  </p>
+</div>
 
 <a class="button" href="standings.html">View Standings</a>
 
