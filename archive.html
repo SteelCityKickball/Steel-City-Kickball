@@ -21,18 +21,18 @@
       text-shadow: 1px 1px 2px black;
     }
 
-   body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(circle at center, rgba(140,0,0,0.55) 0%, rgba(0,0,0,0.90) 80%),
-    url("Amazinglogo.png") no-repeat center center fixed;
-  background-size: 70%;
-  opacity: 0.80;
-  filter: none;
-  z-index: 0;
-}
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at center, rgba(140,0,0,0.55) 0%, rgba(0,0,0,0.90) 80%),
+        url("Amazinglogo.png") no-repeat center center fixed;
+      background-size: 70%;
+      opacity: 0.80;
+      filter: none;
+      z-index: 0;
+    }
 
     /* All page content sits ABOVE the background */
     .page-content {
@@ -83,7 +83,7 @@
       <li><a href="schedule.html">Schedule</a></li>
       <li><a href="standings.html">Standings</a></li>
       <li><a href="teams.html">Teams</a></li>
-      <li><a href="waiver.html">Waivers</a></li>
+      <li><a href="waivers.html">Waivers</a></li>
       <li><a href="archive.html">Archive</a></li>
     </ul>
   </nav>
@@ -133,7 +133,7 @@ async function loadArchive() {
 
   const mvp = await getLatestFromGitHub("images/mvp-archive");
   const mvpGrid = document.getElementById("mvp-archive-grid");
-  mvp.forEach(file => {
+  mvp.forEach file => {
     const img = document.createElement("img");
     img.src = file.download_url;
     mvpGrid.appendChild(img);
