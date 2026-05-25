@@ -6,30 +6,38 @@
   <title>Photo Archive — Steel City Kickball</title>
 
   <style>
-    /* Option C — darkened logo with red‑black gradient */
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* OPTION C – darkened logo + red/black background */
+    body {
+      position: relative;
+      background: #000; /* fallback */
+      font-family: Arial, sans-serif;
+      color: white;
+      text-shadow: 1px 1px 2px black;
+    }
+
     body::before {
       content: "";
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       background:
-        radial-gradient(circle at center, rgba(120,0,0,0.8) 0%, rgba(0,0,0,0.95) 80%),
-        url('Amazinglogo.png') no-repeat center center fixed;
+        radial-gradient(circle at center, rgba(120,0,0,0.85) 0%, rgba(0,0,0,0.98) 80%),
+        url("Amazinglogo.png") no-repeat center center fixed;
       background-size: 70%;
-      opacity: 0.35;
-      filter: brightness(0.3);
-      z-index: -1;
+      opacity: 0.6;          /* stronger so you can SEE it */
+      filter: blur(1px);     /* softens like the mockup */
+      z-index: 0;            /* sits behind content */
     }
 
-    body {
-      background: transparent !important;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      color: white;
-      text-shadow: 1px 1px 2px black;
+    /* All page content sits ABOVE the background */
+    .page-content {
+      position: relative;
+      z-index: 1;
     }
 
     nav ul {
@@ -38,7 +46,7 @@
       margin: 0;
       display: flex;
       gap: 20px;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.8);
     }
 
     nav a {
@@ -68,28 +76,29 @@
 </head>
 
 <body>
+<div class="page-content">
+  <nav>
+    <ul>
+      <li><a href="/Steel-City-Kickball/">Home</a></li>
+      <li><a href="schedule.html">Schedule</a></li>
+      <li><a href="standings.html">Standings</a></li>
+      <li><a href="teams.html">Teams</a></li>
+      <li><a href="waiver.html">Waivers</a></li>
+      <li><a href="archive.html">Archive</a></li>
+    </ul>
+  </nav>
 
-<nav>
-  <ul>
-    <li><a href="/Steel-City-Kickball/">Home</a></li>
-    <li><a href="schedule.html">Schedule</a></li>
-    <li><a href="standings.html">Standings</a></li>
-    <li><a href="teams.html">Teams</a></li>
-    <li><a href="waiver.html">Waivers</a></li>
-    <li><a href="archive.html">Archive</a></li>
-  </ul>
-</nav>
+  <h1>Photo Archive</h1>
 
-<h1>Photo Archive</h1>
+  <h2>Homepage Photos</h2>
+  <div id="archive-grid" class="archive-grid"></div>
 
-<h2>Homepage Photos</h2>
-<div id="archive-grid" class="archive-grid"></div>
+  <h2>Game of the Week Archive</h2>
+  <div id="gotw-archive-grid" class="archive-grid"></div>
 
-<h2>Game of the Week Archive</h2>
-<div id="gotw-archive-grid" class="archive-grid"></div>
-
-<h2>MVP Archive</h2>
-<div id="mvp-archive-grid" class="archive-grid"></div>
+  <h2>MVP Archive</h2>
+  <div id="mvp-archive-grid" class="archive-grid"></div>
+</div>
 
 <script>
 async function getLatestFromGitHub(path) {
