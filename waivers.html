@@ -4,25 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Steel City Kickball – Waivers</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-      body::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        background:
-          radial-gradient(circle at center, rgba(140,0,0,0.55) 0%, rgba(0,0,0,0.90) 80%),
-          url("Amazinglogo.png") no-repeat center center fixed;
-        background-size: 90%; /* bigger logo for waiver page */
-        opacity: 0.80;
-        filter: none;
-        z-index: 0;
-      }
 
-      .page-content {
-        position: relative;
-        z-index: 1;
-      }
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Same as archive page */
+        body {
+            position: relative;
+            background: #000;
+            font-family: Arial, sans-serif;
+            color: white;
+            text-shadow: 1px 1px 2px black;
+        }
+
+        /* Same as archive page but with bigger logo */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at center, rgba(140,0,0,0.55) 0%, rgba(0,0,0,0.90) 80%),
+                url("Amazinglogo.png") no-repeat center center fixed;
+            background-size: 90%; /* bigger logo */
+            opacity: 0.80;
+            filter: none;
+            z-index: 0;
+        }
+
+        /* Same wrapper as archive page */
+        .page-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 10px;
+            margin: 0;
+            display: flex;
+            gap: 20px;
+            background: rgba(0,0,0,0.8);
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -46,17 +78,14 @@
 
         <div class="button-container">
 
-            <!-- City Waiver -->
             <a class="button" href="https://github.com/SteelCityKickball/Steel-City-Kickball/blob/main/City%20of%20Lorain%20Parks%20Recreation%20Facilities%20Waiver%20and%20Release%20Agreement.pdf" target="_blank">
                 Download City of Lorain Waiver
             </a>
 
-            <!-- League Waiver -->
             <a class="button" href="https://github.com/SteelCityKickball/Steel-City-Kickball/blob/main/LeagueWaivers.pdf" target="_blank">
                 Download Steel City Kickball League Waiver
             </a>
 
-            <!-- Digital Waiver Form -->
             <a class="button primary" href="https://docs.google.com/forms/d/1ZVxijW_h6d_UfkGJJGzke2M3FQv1cHOhJu8Aj8JnVfA/preview" target="_blank">
                 Complete Digital Waiver Form
             </a>
