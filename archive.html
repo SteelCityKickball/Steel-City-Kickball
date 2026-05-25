@@ -5,11 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Photo Archive — Steel City Kickball</title>
 
-  <!-- Main site styles -->
-  <link rel="stylesheet" href="style.css">
-
-  <!-- Option C background -->
+  <!-- ALL STYLES INCLUDED HERE -->
   <style>
+    /* Option C Background */
     body::before {
       content: "";
       position: fixed;
@@ -22,6 +20,49 @@
       opacity: 0.15;
       filter: brightness(0.4);
       z-index: -1;
+    }
+
+    /* Page layout */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: white;
+      text-shadow: 1px 1px 2px black;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 10px;
+      margin: 0;
+      display: flex;
+      gap: 20px;
+      background: rgba(0,0,0,0.7);
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    h1, h2 {
+      margin-left: 20px;
+    }
+
+    /* ARCHIVE GRID STYLING */
+    .archive-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .archive-grid img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
     }
   </style>
 </head>
@@ -66,7 +107,7 @@ async function getLatestFromGitHub(path) {
 
 async function loadArchive() {
 
-  // HOMEPAGE PHOTOS
+  /* HOMEPAGE PHOTOS */
   const homepage = await getLatestFromGitHub("images/homepage");
   const homepageGrid = document.getElementById("archive-grid");
 
@@ -76,7 +117,7 @@ async function loadArchive() {
     homepageGrid.appendChild(img);
   });
 
-  // GOTW ARCHIVE
+  /* GOTW ARCHIVE */
   const gotw = await getLatestFromGitHub("images/gotw-archive");
   const gotwGrid = document.getElementById("gotw-archive-grid");
 
@@ -86,7 +127,7 @@ async function loadArchive() {
     gotwGrid.appendChild(img);
   });
 
-  // MVP ARCHIVE
+  /* MVP ARCHIVE */
   const mvp = await getLatestFromGitHub("images/mvp-archive");
   const mvpGrid = document.getElementById("mvp-archive-grid");
 
