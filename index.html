@@ -12,7 +12,14 @@
       background: #f5f5f5;
       text-align: center;
     }
-
+.blurb {
+  font-size: 18px;
+  margin-top: 10px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+}
     /* NAV BAR */
     nav ul {
       list-style: none;
@@ -148,22 +155,28 @@
 <script>
 async function getLatestFromGitHub(path) {
   const apiUrl = `https://api.github.com/repos/SteelCityKickball/Steel-City-Kickball/contents/${path}`;
-
   const response = await fetch(apiUrl);
   const files = await response.json();
 
-  // Filter image files
   const images = files.filter(f =>
     f.name.match(/\.(jpg|jpeg|png|gif)$/i)
   );
 
-  // Sort newest first (alphabetical descending)
   images.sort((a, b) => b.name.localeCompare(a.name));
-
   return images;
 }
 
 async function loadImages() {
+
+  /* ⭐ MANUAL TEXT YOU CAN EDIT ANYTIME ⭐ */
+  document.getElementById("gotw-text").innerText =
+    "Week 3 — Red Rockets vs Blue Bombers. A wild 9–8 finish with a walk-off kick!";
+
+  document.getElementById("mvp-text").innerText =
+    "Jordan M. — 3 RBIs, 2 catches, and a game-saving play!";
+
+  /* ⭐ AUTO-LOADING IMAGES ⭐ */
+
   // GOTW
   const gotw = await getLatestFromGitHub("images/gotw");
   if (gotw.length > 0) {
@@ -176,7 +189,7 @@ async function loadImages() {
     document.getElementById("mvp-img").src = mvp[0].download_url;
   }
 
-  // HOMEPAGE PHOTOS (newest 3)
+  // HOMEPAGE PHOTOS
   const homepage = await getLatestFromGitHub("images/homepage");
   const strip = document.getElementById("photo-strip");
 
@@ -189,6 +202,3 @@ async function loadImages() {
 
 loadImages();
 </script>
-
-</body>
-</html>
