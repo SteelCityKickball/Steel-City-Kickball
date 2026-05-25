@@ -7,7 +7,7 @@
 
   <!-- ALL STYLES INCLUDED HERE -->
   <style>
-    /* Option C Background */
+    /* Option C Background using your real logo */
     body::before {
       content: "";
       position: fixed;
@@ -15,15 +15,17 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: url('images/league-logo.png') no-repeat center center fixed;
+      background: url('https://raw.githubusercontent.com/SteelCityKickball/Steel-City-Kickball/main/Amazinglogo.png')
+                  no-repeat center center fixed;
       background-size: 70%;
-      opacity: 0.15;
-      filter: brightness(0.4);
+      opacity: 0.25;
+      filter: brightness(0.3);
       z-index: -1;
     }
 
-    /* Page layout */
+    /* Ensure background shows */
     body {
+      background: transparent !important;
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
@@ -31,6 +33,7 @@
       text-shadow: 1px 1px 2px black;
     }
 
+    /* Navigation */
     nav ul {
       list-style: none;
       padding: 10px;
