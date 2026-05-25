@@ -33,17 +33,29 @@
     }
 
     /* HERO SECTION */
-    .hero {
-  background: linear-gradient(to bottom, #111 45%, #c00000 55%);
+   .hero {
+  background: linear-gradient(to bottom, #000 45%, #c00000 55%);
   padding: 80px 20px;
+  text-align: center;
 }
- .hero img {
-  width: 60vw;
-  max-width: 800px;
-  filter:
-    drop-shadow(0 -25px 35px rgba(255, 0, 0, 0.9))   /* red glow upward */
-    drop-shadow(0 25px 35px rgba(0, 0, 0, 1))        /* black shadow downward */
-    drop-shadow(0 0 15px rgba(255, 0, 0, 0.7));      /* soft red aura */
+
+.logo-glow {
+  position: relative;
+  display: inline-block;
+}
+
+.logo-glow::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120%;
+  height: 120%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle at top, rgba(255,0,0,0.9) 0%, transparent 60%),
+              radial-gradient(circle at bottom, rgba(0,0,0,0.9) 0%, transparent 70%);
+  filter: blur(40px);
+  z-index: 0;
 }
     .hero h1 {
       color: #ffcc00;
@@ -109,7 +121,9 @@
 
 <!-- HERO SECTION -->
 <div class="hero">
- <img src="kickballLogo.png" alt="Steel City Kickball Logo">
+  <div class="logo-glow">
+    <img src="kickballLogo.png" alt="Steel City Kickball Logo">
+  </div>
   <h1>Steel City Kickball</h1>
 </div>
 
