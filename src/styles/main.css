@@ -513,3 +513,44 @@
 .new-message-form textarea {
     resize: vertical;
 }
+
+/* ===========================
+   NOTIFICATION CARD COMPONENT
+   =========================== */
+
+.notification-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: #1a1a1a;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.25);
+}
+
+.notification-icon {
+    font-size: 26px;
+    width: 50px;
+    height: 50px;
+    background: #2a2a2a;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification-info {
+    flex: 1;
+}
+
+.notification-text {
+    margin: 0;
+    font-size: 15px;
+    color: white;
+}
+
+.notification-time {
+    font-size: 12px;
+    color: #888;
+}
