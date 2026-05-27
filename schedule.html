@@ -12,7 +12,6 @@
       padding: 0;
     }
 
-    /* Same as archive page */
     body {
       position: relative;
       background: #000;
@@ -22,7 +21,6 @@
       text-align: center;
     }
 
-    /* Same background as archive, but bigger logo like waivers */
     body::before {
       content: "";
       position: fixed;
@@ -32,35 +30,13 @@
         url("Amazinglogo.png") no-repeat center center fixed;
       background-size: 90%;
       opacity: 0.80;
-      filter: none;
       z-index: 0;
     }
 
-    /* Content sits above background */
     .page-content {
       position: relative;
       z-index: 1;
       padding: 20px;
-    }
-
-    nav ul {
-      list-style: none;
-      padding: 10px;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      background: rgba(0,0,0,0.8);
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    nav a:hover {
-      text-decoration: underline;
     }
 
     table {
@@ -91,17 +67,18 @@
 </head>
 
 <body>
-<div class="page-content">
 
-<nav>
-  <ul>
-    <li><a href="/Steel-City-Kickball/">Home</a></li>
-    <li><a href="schedule.html" class="active">Schedule</a></li>
-    <li><a href="standings.html">Standings</a></li>
-    <li><a href="teams.html">Teams</a></li>
-    <li><a href="waivers.html">Waivers</a></li>
-  </ul>
-</nav>
+<!-- ⭐ NEW DYNAMIC NAVIGATION ⭐ -->
+<div id="nav-container"></div>
+<script>
+  fetch("/src/components/nav.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("nav-container").innerHTML = html;
+    });
+</script>
+
+<div class="page-content">
 
 <h1>Steel City Kickball — League Schedule</h1>
 
