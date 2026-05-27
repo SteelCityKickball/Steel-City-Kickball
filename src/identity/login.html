@@ -15,7 +15,14 @@
         <h1 class="auth-title">Steel City Kickball</h1>
         <h2 class="auth-subtitle">Sign In</h2>
 
-        <form class="auth-form">
+       <form id="login-form">
+    <input id="login-email" type="email" placeholder="Email" required />
+    <input id="login-password" type="password" placeholder="Password" required />
+    <button type="submit">Log In</button>
+</form>
+
+<script src="/src/identity/login.js"></script>
+
 
             <label>Email</label>
             <input type="email" placeholder="you@example.com" required />
