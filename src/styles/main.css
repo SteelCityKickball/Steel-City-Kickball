@@ -416,3 +416,70 @@
     color: white;
 }
 
+/* ===========================
+   MESSAGE THREAD PAGE
+   =========================== */
+
+.thread-page .page-container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.thread-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.thread-avatar {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e63946;
+}
+
+.thread-name {
+    margin: 0;
+    font-size: 22px;
+    color: white;
+}
+
+.thread-messages {
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 12px;
+    height: 400px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+.thread-input {
+    display: flex;
+    gap: 10px;
+}
+
+.thread-input input {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    background: #2a2a2a;
+    color: white;
+}
+
+.send-button {
+    padding: 12px 20px;
+    background: #e63946;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+}
+
+.send-button:hover {
+    background: #d62839;
+}
+
