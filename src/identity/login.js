@@ -45,4 +45,5 @@ async function handleLogin(event) {
 }
 
 // Attach to form
-document.getElementById("login-form").addEventListener("submit", handleLogin);
+document.getElementById("<form id="loginForm">
+").addEventListener("submit", handleLogin);
