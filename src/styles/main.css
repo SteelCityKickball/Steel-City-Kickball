@@ -554,3 +554,25 @@
     font-size: 12px;
     color: #888;
 }
+
+/* ===========================
+   NOTIFICATIONS LIST PAGE
+   =========================== */
+
+.notifications-page .page-container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.settings-link {
+    display: block;
+    text-align: center;
+    margin-top: 24px;
+    color: #bbb;
+    text-decoration: none;
+}
+
+.settings-link:hover {
+    color: white;
+}
