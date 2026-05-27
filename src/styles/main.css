@@ -159,3 +159,45 @@
 .back-link:hover {
     color: white;
 }
+
+/* ===========================
+   UPLOAD PAGE
+   =========================== */
+
+.upload-page .page-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.upload-form label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+.upload-form input[type="file"],
+.upload-form input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    border: none;
+    background: #2a2a2a;
+    color: white;
+}
+
+.upload-button {
+    width: 100%;
+    padding: 12px;
+    background: #e63946;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.upload-button:hover {
+    background: #d62839;
+}
