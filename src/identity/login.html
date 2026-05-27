@@ -15,20 +15,13 @@
         <h1 class="auth-title">Steel City Kickball</h1>
         <h2 class="auth-subtitle">Sign In</h2>
 
-       <form id="login-form">
-    <input id="login-email" type="email" placeholder="Email" required />
-    <input id="login-password" type="password" placeholder="Password" required />
-    <button type="submit">Log In</button>
-</form>
+        <form id="loginForm" class="auth-form">
 
-<script src="/src/identity/login.js"></script>
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="you@example.com" required />
 
-
-            <label>Email</label>
-            <input type="email" placeholder="you@example.com" required />
-
-            <label>Password</label>
-            <input type="password" placeholder="••••••••" required />
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" placeholder="••••••••" required />
 
             <button type="submit" class="auth-button">Continue</button>
 
@@ -41,6 +34,7 @@
 
     </div>
 
+    <script src="/src/identity/login.js"></script>
+
 </body>
 </html>
-
