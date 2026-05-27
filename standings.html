@@ -40,26 +40,6 @@
       padding: 20px;
     }
 
-    nav ul {
-      list-style: none;
-      padding: 10px;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      background: rgba(0,0,0,0.8);
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    nav a:hover {
-      text-decoration: underline;
-    }
-
     table {
       margin: 20px auto;
       border-collapse: collapse;
@@ -88,17 +68,18 @@
 </head>
 
 <body>
-<div class="page-content">
 
-<nav>
-  <ul>
-    <li><a href="/Steel-City-Kickball/">Home</a></li>
-    <li><a href="schedule.html">Schedule</a></li>
-    <li><a href="standings.html" class="active">Standings</a></li>
-    <li><a href="teams.html">Teams</a></li>
-    <li><a href="waivers.html">Waivers</a></li>
-  </ul>
-</nav>
+<!-- ⭐ NEW DYNAMIC NAVIGATION ⭐ -->
+<div id="nav-container"></div>
+<script>
+  fetch("/src/components/nav.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("nav-container").innerHTML = html;
+    });
+</script>
+
+<div class="page-content">
 
 <h1>Steel City Kickball — Standings & Team Stats</h1>
 
@@ -140,13 +121,13 @@ async function updateBackgroundFromMVP() {
 
 updateBackgroundFromMVP();
 
-/* LOAD STANDINGS + STATS FROM GOOGLE SHEETS */
+/* LOAD STANDINGS + STATS */
 
-/* Standings sheet */
+/* ❗ Replace GID_HERE with your actual standings GID */
 const standingsUrl =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQnsrFD-xSe7RDLO_PEcX6RMQ5HBPC9S3JhQ1i-Tek6m0Z6ZE0HeunDZ5xWNNkd5vwjJGFaN1EFubR9/pub?output=csv";
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQnsrFD-xSe7RDLO_PEcX6RMQ5HBPC9S3JhQ1i-Tek6m0Z6ZE0HeunDZ5xWNNkd5vwjJGFaN1EFubR9/pub?gid=GID_HERE&output=csv";
 
-/* Team stats sheet (same as Bonnies Babies) */
+/* Team stats sheet */
 const statsUrl =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vRjCOIOADqzgiT9RPU9tBGBkpvnL2DP7gXrjkMhwY0DWuNK65XLuBjKV-d1sVXRsQzAbAXBEauAwoT7/pub?output=csv";
 
