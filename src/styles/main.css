@@ -77,3 +77,31 @@
     color: white;
 }
 
+.profile-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    background: #1a1a1a;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #e63946;
+}
+
+.profile-info h2 {
+    margin: 0;
+    font-size: 22px;
+    color: white;
+}
+
+.profile-info p {
+    margin: 4px 0 0;
+    color: #bbb;
+}
