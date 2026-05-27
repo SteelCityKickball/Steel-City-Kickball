@@ -264,3 +264,43 @@
 .upload-link:hover {
     color: white;
 }
+
+/* ===========================
+   MEDIA VIEW PAGE
+   =========================== */
+
+.media-view-page .page-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.media-view {
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+.media-full {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.media-details h2 {
+    margin: 0 0 10px;
+    font-size: 22px;
+    color: white;
+}
+
+.media-details .media-tags {
+    margin: 0 0 10px;
+    color: #bbb;
+}
+
+.media-meta {
+    margin: 4px 0;
+    font-size: 14px;
+    color: #888;
+}
