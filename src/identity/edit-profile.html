@@ -1,1 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Profile – Steel City Kickball</title>
+
+    <link rel="stylesheet" href="/src/styles/main.css" />
+</head>
+
+<body class="edit-profile-page">
+
+    <!-- Require login -->
+    <script src="/src/identity/session.js"></script>
+    <script>
+        const user = requireLogin();
+    </script>
+
+    <div class="page-container">
+
+        <h1 class="page-title">Edit Your Profile</h1>
+
+        <div class="edit-profile-card">
+
+            <!-- Avatar Preview -->
+            <div class="avatar-section">
+                <img id="avatarPreview" class="avatar-preview" src="/src/assets/default-avatar.png" alt="Avatar Preview" />
+                <input id="avatarInput" type="text" placeholder="Avatar image URL" />
+            </div>
+
+            <!-- Profile Fields -->
+            <div class="edit-fields">
+
+                <label for="nicknameInput">Nickname</label>
+                <input id="nicknameInput" type="text" placeholder="Your nickname" />
+
+                <label for="primaryTeamInput">Primary Team</label>
+                <select id="primaryTeamInput">
+                    <option value="">Select team</option>
+                    <option value="The Club">The Club</option>
+                    <option value="Steel City">Steel City</option>
+                    <option value="Kickaholics">Kickaholics</option>
+                </select>
+
+                <label for="secondaryTeamInput">Secondary Team</label>
+                <select id="secondaryTeamInput">
+                    <option value="">None</option>
+                    <option value="The Club">The Club</option>
+                    <option value="Steel City">Steel City</option>
+                    <option value="Kickaholics">Kickaholics</option>
+                </select>
+
+                <button id="saveProfileBtn" class="save-button">Save Changes</button>
+
+                <a href="/src/identity/profile.html" class="back-link">Back to Profile</a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="/src/identity/edit-profile.js"></script>
+
+</body>
+</html>
 
