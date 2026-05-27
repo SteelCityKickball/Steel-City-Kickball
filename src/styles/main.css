@@ -236,3 +236,31 @@
     font-size: 13px;
     color: #bbb;
 }
+
+/* ===========================
+   MEDIA GALLERY PAGE
+   =========================== */
+
+.gallery-page .page-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.upload-link {
+    display: block;
+    text-align: center;
+    margin-top: 24px;
+    color: #bbb;
+    text-decoration: none;
+}
+
+.upload-link:hover {
+    color: white;
+}
