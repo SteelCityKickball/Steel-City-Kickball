@@ -12,32 +12,14 @@
       background: #f5f5f5;
       text-align: center;
     }
-.blurb {
-  font-size: 18px;
-  margin-top: 10px;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-  line-height: 1.5;
-}
-    /* NAV BAR */
-    nav ul {
-      list-style: none;
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      padding: 20px 0;
-      margin: 0;
-      background: #000;
-    }
-    nav a {
-      text-decoration: none;
-      font-weight: bold;
-      color: #fff;
+
+    .blurb {
       font-size: 18px;
-    }
-    nav a:hover {
-      color: #ffcc00;
+      margin-top: 10px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.5;
     }
 
     /* HERO SECTION */
@@ -109,16 +91,15 @@
 
 <body>
 
-<nav>
-  <ul>
-    <li><a href="/Steel-City-Kickball/">Home</a></li>
-    <li><a href="schedule.html">Schedule</a></li>
-    <li><a href="standings.html">Standings</a></li>
-    <li><a href="teams.html">Teams</a></li>
-    <li><a href="waiver.html">Waivers</a></li>
-    <li><a href="archive.html">Archive</a></li> <!-- ⭐ ADD THIS LINE -->
-  </ul>
-</nav>
+<!-- ⭐ NEW DYNAMIC NAVIGATION ⭐ -->
+<div id="nav-container"></div>
+<script>
+  fetch("/src/components/nav.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("nav-container").innerHTML = html;
+    });
+</script>
 
 <!-- HERO SECTION -->
 <div class="hero">
@@ -203,3 +184,6 @@ async function loadImages() {
 
 loadImages();
 </script>
+
+</body>
+</html>
