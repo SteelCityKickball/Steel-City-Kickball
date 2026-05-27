@@ -105,3 +105,57 @@
     margin: 4px 0 0;
     color: #bbb;
 }
+
+/* ===========================
+   SETTINGS PAGE
+   =========================== */
+
+.settings-page .page-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.settings-form label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+.settings-form input,
+.settings-form select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    border: none;
+    background: #2a2a2a;
+    color: white;
+}
+
+.save-button {
+    width: 100%;
+    padding: 12px;
+    background: #e63946;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.save-button:hover {
+    background: #d62839;
+}
+
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 16px;
+    color: #bbb;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    color: white;
+}
