@@ -201,3 +201,12 @@
 .upload-button:hover {
     background: #d62839;
 }
+
+<div class="media-card">
+    <img class="media-thumb" src="/src/assets/sample-media.jpg" alt="Media" />
+
+    <div class="media-info">
+        <p class="media-caption">Sample caption goes here</p>
+        <p class="media-tags">#kickball #gametime</p>
+    </div>
+</div>
