@@ -64,7 +64,7 @@ body::before {
   color: #C0C0C0;
 }
 
-/* DESKTOP MENU (VISIBLE ON DESKTOP) */
+/* DESKTOP MENU */
 .desktop-menu {
   display: flex;
   gap: 20px;
@@ -82,7 +82,7 @@ body::before {
   color: white;
 }
 
-/* HAMBURGER — HIDDEN ON DESKTOP */
+/* HAMBURGER (HIDDEN ON DESKTOP) */
 .hamburger {
   display: none;
   background: none;
@@ -92,7 +92,66 @@ body::before {
   cursor: pointer;
 }
 
-/* MOBILE MENU — HIDDEN BY DEFAULT */
+/* ============================
+   DROPDOWN (DESKTOP)
+============================ */
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropbtn {
+  color: #C0C0C0;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 8px 12px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background: rgba(0,0,0,0.95);
+  min-width: 160px;
+  border: 1px solid rgba(255,255,255,0.2);
+  z-index: 3000;
+}
+
+.dropdown-content a {
+  color: #C0C0C0;
+  padding: 10px 14px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* ============================
+   MOBILE IDENTITY BAR
+============================ */
+
+.mobile-identity {
+  display: none;
+  align-items: center;
+  gap: 10px;
+}
+
+.mobile-identity a {
+  color: #C0C0C0;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* ============================
+   MOBILE MENU
+============================ */
+
 .mobile-menu {
   display: none;
   flex-direction: column;
@@ -132,6 +191,16 @@ body::before {
   /* Show hamburger */
   .hamburger {
     display: block;
+  }
+
+  /* Show mobile identity bar */
+  .mobile-identity {
+    display: flex;
+  }
+
+  .mobile-hamburger {
+    display: flex;
+    align-items: center;
   }
 }
 
