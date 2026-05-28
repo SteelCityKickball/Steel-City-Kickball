@@ -11,7 +11,7 @@ body {
   overflow-x: hidden;
 }
 
-/* BACKGROUND */
+/* BACKGROUND — MATCH STANDINGS */
 body::before {
   content: "";
   position: fixed;
@@ -19,7 +19,8 @@ body::before {
   background:
     radial-gradient(circle at center, rgba(140,0,0,0.55), rgba(0,0,0,0.9)),
     url("../assets/Amazinglogo.png") no-repeat center center;
-  background-size: 70%;
+  background-size: cover;        /* <— FIXED */
+  background-attachment: fixed;
   opacity: 0.8;
   z-index: 0;
 }
@@ -155,7 +156,7 @@ body::before {
   display: flex;
 }
 
-/* MOBILE BREAKPOINT — FIXES EVERYTHING */
+/* MOBILE BREAKPOINT — FORCE MOBILE NAV TO WORK */
 @media (max-width: 768px) {
 
   .desktop-only {
