@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Steel City Kickball — Home</title>
 
+  <!-- Load global CSS -->
+  <link rel="stylesheet" href="src/styles/main.css">
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -94,11 +97,19 @@
 <!-- ⭐ FIXED NAVIGATION ⭐ -->
 <div id="nav-container"></div>
 <script>
-  // FIXED: remove leading slash so GitHub Pages can find the file
   fetch("src/components/nav.html")
     .then(res => res.text())
     .then(html => {
       document.getElementById("nav-container").innerHTML = html;
+
+      const hamburger = document.querySelector(".hamburger");
+      const mobileMenu = document.querySelector("#mobile-menu");
+
+      if (hamburger && mobileMenu) {
+        hamburger.addEventListener("click", () => {
+          mobileMenu.classList.toggle("open");
+        });
+      }
     });
 </script>
 
