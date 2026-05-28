@@ -32,30 +32,7 @@ body {
    NAVIGATION & LINKS
    ======================================= */
 
-nav {
-  background-color: rgba(0, 0, 0, 0.7);
-  padding: 15px;
-  text-align: center;
-}
 
-nav a {
-  color: #ffffff;
-  text-decoration: none;
-  font-size: 20px;
-  margin: 0 15px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-nav a:hover,
-nav a:focus {
-  color: #ffcc00;
-  text-decoration: underline;
-}
-
-nav a.active {
-  color: #ffcc00;
-}
 
 /* Global link styles */
 a {
