@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Steel City Kickball — Standings & Stats</title>
 
-  <!-- Load global CSS (required for hamburger menu) -->
+  <!-- Load global CSS (required for hamburger menu + nav styles) -->
   <link rel="stylesheet" href="src/styles/main.css">
 
   <style>
@@ -38,7 +38,7 @@
       z-index: 0;
     }
 
-    /* ⭐ NAV MUST BE ABOVE EVERYTHING */
+    /* NAV ABOVE EVERYTHING */
     #nav-container {
       position: relative;
       z-index: 2000;
@@ -54,11 +54,19 @@
       margin-top: 30px;
     }
 
+    /* ⭐ MOBILE-FRIENDLY TABLE WRAPPER */
+    .table-wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Wide tables so they scroll instead of squish */
     table {
       margin: 20px auto;
       border-collapse: collapse;
-      width: 95%;
-      max-width: 1000px;
+      width: 1000px;
       background: rgba(0,0,0,0.6);
       border-radius: 8px;
       overflow: hidden;
@@ -84,6 +92,18 @@
     tr:hover td {
       background: rgba(255,255,255,0.12);
     }
+
+    /* ⭐ MOBILE OPTIMIZATION */
+    @media (max-width: 768px) {
+      table {
+        width: 900px;
+      }
+
+      th, td {
+        padding: 8px;
+        font-size: 13px;
+      }
+    }
   </style>
 </head>
 
@@ -108,7 +128,8 @@
           mobileMenu.classList.toggle("open");
         });
       }
-    });
+    })
+    .catch(err => console.error("Nav load failed:", err));
 </script>
 
 <div class="page-content">
@@ -116,13 +137,19 @@
   <h1>Steel City Kickball — Standings & Stats</h1>
 
   <h2>Standings</h2>
-  <div id="standings-container">Loading...</div>
+  <div class="table-wrapper">
+    <div id="standings-container">Loading...</div>
+  </div>
 
   <h2>Betting Insights</h2>
-  <div id="betting-container">Loading...</div>
+  <div class="table-wrapper">
+    <div id="betting-container">Loading...</div>
+  </div>
 
   <h2>Advanced Stats</h2>
-  <div id="advanced-container">Loading...</div>
+  <div class="table-wrapper">
+    <div id="advanced-container">Loading...</div>
+  </div>
 
 </div>
 
@@ -133,7 +160,6 @@
       const response = await fetch(
         "https://raw.githubusercontent.com/SteelCityKickball/Steel-City-Kickball/main/data/mvp.json"
       );
-
       if (!response.ok) return;
 
       const data = await response.json();
@@ -146,7 +172,6 @@
         "background",
         `radial-gradient(circle at center, rgba(140,0,0,0.55) 0%, rgba(0,0,0,0.90) 80%), url('${logoPath}') no-repeat center center fixed`
       );
-
       document.body.style.backgroundSize = "90%";
     } catch (err) {
       console.log("MVP background update failed:", err);
@@ -165,8 +190,8 @@
   const advancedUrl = standingsUrl;
 
   function parseCSV(text) {
-    const rows = text.split(/\r?\n/).filter(r => r.trim() !== "");
-    return rows.map(row => row.split(",").map(cell => cell.trim()));
+    return text.split(/\r?\n/).filter(r => r.trim() !== "")
+      .map(row => row.split(",").map(cell => cell.trim()));
   }
 
   function renderTable(data, containerId) {
