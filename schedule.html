@@ -19,6 +19,7 @@
       color: white;
       text-shadow: 1px 1px 2px black;
       text-align: center;
+      overflow-x: hidden;
     }
 
     /* Background overlay */
@@ -29,51 +30,102 @@
       background:
         radial-gradient(circle at center, rgba(140,0,0,0.55) 0%, rgba(0,0,0,0.90) 80%),
         url("Amazinglogo.png") no-repeat center center fixed;
-      background-size: 90%;
+      background-size: cover;
       opacity: 0.80;
       z-index: 0;
     }
 
-    /* FIX NAV CLICKABILITY */
+    /* NAV WRAPPER */
     #nav-container {
       position: relative;
-      z-index: 1000;
+      z-index: 2000;
     }
 
-    nav {
+    /* NAVBAR BASE */
+    .navbar {
+      width: 100%;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0,0,0,0.75);
       position: relative;
-      z-index: 1100;
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 15px;
-      text-align: center;
+      z-index: 2000;
     }
 
-    nav a {
-      color: #ffffff !important;
+    .nav-title {
+      font-size: 22px;
+      font-weight: bold;
+      color: #ffcc00;
+    }
+
+    /* HAMBURGER BUTTON */
+    .hamburger {
+      font-size: 30px;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      display: block;
+    }
+
+    /* MOBILE MENU (SLIDE OUT) */
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: -260px;
+      width: 240px;
+      height: 100%;
+      background: rgba(0,0,0,0.95);
+      padding-top: 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      transition: left 0.3s ease;
+      z-index: 3000;
+    }
+
+    .mobile-menu a {
+      color: white;
       text-decoration: none;
       font-size: 20px;
-      margin: 0 15px;
-      font-weight: bold;
-      cursor: pointer;
+      padding: 12px 20px;
+      text-align: left;
     }
 
-    nav a:hover {
-      color: #ffcc00 !important;
-      text-decoration: underline;
+    .mobile-menu a:hover {
+      background: rgba(255,255,255,0.1);
     }
 
+    .mobile-menu.open {
+      left: 0;
+    }
+
+    /* DESKTOP NAV LINKS (HIDDEN FOR NOW) */
+    .nav-right a {
+      display: none;
+    }
+
+    /* PAGE CONTENT */
     .page-content {
       position: relative;
       z-index: 1;
       padding: 20px;
     }
 
+    /* TABLE WRAPPER FOR MOBILE SCROLL */
+    .table-wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 0 auto;
+      width: 100%;
+    }
+
     /* Table styling */
     table {
       margin: 20px auto;
       border-collapse: collapse;
-      width: 95%;
-      max-width: 1000px;
+      width: 1000px; /* full width for scroll */
       background: rgba(0,0,0,0.6);
       border-radius: 8px;
       overflow: hidden;
@@ -81,9 +133,10 @@
     }
 
     th, td {
-      padding: 12px;
+      padding: 10px;
       border-bottom: 1px solid rgba(255,255,255,0.2);
       text-align: center;
+      font-size: 14px;
     }
 
     th {
@@ -106,16 +159,17 @@
     }
 
     .team-logo {
-      width: 28px;
-      height: 28px;
+      width: 22px;
+      height: 22px;
       object-fit: contain;
       vertical-align: middle;
-      margin-right: 6px;
+      margin-right: 4px;
     }
 
     .team-link {
       color: #ffcc00;
       font-weight: bold;
+      font-size: 14px;
     }
 
     .team-link:hover {
@@ -133,6 +187,23 @@
     h1, h2 {
       margin-top: 30px;
     }
+
+    /* MOBILE OPTIMIZATION */
+    @media (max-width: 768px) {
+      table {
+        width: 900px;
+      }
+
+      th, td {
+        padding: 8px;
+        font-size: 13px;
+      }
+
+      .team-logo {
+        width: 18px;
+        height: 18px;
+      }
+    }
   </style>
 </head>
 
@@ -141,7 +212,7 @@
 <!-- NAVIGATION -->
 <div id="nav-container"></div>
 <script>
-  fetch("src/components/nav.html")  /* FIXED PATH */
+  fetch("src/components/nav.html")
     .then(res => res.text())
     .then(html => {
       document.getElementById("nav-container").innerHTML = html;
@@ -152,16 +223,19 @@
 
 <h1>Steel City Kickball — League Schedule</h1>
 
-<!-- WEEK SELECTOR -->
 <select id="week-select" class="week-selector">
   <option value="all">Show All Weeks</option>
 </select>
 
 <h2>Upcoming Games</h2>
-<div id="schedule-container">Loading schedule...</div>
+<div class="table-wrapper">
+  <div id="schedule-container">Loading schedule...</div>
+</div>
 
 <h2>Results</h2>
-<div id="results-container">No results yet.</div>
+<div class="table-wrapper">
+  <div id="results-container">No results yet.</div>
+</div>
 
 </div>
 
@@ -192,9 +266,7 @@
   function classifyRow(dateString) {
     const today = new Date();
     const gameDate = new Date(dateString);
-
     if (isNaN(gameDate)) return "";
-
     if (gameDate.toDateString() === today.toDateString()) return "today";
     if (gameDate > today) return "future";
     return "past";
@@ -243,7 +315,6 @@
     .then(text => {
       const data = parseCSV(text);
 
-      // Populate week selector
       const weekIndex = data[0].findIndex(h => h.toLowerCase() === "week");
       const weeks = [...new Set(data.slice(1).map(r => r[weekIndex]))];
 
