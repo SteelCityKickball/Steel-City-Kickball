@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Steel City Kickball — Schedule</title>
 
+  <!-- ⭐ FIXED: Load global CSS so hamburger works -->
+  <link rel="stylesheet" href="src/styles/main.css">
+
   <style>
     html, body {
       height: 100%;
@@ -39,71 +42,6 @@
     #nav-container {
       position: relative;
       z-index: 2000;
-    }
-
-    /* NAVBAR BASE */
-    .navbar {
-      width: 100%;
-      padding: 15px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(0,0,0,0.75);
-      position: relative;
-      z-index: 2000;
-    }
-
-    .nav-title {
-      font-size: 22px;
-      font-weight: bold;
-      color: #ffcc00;
-    }
-
-    /* HAMBURGER BUTTON */
-    .hamburger {
-      font-size: 30px;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-      display: block;
-    }
-
-    /* MOBILE MENU (SLIDE OUT) */
-    .mobile-menu {
-      position: fixed;
-      top: 0;
-      left: -260px;
-      width: 240px;
-      height: 100%;
-      background: rgba(0,0,0,0.95);
-      padding-top: 80px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      transition: left 0.3s ease;
-      z-index: 3000;
-    }
-
-    .mobile-menu a {
-      color: white;
-      text-decoration: none;
-      font-size: 20px;
-      padding: 12px 20px;
-      text-align: left;
-    }
-
-    .mobile-menu a:hover {
-      background: rgba(255,255,255,0.1);
-    }
-
-    .mobile-menu.open {
-      left: 0;
-    }
-
-    /* DESKTOP NAV LINKS (HIDDEN FOR NOW) */
-    .nav-right a {
-      display: none;
     }
 
     /* PAGE CONTENT */
@@ -291,69 +229,4 @@
       row.forEach((cell, i) => {
         let output = cell;
 
-        if (headers[i].toLowerCase().includes("team")) {
-          output = `<img class="team-logo" src="${getTeamLogo(cell)}" onerror="this.style.display='none'"> ${teamLink(cell)}`;
-        }
-
-        if (headers[i].toLowerCase().includes("field")) {
-          output = fieldMapLink(cell);
-        }
-
-        html += `<td>${output}</td>`;
-      });
-
-      html += "</tr>";
-    });
-
-    html += "</table>";
-    document.getElementById(containerId).innerHTML = html;
-  }
-
-  /* LOAD SCHEDULE */
-  fetch(scheduleUrl)
-    .then(res => res.text())
-    .then(text => {
-      const data = parseCSV(text);
-
-      const weekIndex = data[0].findIndex(h => h.toLowerCase() === "week");
-      const weeks = [...new Set(data.slice(1).map(r => r[weekIndex]))];
-
-      const select = document.getElementById("week-select");
-      weeks.forEach(w => {
-        const opt = document.createElement("option");
-        opt.value = w;
-        opt.textContent = "Week " + w;
-        select.appendChild(opt);
-      });
-
-      select.addEventListener("change", () => {
-        const selected = select.value;
-        if (selected === "all") {
-          renderEnhancedTable(data, "schedule-container");
-        } else {
-          const filtered = [data[0], ...data.slice(1).filter(r => r[weekIndex] === selected)];
-          renderEnhancedTable(filtered, "schedule-container");
-        }
-      });
-
-      renderEnhancedTable(data, "schedule-container");
-    });
-
-  /* LOAD RESULTS */
-  fetch(resultsUrl)
-    .then(res => res.text())
-    .then(text => {
-      const data = parseCSV(text);
-      if (data.length <= 1) {
-        document.getElementById("results-container").innerHTML = "No results yet.";
-      } else {
-        renderEnhancedTable(data, "results-container");
-      }
-    })
-    .catch(() => {
-      document.getElementById("results-container").innerHTML = "No results yet.";
-    });
-</script>
-
-</body>
-</html>
+        if (headers[i].
