@@ -21,6 +21,7 @@
       text-align: center;
     }
 
+    /* Background overlay */
     body::before {
       content: "";
       position: fixed;
@@ -33,17 +34,46 @@
       z-index: 0;
     }
 
+    /* FIX NAV CLICKABILITY */
+    #nav-container {
+      position: relative;
+      z-index: 1000;
+    }
+
+    nav {
+      position: relative;
+      z-index: 1100;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 15px;
+      text-align: center;
+    }
+
+    nav a {
+      color: #ffffff !important;
+      text-decoration: none;
+      font-size: 20px;
+      margin: 0 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    nav a:hover {
+      color: #ffcc00 !important;
+      text-decoration: underline;
+    }
+
     .page-content {
       position: relative;
       z-index: 1;
       padding: 20px;
     }
 
+    /* Table styling */
     table {
       margin: 20px auto;
       border-collapse: collapse;
-      width: 90%;
-      max-width: 900px;
+      width: 95%;
+      max-width: 1000px;
       background: rgba(0,0,0,0.6);
       border-radius: 8px;
       overflow: hidden;
@@ -53,11 +83,51 @@
     th, td {
       padding: 12px;
       border-bottom: 1px solid rgba(255,255,255,0.2);
+      text-align: center;
     }
 
     th {
       background: rgba(0,0,0,0.9);
-      color: #fff;
+      color: #ffcc00;
+      font-weight: 700;
+    }
+
+    tr.future td {
+      background: rgba(0, 128, 0, 0.25);
+    }
+
+    tr.today td {
+      background: rgba(255, 215, 0, 0.35);
+      font-weight: bold;
+    }
+
+    tr.past td {
+      background: rgba(255, 0, 0, 0.20);
+    }
+
+    .team-logo {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+
+    .team-link {
+      color: #ffcc00;
+      font-weight: bold;
+    }
+
+    .team-link:hover {
+      text-decoration: underline;
+    }
+
+    .week-selector {
+      margin: 20px auto;
+      padding: 10px 15px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
     }
 
     h1, h2 {
@@ -68,10 +138,10 @@
 
 <body>
 
-<!-- ⭐ NEW DYNAMIC NAVIGATION ⭐ -->
+<!-- NAVIGATION -->
 <div id="nav-container"></div>
 <script>
-  fetch("/src/components/nav.html")
+  fetch("src/components/nav.html")  /* FIXED PATH */
     .then(res => res.text())
     .then(html => {
       document.getElementById("nav-container").innerHTML = html;
@@ -81,6 +151,11 @@
 <div class="page-content">
 
 <h1>Steel City Kickball — League Schedule</h1>
+
+<!-- WEEK SELECTOR -->
+<select id="week-select" class="week-selector">
+  <option value="all">Show All Weeks</option>
+</select>
 
 <h2>Upcoming Games</h2>
 <div id="schedule-container">Loading schedule...</div>
@@ -102,19 +177,59 @@
     return rows.map(row => row.split(",").map(cell => cell.trim()));
   }
 
-  function renderTable(data, containerId) {
+  function getTeamLogo(team) {
+    return `images/${team}-logo.png`;
+  }
+
+  function teamLink(team) {
+    return `<a class="team-link" href="teams/${team}.html">${team}</a>`;
+  }
+
+  function fieldMapLink(field) {
+    return `<a href="https://www.google.com/maps/search/${encodeURIComponent(field)}" target="_blank">${field}</a>`;
+  }
+
+  function classifyRow(dateString) {
+    const today = new Date();
+    const gameDate = new Date(dateString);
+
+    if (isNaN(gameDate)) return "";
+
+    if (gameDate.toDateString() === today.toDateString()) return "today";
+    if (gameDate > today) return "future";
+    return "past";
+  }
+
+  function renderEnhancedTable(data, containerId) {
     if (data.length < 2) {
       document.getElementById(containerId).innerHTML = "No data available.";
       return;
     }
 
+    const headers = data[0];
     let html = "<table><tr>";
-    data[0].forEach(h => html += `<th>${h}</th>`);
+
+    headers.forEach(h => html += `<th>${h}</th>`);
     html += "</tr>";
 
     data.slice(1).forEach(row => {
-      html += "<tr>";
-      row.forEach(cell => html += `<td>${cell}</td>`);
+      const rowClass = classifyRow(row[0]);
+      html += `<tr class="${rowClass}">`;
+
+      row.forEach((cell, i) => {
+        let output = cell;
+
+        if (headers[i].toLowerCase().includes("team")) {
+          output = `<img class="team-logo" src="${getTeamLogo(cell)}" onerror="this.style.display='none'"> ${teamLink(cell)}`;
+        }
+
+        if (headers[i].toLowerCase().includes("field")) {
+          output = fieldMapLink(cell);
+        }
+
+        html += `<td>${output}</td>`;
+      });
+
       html += "</tr>";
     });
 
@@ -122,15 +237,38 @@
     document.getElementById(containerId).innerHTML = html;
   }
 
-  // Load schedule
+  /* LOAD SCHEDULE */
   fetch(scheduleUrl)
     .then(res => res.text())
     .then(text => {
       const data = parseCSV(text);
-      renderTable(data, "schedule-container");
+
+      // Populate week selector
+      const weekIndex = data[0].findIndex(h => h.toLowerCase() === "week");
+      const weeks = [...new Set(data.slice(1).map(r => r[weekIndex]))];
+
+      const select = document.getElementById("week-select");
+      weeks.forEach(w => {
+        const opt = document.createElement("option");
+        opt.value = w;
+        opt.textContent = "Week " + w;
+        select.appendChild(opt);
+      });
+
+      select.addEventListener("change", () => {
+        const selected = select.value;
+        if (selected === "all") {
+          renderEnhancedTable(data, "schedule-container");
+        } else {
+          const filtered = [data[0], ...data.slice(1).filter(r => r[weekIndex] === selected)];
+          renderEnhancedTable(filtered, "schedule-container");
+        }
+      });
+
+      renderEnhancedTable(data, "schedule-container");
     });
 
-  // Load results
+  /* LOAD RESULTS */
   fetch(resultsUrl)
     .then(res => res.text())
     .then(text => {
@@ -138,7 +276,7 @@
       if (data.length <= 1) {
         document.getElementById("results-container").innerHTML = "No results yet.";
       } else {
-        renderTable(data, "results-container");
+        renderEnhancedTable(data, "results-container");
       }
     })
     .catch(() => {
