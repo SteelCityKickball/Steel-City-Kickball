@@ -11,64 +11,67 @@
 
 <body>
 
-<!-- ⭐ NAVIGATION ⭐ -->
-<div id="nav-container"></div>
+<div class="page-content">
 
-<script>
-  // Load nav.html
-  fetch("/Steel-City-Kickball/src/components/nav.html")
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById("nav-container").innerHTML = html;
+  <!-- ⭐ NAVIGATION ⭐ -->
+  <div id="nav-container"></div>
 
-      // Run identity AFTER nav loads
-      if (window.applyIdentityToUI) {
-        window.applyIdentityToUI();
-      }
+  <script>
+    fetch("/Steel-City-Kickball/src/components/nav.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("nav-container").innerHTML = html;
 
-      // Hamburger
-      const hamburger = document.getElementById("hamburger-btn");
-      const mobileMenu = document.getElementById("mobile-menu");
+        // Run identity AFTER nav loads
+        if (window.applyIdentityToUI) {
+          window.applyIdentityToUI();
+        }
 
-      if (hamburger && mobileMenu) {
-        hamburger.addEventListener("click", () => {
-          mobileMenu.classList.toggle("open");
-        });
-      }
-    });
-</script>
+        // Hamburger
+        const hamburger = document.getElementById("hamburger-btn");
+        const mobileMenu = document.getElementById("mobile-menu");
 
-<!-- HERO SECTION -->
-<div class="hero">
-  <img src="/Steel-City-Kickball/src/assets/Amazinglogo.png" alt="Steel City Kickball Logo">
-</div>
+        if (hamburger && mobileMenu) {
+          hamburger.addEventListener("click", () => {
+            mobileMenu.classList.toggle("open");
+          });
+        }
+      });
+  </script>
 
-<!-- GAME OF THE WEEK -->
-<section>
-  <h2>Game of the Week</h2>
-  <img id="gotw-img" src="" alt="Game of the Week">
-  <p id="gotw-text" class="blurb"></p>
-</section>
+  <!-- HERO SECTION -->
+  <div class="hero">
+    <img src="/Steel-City-Kickball/src/assets/Amazinglogo.png" alt="Steel City Kickball Logo">
+  </div>
 
-<!-- MVP -->
-<section>
-  <h2>Game MVP</h2>
-  <img id="mvp-img" src="" alt="Game MVP">
-  <p id="mvp-text" class="blurb"></p>
-</section>
+  <!-- GAME OF THE WEEK -->
+  <section>
+    <h2>Game of the Week</h2>
+    <img id="gotw-img" src="" alt="Game of the Week">
+    <p id="gotw-text" class="blurb"></p>
+  </section>
 
-<!-- PHOTO STRIP -->
-<div id="photo-strip" class="photo-strip"></div>
+  <!-- MVP -->
+  <section>
+    <h2>Game MVP</h2>
+    <img id="mvp-img" src="" alt="Game MVP">
+    <p id="mvp-text" class="blurb"></p>
+  </section>
 
-<!-- ABOUT SECTION -->
-<div class="about">
-  <p>
-    Welcome to the official home of Steel City Kickball!  
-    Check out standings, schedules, teams, and player resources.
-  </p>
-</div>
+  <!-- PHOTO STRIP -->
+  <div id="photo-strip" class="photo-strip"></div>
 
-<a class="button" href="/Steel-City-Kickball/standings.html">View Standings</a>
+  <!-- ABOUT SECTION -->
+  <div class="about">
+    <p>
+      Welcome to the official home of Steel City Kickball!  
+      Check out standings, schedules, teams, and player resources.
+    </p>
+  </div>
+
+  <a class="button" href="/Steel-City-Kickball/standings.html">View Standings</a>
+
+</div> <!-- END .page-content -->
 
 <!-- AUTO-UPDATE SCRIPT -->
 <script>
