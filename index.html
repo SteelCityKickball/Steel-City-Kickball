@@ -6,19 +6,18 @@
   <title>Steel City Kickball — Home</title>
 
   <!-- Load global CSS -->
-  <link rel="stylesheet" href="/Steel-City-Kickball/src/styles/main.css">
+  <link rel="stylesheet" href="src/styles/main.css">
 </head>
 
 <body>
 
-<!-- ⭐ REQUIRED WRAPPER ⭐ -->
 <div class="page-content">
 
   <!-- NAVIGATION -->
   <div id="nav-container"></div>
 
   <script>
-    fetch("/Steel-City-Kickball/src/components/nav.html")
+    fetch("src/components/nav.html")
       .then(res => res.text())
       .then(html => {
         document.getElementById("nav-container").innerHTML = html;
@@ -42,7 +41,7 @@
 
   <!-- HERO SECTION -->
   <div class="hero">
-    <img src="/Steel-City-Kickball/src/assets/Amazinglogo.png" alt="Steel City Kickball Logo">
+    <img src="src/assets/Amazinglogo.png" alt="Steel City Kickball Logo">
   </div>
 
   <!-- GAME OF THE WEEK -->
@@ -70,7 +69,7 @@
     </p>
   </div>
 
-  <a class="button" href="/Steel-City-Kickball/standings.html">View Standings</a>
+  <a class="button" href="standings.html">View Standings</a>
 
 </div> <!-- END .page-content -->
 
@@ -124,7 +123,7 @@ loadImages();
 </script>
 
 <!-- GLOBAL IDENTITY SCRIPT -->
-<script type="module" src="/Steel-City-Kickball/src/scripts/global-identity.js"></script>
+<script type="module" src="src/scripts/global-identity.js"></script>
 
 </body>
 </html>
