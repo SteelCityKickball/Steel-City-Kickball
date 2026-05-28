@@ -13,12 +13,18 @@
 
 <!-- ⭐ NAVIGATION ⭐ -->
 <div id="nav-container"></div>
-<script>
+<script type="module">
+  import { applyIdentityToUI } from "/Steel-City-Kickball/src/scripts/global-identity.js";
+
   fetch("/Steel-City-Kickball/src/components/nav.html")
     .then(res => res.text())
     .then(html => {
       document.getElementById("nav-container").innerHTML = html;
 
+      // Run identity AFTER nav loads
+      applyIdentityToUI();
+
+      // Hamburger
       const hamburger = document.getElementById("hamburger-btn");
       const mobileMenu = document.getElementById("mobile-menu");
 
@@ -113,9 +119,6 @@ async function loadImages() {
 
 loadImages();
 </script>
-
-<!-- GLOBAL IDENTITY SCRIPT -->
-<script type="module" src="/Steel-City-Kickball/src/scripts/global-identity.js"></script>
 
 </body>
 </html>
