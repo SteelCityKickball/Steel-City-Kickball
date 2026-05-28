@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Player Registration — Steel City Kickball</title>
+
+  <link rel="stylesheet" href="src/styles/main.css">
+
+  <style>
+    .content-box {
+      background: rgba(0,0,0,0.75);
+      padding: 25px;
+      border-radius: 10px;
+      max-width: 800px;
+      margin: 40px auto;
+      color: white;
+      text-align: center;
+    }
+
+    .reg-button {
+      display: inline-block;
+      padding: 14px 24px;
+      background: #8B0000;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 18px;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    .reg-button:hover {
+      background: #A00000;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<div id="nav-container"></div>
+<script>
+  fetch("src/components/nav.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("nav-container").innerHTML = html;
+
+      const hamburger = document.querySelector(".hamburger");
+      const mobileMenu = document.querySelector("#mobile-menu");
+
+      if (hamburger && mobileMenu) {
+        hamburger.addEventListener("click", () => {
+          mobileMenu.classList.toggle("open");
+        });
+      }
+    });
+</script>
+
+<div class="page-content">
+
+  <div class="content-box">
+    <h1>Player Registration</h1>
+    <p>
+      Register once — your information and waiver are all collected in a single form.
+      No duplicate entries, no repeated questions, no hassle.
+    </p>
+
+    <!-- ⭐ Replace the # with your Google Form URL ⭐ -->
+    <a class="reg-button" href="#" target="_blank">
+      Complete Registration & Waiver
+    </a>
+
+    <p style="margin-top:20px; font-size:14px; color:#ccc;">
+      This form includes: player info, emergency contact, waiver agreements, and league registration questions.
+    </p>
+  </div>
+
+</div>
+
+</body>
+</html>
