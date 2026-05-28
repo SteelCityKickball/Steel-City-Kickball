@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Steel City Kickball — Standings & Stats</title>
 
+  <!-- Load global CSS -->
+  <link rel="stylesheet" href="src/styles/main.css">
+
   <style>
     html, body {
       height: 100%;
@@ -19,9 +22,10 @@
       color: white;
       text-shadow: 1px 1px 2px black;
       text-align: center;
+      overflow-x: hidden;
     }
 
-    /* ⭐ MVP BACKGROUND OVERLAY */
+    /* Background overlay */
     body::before {
       content: "";
       position: fixed;
@@ -32,57 +36,24 @@
       background-size: 90%;
       opacity: 0.80;
       z-index: 0;
-      transition: background 0.6s ease-in-out;
     }
 
-    /* ⭐ FIX NAV CLICKABILITY */
+    /* ⭐ FIX: nav must be above everything */
     #nav-container {
       position: relative;
-      z-index: 1000;
+      z-index: 2000;
     }
 
-    nav {
-      position: relative;
-      z-index: 1100;
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 15px;
-      text-align: center;
-    }
-
-    nav a {
-      color: #ffffff !important;
-      text-decoration: none;
-      font-size: 20px;
-      margin: 0 15px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    nav a:hover {
-      color: #ffcc00 !important;
-      text-decoration: underline;
-    }
-
-    /* ⭐ PAGE CONTENT ABOVE BACKGROUND */
     .page-content {
       position: relative;
       z-index: 1;
       padding: 20px;
     }
 
-    /* ⭐ GLOBAL LINK STYLES */
-    a {
-      color: #ffffff;
-      text-decoration: none;
-      font-weight: bold;
+    h1, h2 {
+      margin-top: 30px;
     }
 
-    a:hover {
-      color: #ffcc00;
-      text-decoration: underline;
-    }
-
-    /* ⭐ TABLES */
     table {
       margin: 20px auto;
       border-collapse: collapse;
@@ -113,122 +84,64 @@
     tr:hover td {
       background: rgba(255,255,255,0.12);
     }
-
-    h1, h2 {
-      margin-top: 30px;
-    }
   </style>
 </head>
 
 <body>
 
-  <!-- ⭐ NAVIGATION -->
-  <div id="nav-container"></div>
-  <script>
-    fetch("src/components/nav.html")
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("nav-container").innerHTML = html;
+<!-- NAVIGATION -->
+<div id="nav-container"></div>
+
+<script>
+  // Load shared nav
+  fetch("src/components/nav.html")
+    .then(res => res.text())
+    .then(html => {
+      const navContainer = document.getElementById("nav-container");
+      navContainer.innerHTML = html;
+
+      // ⭐ Attach hamburger click AFTER nav loads
+      const hamburger = navContainer.querySelector(".hamburger");
+      const mobileMenu = navContainer.querySelector("#mobile-menu");
+
+      hamburger.addEventListener("click", () => {
+        mobileMenu.classList.toggle("open");
       });
-  </script>
+    });
+</script>
 
-  <div class="page-content">
+<div class="page-content">
 
-    <h1>Steel City Kickball — Standings & Stats</h1>
+  <h1>Steel City Kickball — Standings & Stats</h1>
 
-    <!-- ⭐ TABLE 1: Standings -->
-    <h2>Standings</h2>
-    <div id="standings-container">Loading...</div>
+  <h2>Standings</h2>
+  <div id="standings-container">Loading...</div>
 
-    <!-- ⭐ TABLE 2: Betting Insights -->
-    <h2>Betting Insights</h2>
-    <div id="betting-container">Loading...</div>
+  <h2>Betting Insights</h2>
+  <div id="betting-container">Loading...</div>
 
-    <!-- ⭐ TABLE 3: Advanced Stats -->
-    <h2>Advanced Stats</h2>
-    <div id="advanced-container">Loading...</div>
+  <h2>Advanced Stats</h2>
+  <div id="advanced-container">Loading...</div>
 
-  </div>
+</div>
 
-  <script>
-    /* ⭐ MVP AUTO‑BACKGROUND LOGIC */
-    async function updateBackgroundFromMVP() {
-      try {
-        const response = await fetch(
-          "https://raw.githubusercontent.com/SteelCityKickball/Steel-City-Kickball/main/data/mvp.json"
-        );
+<script>
+  /* MVP AUTO‑BACKGROUND LOGIC */
+  async function updateBackgroundFromMVP() {
+    try {
+      const response = await fetch(
+        "https://raw.githubusercontent.com/SteelCityKickball/Steel-City-Kickball/main/data/mvp.json"
+      );
 
-        if (!response.ok) return;
+      if (!response.ok) return;
 
-        const data = await response.json();
-        const mvpTeam = data.team;
+      const data = await response.json();
+      const mvpTeam = data.team;
 
-        if (!mvpTeam) return;
+      if (!mvpTeam) return;
 
-        const logoPath = `images/${mvpTeam}-logo.png`;
+      const logoPath = `images/${mvpTeam}-logo.png`;
 
-        document.body.style.setProperty(
-          "background",
-          `radial-gradient(circle at center, rgba(140,0,0,0.55) 0%, rgba(0,0,0,0.90) 80%), url('${logoPath}') no-repeat center center fixed`
-        );
-
-        document.body.style.backgroundSize = "90%";
-      } catch (err) {
-        console.log("MVP background update failed:", err);
-      }
-    }
-
-    updateBackgroundFromMVP();
-
-    /* ⭐ CSV SOURCES */
-    const standingsUrl =
-      "https://docs.google.com/spreadsheets/d/e/2PACX-1vS1iJY8XgcXtvO-p1fMzfhH77uLbub8KE9Z2HL6zAznAe688I5uLY61kvZQfHSU4N7sJU8b3TD33Yr_/pub?output=csv";
-
-    const statsUrl =
-      "https://docs.google.com/spreadsheets/d/e/2PACX-1vRjCOIOADqzgiT9RPU9tBGBkpvnL2DP7gXrjkMhwY0DWuNK65XLuBjKV-d1sVXRsQzAbAXBEauAwoT7/pub?output=csv";
-
-    const advancedUrl = standingsUrl;
-
-    /* ⭐ CSV PARSER */
-    function parseCSV(text) {
-      const rows = text.split(/\r?\n/).filter(r => r.trim() !== "");
-      return rows.map(row => row.split(",").map(cell => cell.trim()));
-    }
-
-    /* ⭐ GENERIC TABLE RENDERER */
-    function renderTable(data, containerId) {
-      if (data.length < 2) {
-        document.getElementById(containerId).innerHTML = "No data available.";
-        return;
-      }
-
-      let html = "<table><tr>";
-      data[0].forEach(h => html += `<th>${h}</th>`);
-      html += "</tr>";
-
-      data.slice(1).forEach(row => {
-        html += "<tr>";
-        row.forEach(cell => html += `<td>${cell}</td>`);
-        html += "</tr>";
-      });
-
-      html += "</table>";
-      document.getElementById(containerId).innerHTML = html;
-    }
-
-    /* ⭐ LOAD ALL THREE TABLES */
-    fetch(standingsUrl)
-      .then(res => res.text())
-      .then(text => renderTable(parseCSV(text), "standings-container"));
-
-    fetch(statsUrl)
-      .then(res => res.text())
-      .then(text => renderTable(parseCSV(text), "betting-container"));
-
-    fetch(advancedUrl)
-      .then(res => res.text())
-      .then(text => renderTable(parseCSV(text), "advanced-container"));
-  </script>
-
-</body>
-</html>
+      document.body.style.setProperty(
+        "background",
+        `radial-gradient
