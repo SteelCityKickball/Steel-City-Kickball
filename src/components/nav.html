@@ -5,18 +5,28 @@
 
   <!-- DESKTOP MENU -->
   <div class="nav-right desktop-menu">
+
+    <!-- MAIN LINKS (always visible) -->
     <a href="index.html">Home</a>
     <a href="standings.html">Standings</a>
     <a href="schedule.html">Schedule</a>
     <a href="teams.html">Teams</a>
-    <a href="waivers.html">Waivers</a>
-    <a href="archives.html">Archives</a>
 
-    <!-- NEW LINKS -->
-    <a href="registration.html">Registration</a>
-    <a href="rules.html">Rules</a>
+    <!-- DROPDOWN -->
+    <div class="dropdown">
+      <span class="dropbtn">More ▼</span>
+      <div class="dropdown-content">
+        <a href="waivers.html">Waivers</a>
+        <a href="archives.html">Archives</a>
+        <a href="registration.html">Registration</a>
+        <a href="rules.html">Rules</a>
+      </div>
+    </div>
 
-    <!-- Login/Profile -->
+    <!-- AVATAR + LOGIN/PROFILE -->
+    <img id="avatar" src="" alt="Avatar"
+         style="width:32px; height:32px; border-radius:50%; display:none; margin-left:15px;">
+
     <a id="login-link" href="login.html">Login</a>
     <a id="profile-link" href="profile.html" style="display:none;">Profile</a>
     <span id="logout-link" style="display:none; cursor:pointer;">Logout</span>
@@ -27,16 +37,17 @@
     <button class="hamburger">☰</button>
   </div>
 
-  <!-- MOBILE MENU -->
+  <!-- MOBILE MENU (unchanged) -->
   <div id="mobile-menu" class="mobile-menu">
+    <img id="mobile-avatar" src="" alt="Avatar"
+         style="width:60px; height:60px; border-radius:50%; margin:10px auto; display:none;">
+
     <a href="index.html">Home</a>
     <a href="standings.html">Standings</a>
     <a href="schedule.html">Schedule</a>
     <a href="teams.html">Teams</a>
     <a href="waivers.html">Waivers</a>
     <a href="archives.html">Archives</a>
-
-    <!-- NEW LINKS -->
     <a href="registration.html">Registration</a>
     <a href="rules.html">Rules</a>
 
