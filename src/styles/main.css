@@ -1,6 +1,15 @@
 /* RESET */
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: Arial, sans-serif; color: white; overflow-x: hidden; }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  color: white;
+  overflow-x: hidden;
+}
 
 /* BACKGROUND */
 body::before {
@@ -24,7 +33,9 @@ body::before {
 /* NAVBAR */
 .navbar {
   position: fixed;
-  top: 0; left: 0; right: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   background: rgba(0,0,0,0.85);
   padding: 12px 20px;
   display: flex;
@@ -37,10 +48,16 @@ body::before {
   width: auto;
 }
 
-/* DESKTOP MENU */
-.desktop-only { display: flex; }
-.mobile-only { display: none; }
+/* DESKTOP / MOBILE VISIBILITY */
+.desktop-only {
+  display: flex;
+}
 
+.mobile-only {
+  display: none;
+}
+
+/* NAV MENU */
 .nav-menu {
   list-style: none;
   display: flex;
@@ -54,10 +71,15 @@ body::before {
   font-weight: bold;
 }
 
-.nav-menu a:hover { color: white; }
+.nav-menu a:hover {
+  color: white;
+}
 
 /* DROPDOWN */
-.dropdown { position: relative; }
+.dropdown {
+  position: relative;
+}
+
 .dropdown-btn {
   background: none;
   border: none;
@@ -65,7 +87,10 @@ body::before {
   font-weight: bold;
   cursor: pointer;
 }
-.dropdown-btn:hover { color: white; }
+
+.dropdown-btn:hover {
+  color: white;
+}
 
 .dropdown-menu {
   display: none;
@@ -84,7 +109,9 @@ body::before {
   white-space: nowrap;
 }
 
-.dropdown:hover .dropdown-menu { display: block; }
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
 
 /* AUTH */
 .nav-right {
@@ -100,21 +127,17 @@ body::before {
   border: 2px solid #C0C0C0;
 }
 
-/* MOBILE */
-@media (max-width: 768px) {
-  .desktop-only { display: none; }
-  .mobile-only { display: flex; }
-  .hamburger { display: block; }
-}
-
+/* HAMBURGER */
 .hamburger {
   display: none;
   background: none;
   border: none;
   font-size: 30px;
   color: #C0C0C0;
+  cursor: pointer;
 }
 
+/* MOBILE MENU */
 .mobile-menu {
   display: none;
   flex-direction: column;
@@ -128,7 +151,25 @@ body::before {
   z-index: 3000;
 }
 
-.mobile-menu.open { display: flex; }
+.mobile-menu.open {
+  display: flex;
+}
+
+/* MOBILE BREAKPOINT — FIXES EVERYTHING */
+@media (max-width: 768px) {
+
+  .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-only {
+    display: flex !important;
+  }
+
+  .hamburger {
+    display: block !important;
+  }
+}
 
 /* HERO + IMAGES */
 .hero img {
@@ -179,4 +220,6 @@ body::before {
 }
 
 /* UTILITY */
-.hidden { display: none !important; }
+.hidden {
+  display: none !important;
+}
