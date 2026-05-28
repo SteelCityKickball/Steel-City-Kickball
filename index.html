@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Steel City Kickball — Home</title>
 
-  <!-- Load global CSS -->
   <link rel="stylesheet" href="src/styles/main.css">
 </head>
 
@@ -22,12 +21,10 @@
       .then(html => {
         document.getElementById("nav-container").innerHTML = html;
 
-        // Identity AFTER nav loads
         if (window.applyIdentityToUI) {
           window.applyIdentityToUI();
         }
 
-        // Hamburger
         const hamburger = document.getElementById("hamburger-btn");
         const mobileMenu = document.getElementById("mobile-menu");
 
@@ -39,7 +36,7 @@
       });
   </script>
 
-  <!-- HERO SECTION -->
+  <!-- HERO -->
   <div class="hero">
     <img src="src/assets/Amazinglogo.png" alt="Steel City Kickball Logo">
   </div>
@@ -61,7 +58,7 @@
   <!-- PHOTO STRIP -->
   <div id="photo-strip" class="photo-strip"></div>
 
-  <!-- ABOUT SECTION -->
+  <!-- ABOUT -->
   <div class="about">
     <p>
       Welcome to the official home of Steel City Kickball!  
@@ -71,44 +68,32 @@
 
   <a class="button" href="standings.html">View Standings</a>
 
-</div> <!-- END .page-content -->
+</div>
 
-<!-- AUTO-UPDATE SCRIPT -->
 <script>
 async function getLatestFromGitHub(path) {
   const apiUrl = `https://api.github.com/repos/SteelCityKickball/Steel-City-Kickball/contents/${path}`;
   const response = await fetch(apiUrl);
   const files = await response.json();
 
-  const images = files.filter(f =>
-    f.name.match(/\.(jpg|jpeg|png|gif)$/i)
-  );
-
+  const images = files.filter(f => f.name.match(/\.(jpg|jpeg|png|gif)$/i));
   images.sort((a, b) => b.name.localeCompare(a.name));
   return images;
 }
 
 async function loadImages() {
-
   document.getElementById("gotw-text").innerText =
     "Week 3 — Red Rockets vs Blue Bombers. A wild 9–8 finish with a walk-off kick!";
 
   document.getElementById("mvp-text").innerText =
     "Jordan M. — 3 RBIs, 2 catches, and a game-saving play!";
 
-  // GOTW
   const gotw = await getLatestFromGitHub("images/gotw");
-  if (gotw.length > 0) {
-    document.getElementById("gotw-img").src = gotw[0].download_url;
-  }
+  if (gotw.length > 0) document.getElementById("gotw-img").src = gotw[0].download_url;
 
-  // MVP
   const mvp = await getLatestFromGitHub("images/mvp");
-  if (mvp.length > 0) {
-    document.getElementById("mvp-img").src = mvp[0].download_url;
-  }
+  if (mvp.length > 0) document.getElementById("mvp-img").src = mvp[0].download_url;
 
-  // HOMEPAGE PHOTOS
   const homepage = await getLatestFromGitHub("images/homepage");
   const strip = document.getElementById("photo-strip");
 
@@ -122,7 +107,6 @@ async function loadImages() {
 loadImages();
 </script>
 
-<!-- GLOBAL IDENTITY SCRIPT -->
 <script type="module" src="src/scripts/global-identity.js"></script>
 
 </body>
