@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Steel City Kickball — Teams</title>
 
+  <!-- Load global CSS -->
+  <link rel="stylesheet" href="src/styles/main.css">
+
   <style>
     html, body {
       height: 100%;
@@ -12,7 +15,6 @@
       padding: 0;
     }
 
-    /* Same as archive/schedule/waivers */
     body {
       position: relative;
       background: #000;
@@ -20,9 +22,9 @@
       color: white;
       text-shadow: 1px 1px 2px black;
       text-align: center;
+      overflow-x: hidden;
     }
 
-    /* Background with bigger logo */
     body::before {
       content: "";
       position: fixed;
@@ -32,42 +34,19 @@
         url("Amazinglogo.png") no-repeat center center fixed;
       background-size: 90%;
       opacity: 0.80;
-      filter: none;
       z-index: 0;
     }
 
-    /* Content sits above background */
     .page-content {
       position: relative;
       z-index: 1;
       padding: 20px;
     }
 
-    nav ul {
-      list-style: none;
-      padding: 10px;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      background: rgba(0,0,0,0.8);
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    nav a:hover {
-      text-decoration: underline;
-    }
-
     h1 {
       margin-top: 30px;
     }
 
-    /* Team cards styled for dark theme */
     .team-card {
       background: rgba(0,0,0,0.6);
       padding: 20px;
@@ -100,17 +79,29 @@
 </head>
 
 <body>
-<div class="page-content">
 
-<nav>
-  <ul>
-    <li><a href="/Steel-City-Kickball/">Home</a></li>
-    <li><a href="schedule.html">Schedule</a></li>
-    <li><a href="standings.html">Standings</a></li>
-    <li><a href="teams.html" class="active">Teams</a></li>
-    <li><a href="waivers.html">Waivers</a></li>
-  </ul>
-</nav>
+<!-- NAVIGATION -->
+<div id="nav-container"></div>
+
+<script>
+  // Load shared nav
+  fetch("src/components/nav.html")
+    .then(res => res.text())
+    .then(html => {
+      const navContainer = document.getElementById("nav-container");
+      navContainer.innerHTML = html;
+
+      // Attach hamburger click AFTER nav loads
+      const hamburger = navContainer.querySelector(".hamburger");
+      const mobileMenu = navContainer.querySelector("#mobile-menu");
+
+      hamburger.addEventListener("click", () => {
+        mobileMenu.classList.toggle("open");
+      });
+    });
+</script>
+
+<div class="page-content">
 
 <h1>Steel City Kickball — Teams</h1>
 <p>Select a team to view more details.</p>
@@ -145,3 +136,7 @@
   <a href="teams/kickaholics.html">View Team Page</a>
 </div>
 
+</div>
+
+</body>
+</html>
