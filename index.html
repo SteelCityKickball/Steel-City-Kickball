@@ -11,9 +11,10 @@
 
 <body>
 
+<!-- ⭐ REQUIRED WRAPPER ⭐ -->
 <div class="page-content">
 
-  <!-- ⭐ NAVIGATION ⭐ -->
+  <!-- NAVIGATION -->
   <div id="nav-container"></div>
 
   <script>
@@ -22,7 +23,7 @@
       .then(html => {
         document.getElementById("nav-container").innerHTML = html;
 
-        // Run identity AFTER nav loads
+        // Identity AFTER nav loads
         if (window.applyIdentityToUI) {
           window.applyIdentityToUI();
         }
