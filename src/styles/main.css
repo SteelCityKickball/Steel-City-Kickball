@@ -9,7 +9,7 @@ body::before {
   inset: 0;
   background:
     radial-gradient(circle at center, rgba(140,0,0,0.55), rgba(0,0,0,0.9)),
-    url("src/assets/Amazinglogo.png") no-repeat center center;
+    url("../assets/Amazinglogo.png") no-repeat center center;
   background-size: 70%;
   opacity: 0.8;
   z-index: 0;
@@ -58,7 +58,15 @@ body::before {
 
 /* DROPDOWN */
 .dropdown { position: relative; }
-.dropdown-btn { cursor: pointer; }
+.dropdown-btn {
+  background: none;
+  border: none;
+  color: #C0C0C0;
+  font-weight: bold;
+  cursor: pointer;
+}
+.dropdown-btn:hover { color: white; }
+
 .dropdown-menu {
   display: none;
   position: absolute;
@@ -69,6 +77,13 @@ body::before {
   list-style: none;
   border: 1px solid #444;
 }
+
+.dropdown-menu li a {
+  display: block;
+  padding: 6px 10px;
+  white-space: nowrap;
+}
+
 .dropdown:hover .dropdown-menu { display: block; }
 
 /* AUTH */
