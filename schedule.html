@@ -5,16 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Steel City Kickball — Schedule</title>
 
-  <!-- ⭐ FIXED: Load global CSS so hamburger works -->
   <link rel="stylesheet" href="src/styles/main.css">
 
   <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
-
+    html, body { height: 100%; margin: 0; padding: 0; }
     body {
       position: relative;
       background: #000;
@@ -25,7 +19,6 @@
       overflow-x: hidden;
     }
 
-    /* Background overlay */
     body::before {
       content: "";
       position: fixed;
@@ -38,32 +31,15 @@
       z-index: 0;
     }
 
-    /* NAV WRAPPER */
-    #nav-container {
-      position: relative;
-      z-index: 2000;
-    }
+    #nav-container { position: relative; z-index: 2000; }
+    .page-content { position: relative; z-index: 1; padding: 20px; }
 
-    /* PAGE CONTENT */
-    .page-content {
-      position: relative;
-      z-index: 1;
-      padding: 20px;
-    }
+    .table-wrapper { overflow-x: auto; margin: 0 auto; width: 100%; }
 
-    /* TABLE WRAPPER FOR MOBILE SCROLL */
-    .table-wrapper {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      margin: 0 auto;
-      width: 100%;
-    }
-
-    /* Table styling */
     table {
       margin: 20px auto;
       border-collapse: collapse;
-      width: 1000px; /* full width for scroll */
+      width: 1000px;
       background: rgba(0,0,0,0.6);
       border-radius: 8px;
       overflow: hidden;
@@ -77,42 +53,13 @@
       font-size: 14px;
     }
 
-    th {
-      background: rgba(0,0,0,0.9);
-      color: #ffcc00;
-      font-weight: 700;
-    }
+    th { background: rgba(0,0,0,0.9); color: #ffcc00; font-weight: 700; }
+    tr.future td { background: rgba(0,128,0,0.25); }
+    tr.today td { background: rgba(255,215,0,0.35); font-weight: bold; }
+    tr.past td { background: rgba(255,0,0,0.20); }
 
-    tr.future td {
-      background: rgba(0, 128, 0, 0.25);
-    }
-
-    tr.today td {
-      background: rgba(255, 215, 0, 0.35);
-      font-weight: bold;
-    }
-
-    tr.past td {
-      background: rgba(255, 0, 0, 0.20);
-    }
-
-    .team-logo {
-      width: 22px;
-      height: 22px;
-      object-fit: contain;
-      vertical-align: middle;
-      margin-right: 4px;
-    }
-
-    .team-link {
-      color: #ffcc00;
-      font-weight: bold;
-      font-size: 14px;
-    }
-
-    .team-link:hover {
-      text-decoration: underline;
-    }
+    .team-logo { width: 22px; height: 22px; margin-right: 4px; }
+    .team-link { color: #ffcc00; font-weight: bold; font-size: 14px; }
 
     .week-selector {
       margin: 20px auto;
@@ -122,58 +69,53 @@
       border: none;
     }
 
-    h1, h2 {
-      margin-top: 30px;
-    }
-
-    /* MOBILE OPTIMIZATION */
     @media (max-width: 768px) {
-      table {
-        width: 900px;
-      }
-
-      th, td {
-        padding: 8px;
-        font-size: 13px;
-      }
-
-      .team-logo {
-        width: 18px;
-        height: 18px;
-      }
+      table { width: 900px; }
+      th, td { padding: 8px; font-size: 13px; }
+      .team-logo { width: 18px; height: 18px; }
     }
   </style>
 </head>
 
 <body>
 
-<!-- NAVIGATION -->
 <div id="nav-container"></div>
+
 <script>
+  // Load nav
   fetch("src/components/nav.html")
     .then(res => res.text())
     .then(html => {
-      document.getElementById("nav-container").innerHTML = html;
+      const navContainer = document.getElementById("nav-container");
+      navContainer.innerHTML = html;
+
+      // Attach hamburger click AFTER nav loads
+      const hamburger = navContainer.querySelector(".hamburger");
+      const mobileMenu = navContainer.querySelector("#mobile-menu");
+
+      hamburger.addEventListener("click", () => {
+        mobileMenu.classList.toggle("open");
+      });
     });
 </script>
 
 <div class="page-content">
 
-<h1>Steel City Kickball — League Schedule</h1>
+  <h1>Steel City Kickball — League Schedule</h1>
 
-<select id="week-select" class="week-selector">
-  <option value="all">Show All Weeks</option>
-</select>
+  <select id="week-select" class="week-selector">
+    <option value="all">Show All Weeks</option>
+  </select>
 
-<h2>Upcoming Games</h2>
-<div class="table-wrapper">
-  <div id="schedule-container">Loading schedule...</div>
-</div>
+  <h2>Upcoming Games</h2>
+  <div class="table-wrapper">
+    <div id="schedule-container">Loading schedule...</div>
+  </div>
 
-<h2>Results</h2>
-<div class="table-wrapper">
-  <div id="results-container">No results yet.</div>
-</div>
+  <h2>Results</h2>
+  <div class="table-wrapper">
+    <div id="results-container">No results yet.</div>
+  </div>
 
 </div>
 
@@ -185,8 +127,8 @@
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vTt2eUK_a8_78KlrEtuZ_yeZs-jMxBP630-Q-2X69FGwEjN9oLsakD-w6xN6DdGGBa0CLEAjyqOCVBr/pub?output=csv";
 
   function parseCSV(text) {
-    const rows = text.split(/\r?\n/).filter(r => r.trim() !== "");
-    return rows.map(row => row.split(",").map(cell => cell.trim()));
+    return text.split(/\r?\n/).filter(r => r.trim() !== "")
+      .map(row => row.split(",").map(cell => cell.trim()));
   }
 
   function getTeamLogo(team) {
@@ -229,4 +171,69 @@
       row.forEach((cell, i) => {
         let output = cell;
 
-        if (headers[i].
+        if (headers[i].toLowerCase().includes("team")) {
+          output = `<img class="team-logo" src="${getTeamLogo(cell)}" onerror="this.style.display='none'"> ${teamLink(cell)}`;
+        }
+
+        if (headers[i].toLowerCase().includes("field")) {
+          output = fieldMapLink(cell);
+        }
+
+        html += `<td>${output}</td>`;
+      });
+
+      html += "</tr>";
+    });
+
+    html += "</table>";
+    document.getElementById(containerId).innerHTML = html;
+  }
+
+  // LOAD SCHEDULE
+  fetch(scheduleUrl)
+    .then(res => res.text())
+    .then(text => {
+      const data = parseCSV(text);
+
+      const weekIndex = data[0].findIndex(h => h.toLowerCase() === "week");
+      const weeks = [...new Set(data.slice(1).map(r => r[weekIndex]))];
+
+      const select = document.getElementById("week-select");
+      weeks.forEach(w => {
+        const opt = document.createElement("option");
+        opt.value = w;
+        opt.textContent = "Week " + w;
+        select.appendChild(opt);
+      });
+
+      select.addEventListener("change", () => {
+        const selected = select.value;
+        if (selected === "all") {
+          renderEnhancedTable(data, "schedule-container");
+        } else {
+          const filtered = [data[0], ...data.slice(1).filter(r => r[weekIndex] === selected)];
+          renderEnhancedTable(filtered, "schedule-container");
+        }
+      });
+
+      renderEnhancedTable(data, "schedule-container");
+    });
+
+  // LOAD RESULTS
+  fetch(resultsUrl)
+    .then(res => res.text())
+    .then(text => {
+      const data = parseCSV(text);
+      if (data.length <= 1) {
+        document.getElementById("results-container").innerHTML = "No results yet.";
+      } else {
+        renderEnhancedTable(data, "results-container");
+      }
+    })
+    .catch(() => {
+      document.getElementById("results-container").innerHTML = "No results yet.";
+    });
+</script>
+
+</body>
+</html>
