@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Steel City Kickball — Standings & Stats</title>
 
-  <!-- Load global CSS -->
+  <!-- Load global CSS (required for hamburger menu) -->
   <link rel="stylesheet" href="src/styles/main.css">
-<link rel="stylesheet" href="src/styles/main.css">
 
   <style>
     html, body {
@@ -39,7 +38,7 @@
       z-index: 0;
     }
 
-    /* ⭐ FIX: nav must be above everything */
+    /* ⭐ NAV MUST BE ABOVE EVERYTHING */
     #nav-container {
       position: relative;
       z-index: 2000;
@@ -94,20 +93,21 @@
 <div id="nav-container"></div>
 
 <script>
-  // Load shared nav
+  // Load shared nav and attach hamburger click
   fetch("src/components/nav.html")
     .then(res => res.text())
     .then(html => {
       const navContainer = document.getElementById("nav-container");
       navContainer.innerHTML = html;
 
-      // ⭐ Attach hamburger click AFTER nav loads
       const hamburger = navContainer.querySelector(".hamburger");
       const mobileMenu = navContainer.querySelector("#mobile-menu");
 
-      hamburger.addEventListener("click", () => {
-        mobileMenu.classList.toggle("open");
-      });
+      if (hamburger && mobileMenu) {
+        hamburger.addEventListener("click", () => {
+          mobileMenu.classList.toggle("open");
+        });
+      }
     });
 </script>
 
@@ -138,11 +138,69 @@
 
       const data = await response.json();
       const mvpTeam = data.team;
-
       if (!mvpTeam) return;
 
       const logoPath = `images/${mvpTeam}-logo.png`;
 
       document.body.style.setProperty(
         "background",
-        `radial-gradient
+        `radial-gradient(circle at center, rgba(140,0,0,0.55) 0%, rgba(0,0,0,0.90) 80%), url('${logoPath}') no-repeat center center fixed`
+      );
+
+      document.body.style.backgroundSize = "90%";
+    } catch (err) {
+      console.log("MVP background update failed:", err);
+    }
+  }
+
+  updateBackgroundFromMVP();
+
+  /* CSV SOURCES */
+  const standingsUrl =
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vS1iJY8XgcXtvO-p1fMzfhH77uLbub8KE9Z2HL6zAznAe688I5uLY61kvZQfHSU4N7sJU8b3TD33Yr_/pub?output=csv";
+
+  const statsUrl =
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vRjCOIOADqzgiT9RPU9tBGBkpvnL2DP7gXrjkMhwY0DWuNK65XLuBjKV-d1sVXRsQzAbAXBEauAwoT7/pub?output=csv";
+
+  const advancedUrl = standingsUrl;
+
+  function parseCSV(text) {
+    const rows = text.split(/\r?\n/).filter(r => r.trim() !== "");
+    return rows.map(row => row.split(",").map(cell => cell.trim()));
+  }
+
+  function renderTable(data, containerId) {
+    if (data.length < 2) {
+      document.getElementById(containerId).innerHTML = "No data available.";
+      return;
+    }
+
+    let html = "<table><tr>";
+    data[0].forEach(h => html += `<th>${h}</th>`);
+    html += "</tr>";
+
+    data.slice(1).forEach(row => {
+      html += "<tr>";
+      row.forEach(cell => html += `<td>${cell}</td>`);
+      html += "</tr>";
+    });
+
+    html += "</table>";
+    document.getElementById(containerId).innerHTML = html;
+  }
+
+  fetch(standingsUrl)
+    .then(res => res.text())
+    .then(text => renderTable(parseCSV(text), "standings-container"));
+
+  fetch(statsUrl)
+    .then(res => res.text())
+    .then(text => renderTable(parseCSV(text), "betting-container"));
+
+  fetch(advancedUrl)
+    .then(res => res.text())
+    .then(text => renderTable(parseCSV(text), "advanced-container"));
+</script>
+
+</body>
+</html>
