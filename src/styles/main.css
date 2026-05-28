@@ -108,6 +108,7 @@ body::before {
   padding: 8px 12px;
 }
 
+/* Hidden by default */
 .dropdown-content {
   display: none;
   position: absolute;
@@ -128,7 +129,13 @@ body::before {
   background: rgba(255,255,255,0.1);
 }
 
+/* Show on hover (mouse) */
 .dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Show when JS adds .open (click/touch) */
+.dropdown.open .dropdown-content {
   display: block;
 }
 
