@@ -43,7 +43,7 @@ a {
 
 a:hover,
 a:focus {
-  color: #ffcc00;
+  color: #C0C0C0;
   text-decoration: underline;
 }
 
@@ -88,7 +88,7 @@ th, td {
 
 th {
   background: rgba(0, 0, 0, 0.9);
-  color: #ffcc00;
+  color: #C0C0C0;
   font-weight: 700;
 }
 
@@ -124,7 +124,7 @@ button,
   cursor: pointer;
   font-size: 15px;
   font-weight: 600;
-  background: #ffcc00;
+  background: #C0C0C0;
   color: #000;
   transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.1s ease;
 }
@@ -214,7 +214,7 @@ button:hover,
 
 #photo-strip img:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 12px #ffcc00;
+  box-shadow: 0 0 12px #C0C0C0;
 }
 
 /* =======================================
@@ -308,7 +308,7 @@ button:hover,
   height: 80px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #ffcc00;
+  border: 3px solid #C0C0C0;
 }
 
 .profile-info h2 {
@@ -473,7 +473,7 @@ button:hover,
 }
 
 .message-bubble.you {
-  background: #ffcc00;
+  background: #C0C0C0;
   color: #000;
   margin-left: auto;
   border-bottom-right-radius: 4px;
@@ -520,7 +520,7 @@ button:hover,
   height: 55px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #ffcc00;
+  border: 2px solid #C0C0C0;
 }
 
 .conversation-info {
@@ -574,7 +574,7 @@ button:hover,
 .nav-title {
   font-size: 22px;
   font-weight: bold;
-  color: #ffcc00;
+  color: #C0C0C0;
 }
 
 .hamburger {
@@ -649,6 +649,6 @@ button:hover,
   }
 
   .nav-right a:hover {
-    color: #ffcc00;
+    color: #C0C0C0;
   }
 }
