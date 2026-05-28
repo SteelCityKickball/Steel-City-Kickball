@@ -1,22 +1,25 @@
-<nav class="main-nav" style="background:#111; padding:15px; display:flex; justify-content:space-between; align-items:center;">
+<nav class="navbar">
+  <div class="nav-left">
+    <span class="nav-title">Steel City Kickball</span>
+  </div>
 
-    <div class="nav-left" style="display:flex; gap:20px; align-items:center;">
-        <a href="index.html" style="color:white; text-decoration:none;">Home</a>
-        <a href="standings.html" style="color:white; text-decoration:none;">Standings</a>
-        <a href="schedule.html" style="color:white; text-decoration:none;">Schedule</a>
-        <a href="teams.html" style="color:white; text-decoration:none;">Teams</a>
-        <a href="waivers.html" style="color:white; text-decoration:none;">Waivers</a>
-        <a href="archive.html" style="color:white; text-decoration:none;">Archives</a>
-    </div>
+  <div class="nav-right">
+    <button class="hamburger" onclick="toggleMenu()">☰</button>
+  </div>
 
-    <div class="nav-right" style="display:flex; gap:15px; align-items:center;">
-        <img class="nav-avatar" src="src/assets/default-avatar.png" alt="User Avatar" style="height:32px; width:32px; border-radius:50%;" />
-        <span class="nav-username" style="color:white;">Guest</span>
-        <a href="src/identity/profile.html" class="nav-profile-link" style="color:white; text-decoration:none;">Profile</a>
-        <button class="nav-logout" style="background:#c00000; color:white; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;">Logout</button>
-        <a href="src/identity/login.html" class="nav-login" style="color:white; text-decoration:none;">Login</a>
-    </div>
-
+  <div id="mobile-menu" class="mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="standings.html">Standings</a>
+    <a href="schedule.html">Schedule</a>
+    <a href="teams.html">Teams</a>
+    <a href="waivers.html">Waivers</a>
+    <a href="archives.html">Archives</a>
+    <a href="login.html">Login</a>
+  </div>
 </nav>
 
-<script type="module" src="src/identity/global-identity.js"></script>
+<script>
+  function toggleMenu() {
+    document.getElementById("mobile-menu").classList.toggle("open");
+  }
+</script>
