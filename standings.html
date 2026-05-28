@@ -72,7 +72,8 @@
 <!-- ⭐ NAVIGATION -->
 <div id="nav-container"></div>
 <script>
-  fetch("/src/components/nav.html")
+  /* FIXED: Removed leading slash so GitHub Pages can find the file */
+  fetch("src/components/nav.html")
     .then(res => res.text())
     .then(html => {
       document.getElementById("nav-container").innerHTML = html;
@@ -128,8 +129,59 @@ async function updateBackgroundFromMVP() {
 updateBackgroundFromMVP();
 
 /* ⭐ CSV SOURCES */
+
+/* Standings (Results + Standings System) */
 const standingsUrl =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vS1iJY8XgcXtvO-p1fMzfhH77uLbub8KE9Z2HL6zAznAe688I5uLY61kvZQfHSU4N7sJU8b3TD33Yr_/pub?output=csv";
 
+/* Team Stats sheet */
 const statsUrl =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRjCOIOAD
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRjCOIOADqzgiT9RPU9tBGBkpvnL2DP7gXrjkMhwY0DWuNK65XLuBjKV-d1sVXRsQzAbAXBEauAwoT7/pub?output=csv";
+
+/* Advanced Stats sheet (same as standings for now) */
+const advancedUrl =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vS1iJY8XgcXtvO-p1fMzfhH77uLbub8KE9Z2HL6zAznAe688I5uLY61kvZQfHSU4N7sJU8b3TD33Yr_/pub?output=csv";
+
+/* ⭐ CSV PARSER */
+function parseCSV(text) {
+  const rows = text.split(/\r?\n/).filter(r => r.trim() !== "");
+  return rows.map(row => row.split(",").map(cell => cell.trim()));
+}
+
+/* ⭐ GENERIC TABLE RENDERER */
+function renderTable(data, containerId) {
+  if (data.length < 2) {
+    document.getElementById(containerId).innerHTML = "No data available.";
+    return;
+  }
+
+  let html = "<table><tr>";
+  data[0].forEach(h => html += `<th>${h}</th>`);
+  html += "</tr>";
+
+  data.slice(1).forEach(row => {
+    html += "<tr>";
+    row.forEach(cell => html += `<td>${cell}</td>`);
+    html += "</tr>";
+  });
+
+  html += "</table>";
+  document.getElementById(containerId).innerHTML = html;
+}
+
+/* ⭐ LOAD ALL THREE TABLES */
+fetch(standingsUrl)
+  .then(res => res.text())
+  .then(text => renderTable(parseCSV(text), "standings-container"));
+
+fetch(statsUrl)
+  .then(res => res.text())
+  .then(text => renderTable(parseCSV(text), "betting-container"));
+
+fetch(advancedUrl)
+  .then(res => res.text())
+  .then(text => renderTable(parseCSV(text), "advanced-container"));
+</script>
+
+</body>
+</html>
