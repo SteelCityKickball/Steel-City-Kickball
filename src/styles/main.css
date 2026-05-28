@@ -1,624 +1,583 @@
+/* =======================================
+   RESET & GLOBAL
+   ======================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background-color: #000; /* MVP JS will override background-image */
+  color: #fff;
+  text-shadow: 1px 1px 2px #000;
+}
+
+/* Generic layout wrapper used on most pages */
+.page-container {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+/* =======================================
+   NAVIGATION & LINKS
+   ======================================= */
+
+nav {
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 15px;
+  text-align: center;
+}
+
+nav a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 20px;
+  margin: 0 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+nav a:hover,
+nav a:focus {
+  color: #ffcc00;
+  text-decoration: underline;
+}
+
+nav a.active {
+  color: #ffcc00;
+}
+
+/* Global link styles */
+a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a:hover,
+a:focus {
+  color: #ffcc00;
+  text-decoration: underline;
+}
+
+/* =======================================
+   HEADINGS & TEXT
+   ======================================= */
+
+h1, h2, h3, h4 {
+  margin-top: 0;
+  text-align: center;
+}
+
+h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-size: 24px;
+  margin: 20px 0 10px;
+}
+
+/* =======================================
+   TABLES (Standings, Betting, Stats, etc.)
+   ======================================= */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px auto;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 8px;
+  overflow: hidden;
+  color: #ffffff;
+}
+
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  text-align: center;
+}
+
+th {
+  background: rgba(0, 0, 0, 0.9);
+  color: #ffcc00;
+  font-weight: 700;
+}
+
+tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+tr:hover td {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Containers used on standings page */
+#standings-container,
+#betting-container,
+#advanced-container {
+  margin-top: 10px;
+}
+
+/* =======================================
+   BUTTONS (Shared)
+   ======================================= */
+
+button,
+.btn,
+.save-button,
+.upload-button,
+.send-button,
+.auth-button {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  background: #ffcc00;
+  color: #000;
+  transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+button:hover,
+.btn:hover,
+.save-button:hover,
+.upload-button:hover,
+.send-button:hover,
+.auth-button:hover {
+  background: #e6b800;
+  transform: translateY(-1px);
+  box-shadow: 0 0 10px rgba(255, 204, 0, 0.6);
+}
+
+/* Links styled as subtle text buttons */
+.text-link,
+.back-link,
+.upload-link,
+.new-message-link,
+.settings-link {
+  display: block;
+  text-align: center;
+  margin-top: 16px;
+  color: #bbb;
+  font-weight: 400;
+}
+
+.text-link:hover,
+.back-link:hover,
+.upload-link:hover,
+.new-message-link:hover,
+.settings-link:hover {
+  color: #ffffff;
+}
+
+/* =======================================
+   HOMEPAGE: GOTW, MVP, PHOTO STRIP
+   ======================================= */
+
+/* Game of the Week image */
+#gotw-section {
+  margin: 30px auto;
+  text-align: center;
+}
+
+#gotw-img {
+  width: 100%;
+  max-width: 600px;
+  border-radius: 10px;
+  display: block;
+  margin: 10px auto 0;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+}
+
+/* MVP image (separate from background) */
+#mvp-section {
+  margin: 30px auto;
+  text-align: center;
+}
+
+#mvp-img {
+  width: 100%;
+  max-width: 600px;
+  border-radius: 10px;
+  display: block;
+  margin: 10px auto 0;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+}
+
+/* Homepage photo strip (latest 3 images) */
+#photo-strip {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 30px auto 10px;
+  flex-wrap: wrap;
+}
+
+#photo-strip img {
+  width: 30%;
+  max-width: 250px;
+  border-radius: 10px;
+  object-fit: cover;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#photo-strip img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 12px #ffcc00;
+}
+
+/* =======================================
+   AUTH / LOGIN / PROFILE
+   (from your existing CSS, recolored to gold)
+   ======================================= */
+
 .auth-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: #111;
-    color: white;
-    font-family: system-ui, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #111;
+  color: white;
+  font-family: system-ui, sans-serif;
 }
 
 .auth-container {
-    width: 100%;
-    max-width: 380px;
-    padding: 32px;
-    background: #1a1a1a;
-    border-radius: 12px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.4);
+  width: 100%;
+  max-width: 380px;
+  padding: 32px;
+  background: #1a1a1a;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
 }
 
 .auth-title {
-    text-align: center;
-    font-size: 28px;
-    margin-bottom: 8px;
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 8px;
 }
 
 .auth-subtitle {
-    text-align: center;
-    font-size: 18px;
-    margin-bottom: 24px;
-    color: #bbb;
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 24px;
+  color: #bbb;
 }
 
 .auth-form label {
-    display: block;
-    margin-bottom: 6px;
-    font-size: 14px;
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
 }
 
 .auth-form input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 16px;
-    border-radius: 8px;
-    border: none;
-    background: #2a2a2a;
-    color: white;
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  border: none;
+  background: #2a2a2a;
+  color: white;
 }
 
 .auth-button {
-    width: 100%;
-    padding: 12px;
-    background: #e63946;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
+  width: 100%;
 }
 
-.auth-button:hover {
-    background: #d62839;
-}
-
+/* Auth links */
 .auth-links {
-    margin-top: 16px;
-    text-align: center;
+  margin-top: 16px;
+  text-align: center;
 }
 
 .auth-links a {
-    display: block;
-    margin-top: 6px;
-    color: #bbb;
-    text-decoration: none;
+  display: block;
+  margin-top: 6px;
+  color: #bbb;
+  text-decoration: none;
+  font-weight: 400;
 }
 
 .auth-links a:hover {
-    color: white;
+  color: white;
 }
 
+/* Profile card */
 .profile-card {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 20px;
-    background: #1a1a1a;
-    border-radius: 12px;
-    margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: #1a1a1a;
+  border-radius: 12px;
+  margin-bottom: 20px;
 }
 
 .profile-avatar {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #e63946;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ffcc00;
 }
 
 .profile-info h2 {
-    margin: 0;
-    font-size: 22px;
-    color: white;
+  margin: 0;
+  font-size: 22px;
+  color: white;
 }
 
 .profile-info p {
-    margin: 4px 0 0;
-    color: #bbb;
+  margin: 4px 0 0;
+  color: #bbb;
 }
 
-/* ===========================
+/* =======================================
    SETTINGS PAGE
-   =========================== */
+   ======================================= */
 
 .settings-page .page-container {
-    max-width: 600px;
-    margin: 40px auto;
-    padding: 20px;
+  max-width: 600px;
 }
 
 .settings-form label {
-    display: block;
-    margin-bottom: 6px;
-    font-size: 14px;
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
 }
 
 .settings-form input,
 .settings-form select {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 16px;
-    border-radius: 8px;
-    border: none;
-    background: #2a2a2a;
-    color: white;
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  border: none;
+  background: #2a2a2a;
+  color: white;
 }
 
-.save-button {
-    width: 100%;
-    padding: 12px;
-    background: #e63946;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-}
+/* save-button already styled globally */
 
-.save-button:hover {
-    background: #d62839;
-}
-
-.back-link {
-    display: block;
-    text-align: center;
-    margin-top: 16px;
-    color: #bbb;
-    text-decoration: none;
-}
-
-.back-link:hover {
-    color: white;
-}
-
-/* ===========================
+/* =======================================
    UPLOAD PAGE
-   =========================== */
+   ======================================= */
 
 .upload-page .page-container {
-    max-width: 600px;
-    margin: 40px auto;
-    padding: 20px;
+  max-width: 600px;
 }
 
 .upload-form label {
-    display: block;
-    margin-bottom: 6px;
-    font-size: 14px;
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
 }
 
 .upload-form input[type="file"],
 .upload-form input[type="text"] {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 16px;
-    border-radius: 8px;
-    border: none;
-    background: #2a2a2a;
-    color: white;
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  border: none;
+  background: #2a2a2a;
+  color: white;
 }
 
-.upload-button {
-    width: 100%;
-    padding: 12px;
-    background: #e63946;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-}
+/* upload-button already styled globally */
 
-.upload-button:hover {
-    background: #d62839;
-}
-
-/* ===========================
-   MEDIA CARD COMPONENT
-   =========================== */
+/* =======================================
+   MEDIA CARD & GALLERY
+   ======================================= */
 
 .media-card {
-    background: #1a1a1a;
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 20px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  background: #1a1a1a;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .media-thumb {
-    width: 100%;
-    height: 220px;
-    object-fit: cover;
-    display: block;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
 }
 
 .media-info {
-    padding: 12px 16px;
+  padding: 12px 16px;
 }
 
 .media-caption {
-    margin: 0;
-    font-size: 16px;
-    color: white;
+  margin: 0;
+  font-size: 16px;
+  color: white;
 }
 
 .media-tags {
-    margin: 6px 0 0;
-    font-size: 13px;
-    color: #bbb;
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: #bbb;
 }
 
-/* ===========================
-   MEDIA GALLERY PAGE
-   =========================== */
-
+/* Gallery page */
 .gallery-page .page-container {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 20px;
+  max-width: 900px;
 }
 
 .gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
 }
 
-.upload-link {
-    display: block;
-    text-align: center;
-    margin-top: 24px;
-    color: #bbb;
-    text-decoration: none;
-}
+/* upload-link already styled globally */
 
-.upload-link:hover {
-    color: white;
-}
-
-/* ===========================
-   MEDIA VIEW PAGE
-   =========================== */
-
+/* Media view page */
 .media-view-page .page-container {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 20px;
+  max-width: 900px;
 }
 
 .media-view {
-    background: #1a1a1a;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  background: #1a1a1a;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .media-full {
-    width: 100%;
-    border-radius: 12px;
-    margin-bottom: 20px;
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 20px;
 }
 
 .media-details h2 {
-    margin: 0 0 10px;
-    font-size: 22px;
-    color: white;
+  margin: 0 0 10px;
+  font-size: 22px;
+  color: white;
 }
 
 .media-details .media-tags {
-    margin: 0 0 10px;
-    color: #bbb;
+  margin: 0 0 10px;
+  color: #bbb;
 }
 
 .media-meta {
-    margin: 4px 0;
-    font-size: 14px;
-    color: #888;
+  margin: 4px 0;
+  font-size: 14px;
+  color: #888;
 }
 
-/* ===========================
-   MESSAGE BUBBLE COMPONENT
-   =========================== */
+/* =======================================
+   MESSAGE BUBBLES / THREADS / INBOX
+   ======================================= */
 
 .message-bubble {
-    max-width: 75%;
-    padding: 12px 16px;
-    margin-bottom: 12px;
-    border-radius: 12px;
-    position: relative;
-    display: inline-block;
+  max-width: 75%;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  position: relative;
+  display: inline-block;
 }
 
 .message-bubble.you {
-    background: #e63946;
-    color: white;
-    margin-left: auto;
-    border-bottom-right-radius: 4px;
+  background: #ffcc00;
+  color: #000;
+  margin-left: auto;
+  border-bottom-right-radius: 4px;
 }
 
 .message-bubble.them {
-    background: #1f1f1f;
-    color: white;
-    margin-right: auto;
-    border-bottom-left-radius: 4px;
+  background: #1f1f1f;
+  color: white;
+  margin-right: auto;
+  border-bottom-left-radius: 4px;
 }
 
 .message-text {
-    margin: 0 0 6px;
-    font-size: 15px;
+  margin: 0 0 6px;
+  font-size: 15px;
 }
 
 .message-time {
-    font-size: 12px;
-    color: #ccc;
-    display: block;
-    text-align: right;
+  font-size: 12px;
+  color: #ccc;
+  display: block;
+  text-align: right;
 }
 
-/* ===========================
-   CONVERSATION CARD COMPONENT
-   =========================== */
-
+/* Conversation card */
 .conversation-card {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 16px;
-    background: #1a1a1a;
-    border-radius: 12px;
-    margin-bottom: 16px;
-    cursor: pointer;
-    transition: background 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: #1a1a1a;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
 
 .conversation-card:hover {
-    background: #2a2a2a;
+  background: #2a2a2a;
 }
 
 .conversation-avatar {
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #e63946;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffcc00;
 }
 
 .conversation-info {
-    flex: 1;
+  flex: 1;
 }
 
 .conversation-name {
-    margin: 0;
-    font-size: 18px;
-    color: white;
+  margin: 0;
+  font-size: 18px;
+  color: white;
 }
 
 .conversation-preview {
-    margin: 4px 0 0;
-    font-size: 14px;
-    color: #bbb;
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: #bbb;
 }
 
 .conversation-time {
-    font-size: 12px;
-    color: #888;
-    white-space: nowrap;
+  font-size: 12px;
+  color: #888;
+  white-space: nowrap;
 }
 
-/* ===========================
-   INBOX PAGE
-   =========================== */
-
+/* Inbox page */
 .inbox-page .page-container {
-    max-width: 700px;
-    margin: 40px auto;
-    padding: 20px;
+  max-width: 700px;
 }
 
-.new-message-link {
-    display: block;
-    text-align: center;
-    margin-top: 24px;
-    color: #bbb;
-    text-decoration: none;
-}
+/* new-message-link already styled globally */
 
-.new-message-link:hover {
-    color: white;
-}
-
-/* ===========================
-   MESSAGE THREAD PAGE
-   =========================== */
-
+/* Thread page */
 .thread-page .page-container {
-    max-width: 700px;
-    margin: 40px auto;
-    padding: 20px;
+  max-width: 700px;
 }
 
-.thread-header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 20px;
-}
-
-.thread-avatar {
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #e63946;
-}
-
-.thread-name {
-    margin: 0;
-    font-size: 22px;
-    color: white;
-}
-
-.thread-messages {
-    background: #1a1a1a;
-    padding: 20px;
-    border-radius: 12px;
-    height: 400px;
-    overflow-y: auto;
-    margin-bottom: 20px;
-}
-
-.thread-input {
-    display: flex;
-    gap: 10px;
-}
-
-.thread-input input {
-    flex: 1;
-    padding: 12px;
-    border-radius: 8px;
-    border: none;
-    background: #2a2a2a;
-    color: white;
-}
-
-.send-button {
-    padding: 12px 20px;
-    background: #e63946;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    cursor: pointer;
-}
-
-.send-button:hover {
-    background: #d62839;
-}
-
-/* ===========================
-   NEW MESSAGE PAGE
-   =========================== */
-
-.new-message-page .page-container {
-    max-width: 700px;
-    margin: 40px auto;
-    padding: 20px;
-}
-
-.new-message-form label {
-    display: block;
-    margin-bottom: 6px;
-    font-size: 14px;
-}
-
-.new-message-form input,
-.new-message-form textarea {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 16px;
-    border-radius: 8px;
-    border: none;
-    background: #2a2a2a;
-    color: white;
-}
-
-.new-message-form textarea {
-    resize: vertical;
-}
-
-/* ===========================
-   NOTIFICATION CARD COMPONENT
-   =========================== */
-
-.notification-card {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 16px;
-    background: #1a1a1a;
-    border-radius: 12px;
-    margin-bottom: 16px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.25);
-}
-
-.notification-icon {
-    font-size: 26px;
-    width: 50px;
-    height: 50px;
-    background: #2a2a2a;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.notification-info {
-    flex: 1;
-}
-
-.notification-text {
-    margin: 0;
-    font-size: 15px;
-    color: white;
-}
-
-.notification-time {
-    font-size: 12px;
-    color: #888;
-}
-
-/* ===========================
-   NOTIFICATIONS LIST PAGE
-   =========================== */
-
-.notifications-page .page-container {
-    max-width: 700px;
-    margin: 40px auto;
-    padding: 20px;
-}
-
-.settings-link {
-    display: block;
-    text-align: center;
-    margin-top: 24px;
-    color: #bbb;
-    text-decoration: none;
-}
-
-.settings-link:hover {
-    color: white;
-}
-
-/* ===========================
-   NOTIFICATION SETTINGS PAGE
-   =========================== */
-
-.notification-settings-page .page-container {
-    max-width: 700px;
-    margin: 40px auto;
-    padding: 20px;
-}
-
-.notification-settings-form {
-    margin-top: 20px;
-}
-
-.toggle-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #1a1a1a;
-    padding: 14px 18px;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    font-size: 16px;
-    color: white;
-}
-
-.toggle-row input[type="checkbox"] {
-    transform: scale(1.3);
-}
-
-.save-button {
-    width: 100%;
-    padding: 12px;
-    background: #e63946;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-.save-button:hover {
-    background: #d62839;
-}
+.thread
