@@ -10,31 +10,68 @@ export function getUser() {
 // Logs the user out everywhere
 export function logout() {
     localStorage.removeItem("sck_user");
-    window.location.href = "/src/identity/login.html";
+    window.location.href = "/index.html";
 }
 
 // Injects user identity into global UI elements
 export function applyIdentityToUI() {
     const user = getUser();
 
-    // Username in nav
-    const nameEl = document.querySelector(".nav-username");
-    if (nameEl) {
-        nameEl.textContent = user ? (user.Nickname || user.Email) : "Guest";
+    // ============================
+    // DESKTOP ELEMENTS
+    // ============================
+    const navLogin = document.getElementById("nav-login");
+    const navProfile = document.getElementById("nav-profile");
+    const navLogout = document.getElementById("nav-logout");
+    const navAvatar = document.getElementById("nav-avatar");
+
+    // ============================
+    // MOBILE ELEMENTS
+    // ============================
+    const mobileLogin = document.getElementById("mobile-login");
+    const mobileProfile = document.getElementById("mobile-profile");
+    const mobileLogout = document.getElementById("mobile-logout");
+    const mobileAvatar = document.getElementById("mobile-avatar");
+
+    // ============================
+    // APPLY USER STATE
+    // ============================
+    if (user) {
+        // Desktop
+        if (navLogin) navLogin.classList.add("hidden");
+        if (navProfile) navProfile.classList.remove("hidden");
+        if (navLogout) navLogout.classList.remove("hidden");
+        if (navAvatar) navAvatar.src = user.avatar || "/src/assets/default-avatar.png";
+
+        // Mobile
+        if (mobileLogin) mobileLogin.classList.add("hidden");
+        if (mobileProfile) mobileProfile.classList.remove("hidden");
+        if (mobileLogout) mobileLogout.classList.remove("hidden");
+        if (mobileAvatar) mobileAvatar.src = user.avatar || "/src/assets/default-avatar.png";
+
+    } else {
+        // Desktop
+        if (navLogin) navLogin.classList.remove("hidden");
+        if (navProfile) navProfile.classList.add("hidden");
+        if (navLogout) navLogout.classList.add("hidden");
+        if (navAvatar) navAvatar.src = "/src/assets/default-avatar.png";
+
+        // Mobile
+        if (mobileLogin) mobileLogin.classList.remove("hidden");
+        if (mobileProfile) mobileProfile.classList.add("hidden");
+        if (mobileLogout) mobileLogout.classList.add("hidden");
+        if (mobileAvatar) mobileAvatar.src = "/src/assets/default-avatar.png";
     }
 
-    // Avatar in nav
-    const avatarEl = document.querySelector(".nav-avatar");
-    if (avatarEl) {
-        avatarEl.src = user && user.avatar
-            ? user.avatar
-            : "/src/assets/default-avatar.png";
+    // ============================
+    // LOGOUT HANDLERS
+    // ============================
+    if (navLogout) {
+        navLogout.addEventListener("click", logout);
     }
 
-    // Logout button
-    const logoutBtn = document.querySelector(".nav-logout");
-    if (logoutBtn) {
-        logoutBtn.addEventListener("click", logout);
+    if (mobileLogout) {
+        mobileLogout.addEventListener("click", logout);
     }
 }
 
