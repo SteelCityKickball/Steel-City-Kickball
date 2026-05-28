@@ -13,16 +13,18 @@
 
 <!-- ⭐ NAVIGATION ⭐ -->
 <div id="nav-container"></div>
-<script type="module">
-  import { applyIdentityToUI } from "/Steel-City-Kickball/src/scripts/global-identity.js";
 
+<script>
+  // Load nav.html
   fetch("/Steel-City-Kickball/src/components/nav.html")
     .then(res => res.text())
     .then(html => {
       document.getElementById("nav-container").innerHTML = html;
 
       // Run identity AFTER nav loads
-      applyIdentityToUI();
+      if (window.applyIdentityToUI) {
+        window.applyIdentityToUI();
+      }
 
       // Hamburger
       const hamburger = document.getElementById("hamburger-btn");
@@ -85,14 +87,11 @@ async function getLatestFromGitHub(path) {
 
 async function loadImages() {
 
-  /* ⭐ MANUAL TEXT ⭐ */
   document.getElementById("gotw-text").innerText =
     "Week 3 — Red Rockets vs Blue Bombers. A wild 9–8 finish with a walk-off kick!";
 
   document.getElementById("mvp-text").innerText =
     "Jordan M. — 3 RBIs, 2 catches, and a game-saving play!";
-
-  /* ⭐ AUTO-LOADING IMAGES ⭐ */
 
   // GOTW
   const gotw = await getLatestFromGitHub("images/gotw");
@@ -119,6 +118,9 @@ async function loadImages() {
 
 loadImages();
 </script>
+
+<!-- GLOBAL IDENTITY SCRIPT -->
+<script type="module" src="/Steel-City-Kickball/src/scripts/global-identity.js"></script>
 
 </body>
 </html>
