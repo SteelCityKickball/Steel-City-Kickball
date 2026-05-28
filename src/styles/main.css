@@ -1,654 +1,196 @@
-/* =======================================
-   RESET & GLOBAL
-   ======================================= */
+/* ============================
+   GLOBAL RESET
+============================ */
 
-*,
-*::before,
-*::after {
+* {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
 html, body {
-  margin: 0;
-  padding: 0;
-  min-height: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  font-family: Arial, sans-serif;
+  color: white;
 }
+
+/* ============================
+   BACKGROUND
+============================ */
 
 body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background-color: #000; /* MVP JS will override background-image */
-  color: #fff;
-  text-shadow: 1px 1px 2px #000;
-}
-
-/* Generic layout wrapper used on most pages */
-.page-container {
-  max-width: 1100px;
-  margin: 40px auto;
-  padding: 20px;
-}
-
-/* =======================================
-   NAVIGATION & LINKS
-   ======================================= */
-
-
-
-/* Global link styles */
-a {
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-a:hover,
-a:focus {
-  color: #C0C0C0;
-  text-decoration: underline;
-}
-
-/* =======================================
-   HEADINGS & TEXT
-   ======================================= */
-
-h1, h2, h3, h4 {
-  margin-top: 0;
-  text-align: center;
-}
-
-h1 {
-  font-size: 32px;
-  margin-bottom: 10px;
-}
-
-h2 {
-  font-size: 24px;
-  margin: 20px 0 10px;
-}
-
-/* =======================================
-   TABLES (Standings, Betting, Stats, etc.)
-   ======================================= */
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px auto;
-  background: rgba(0, 0, 0, 0.6);
-  border-radius: 8px;
-  overflow: hidden;
-  color: #ffffff;
-}
-
-th, td {
-  padding: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-  text-align: center;
-}
-
-th {
-  background: rgba(0, 0, 0, 0.9);
-  color: #C0C0C0;
-  font-weight: 700;
-}
-
-tr:nth-child(even) td {
-  background: rgba(255, 255, 255, 0.03);
-}
-
-tr:hover td {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-/* Containers used on standings page */
-#standings-container,
-#betting-container,
-#advanced-container {
-  margin-top: 10px;
-}
-
-/* =======================================
-   BUTTONS (Shared)
-   ======================================= */
-
-button,
-.btn,
-.save-button,
-.upload-button,
-.send-button,
-.auth-button {
-  display: inline-block;
-  padding: 10px 18px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  font-size: 15px;
-  font-weight: 600;
-  background: #C0C0C0;
-  color: #000;
-  transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.1s ease;
-}
-
-button:hover,
-.btn:hover,
-.save-button:hover,
-.upload-button:hover,
-.send-button:hover,
-.auth-button:hover {
-  background: #e6b800;
-  transform: translateY(-1px);
-  box-shadow: 0 0 10px rgba(255, 204, 0, 0.6);
-}
-
-/* Links styled as subtle text buttons */
-.text-link,
-.back-link,
-.upload-link,
-.new-message-link,
-.settings-link {
-  display: block;
-  text-align: center;
-  margin-top: 16px;
-  color: #bbb;
-  font-weight: 400;
-}
-
-.text-link:hover,
-.back-link:hover,
-.upload-link:hover,
-.new-message-link:hover,
-.settings-link:hover {
-  color: #ffffff;
-}
-
-/* =======================================
-   HOMEPAGE: GOTW, MVP, PHOTO STRIP
-   ======================================= */
-
-/* Game of the Week image */
-#gotw-section {
-  margin: 30px auto;
-  text-align: center;
-}
-
-#gotw-img {
-  width: 100%;
-  max-width: 600px;
-  border-radius: 10px;
-  display: block;
-  margin: 10px auto 0;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
-}
-
-/* MVP image (separate from background) */
-#mvp-section {
-  margin: 30px auto;
-  text-align: center;
-}
-
-#mvp-img {
-  width: 100%;
-  max-width: 600px;
-  border-radius: 10px;
-  display: block;
-  margin: 10px auto 0;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
-}
-
-/* Homepage photo strip (latest 3 images) */
-#photo-strip {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin: 30px auto 10px;
-  flex-wrap: wrap;
-}
-
-#photo-strip img {
-  width: 30%;
-  max-width: 250px;
-  border-radius: 10px;
-  object-fit: cover;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-#photo-strip img:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 12px #C0C0C0;
-}
-
-/* =======================================
-   AUTH / LOGIN / PROFILE
-   (from your existing CSS, recolored to gold)
-   ======================================= */
-
-.auth-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: #111;
-  color: white;
-  font-family: system-ui, sans-serif;
-}
-
-.auth-container {
-  width: 100%;
-  max-width: 380px;
-  padding: 32px;
-  background: #1a1a1a;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
-}
-
-.auth-title {
-  text-align: center;
-  font-size: 28px;
-  margin-bottom: 8px;
-}
-
-.auth-subtitle {
-  text-align: center;
-  font-size: 18px;
-  margin-bottom: 24px;
-  color: #bbb;
-}
-
-.auth-form label {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 14px;
-}
-
-.auth-form input {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 16px;
-  border-radius: 8px;
-  border: none;
-  background: #2a2a2a;
-  color: white;
-}
-
-.auth-button {
-  width: 100%;
-}
-
-/* Auth links */
-.auth-links {
-  margin-top: 16px;
-  text-align: center;
-}
-
-.auth-links a {
-  display: block;
-  margin-top: 6px;
-  color: #bbb;
-  text-decoration: none;
-  font-weight: 400;
-}
-
-.auth-links a:hover {
-  color: white;
-}
-
-/* Profile card */
-.profile-card {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 20px;
-  background: #1a1a1a;
-  border-radius: 12px;
-  margin-bottom: 20px;
-}
-
-.profile-avatar {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid #C0C0C0;
-}
-
-.profile-info h2 {
-  margin: 0;
-  font-size: 22px;
-  color: white;
-}
-
-.profile-info p {
-  margin: 4px 0 0;
-  color: #bbb;
-}
-
-/* =======================================
-   SETTINGS PAGE
-   ======================================= */
-
-.settings-page .page-container {
-  max-width: 600px;
-}
-
-.settings-form label {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 14px;
-}
-
-.settings-form input,
-.settings-form select {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 16px;
-  border-radius: 8px;
-  border: none;
-  background: #2a2a2a;
-  color: white;
-}
-
-/* save-button already styled globally */
-
-/* =======================================
-   UPLOAD PAGE
-   ======================================= */
-
-.upload-page .page-container {
-  max-width: 600px;
-}
-
-.upload-form label {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 14px;
-}
-
-.upload-form input[type="file"],
-.upload-form input[type="text"] {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 16px;
-  border-radius: 8px;
-  border: none;
-  background: #2a2a2a;
-  color: white;
-}
-
-/* upload-button already styled globally */
-
-/* =======================================
-   MEDIA CARD & GALLERY
-   ======================================= */
-
-.media-card {
-  background: #1a1a1a;
-  border-radius: 12px;
-  overflow: hidden;
-  margin-bottom: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
-
-.media-thumb {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  display: block;
-}
-
-.media-info {
-  padding: 12px 16px;
-}
-
-.media-caption {
-  margin: 0;
-  font-size: 16px;
-  color: white;
-}
-
-.media-tags {
-  margin: 6px 0 0;
-  font-size: 13px;
-  color: #bbb;
-}
-
-/* Gallery page */
-.gallery-page .page-container {
-  max-width: 900px;
-}
-
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
-}
-
-/* upload-link already styled globally */
-
-/* Media view page */
-.media-view-page .page-container {
-  max-width: 900px;
-}
-
-.media-view {
-  background: #1a1a1a;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
-
-.media-full {
-  width: 100%;
-  border-radius: 12px;
-  margin-bottom: 20px;
-}
-
-.media-details h2 {
-  margin: 0 0 10px;
-  font-size: 22px;
-  color: white;
-}
-
-.media-details .media-tags {
-  margin: 0 0 10px;
-  color: #bbb;
-}
-
-.media-meta {
-  margin: 4px 0;
-  font-size: 14px;
-  color: #888;
-}
-
-/* =======================================
-   MESSAGE BUBBLES / THREADS / INBOX
-   ======================================= */
-
-.message-bubble {
-  max-width: 75%;
-  padding: 12px 16px;
-  margin-bottom: 12px;
-  border-radius: 12px;
   position: relative;
-  display: inline-block;
+  background: #000;
+  text-shadow: 1px 1px 2px black;
 }
 
-.message-bubble.you {
-  background: #C0C0C0;
-  color: #000;
-  margin-left: auto;
-  border-bottom-right-radius: 4px;
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at center, rgba(140,0,0,0.55) 0%, rgba(0,0,0,0.90) 80%),
+    url("Amazinglogo.png") no-repeat center center fixed;
+  background-size: 70%;
+  opacity: 0.80;
+  z-index: 0;
 }
 
-.message-bubble.them {
-  background: #1f1f1f;
-  color: white;
-  margin-right: auto;
-  border-bottom-left-radius: 4px;
+.page-content {
+  position: relative;
+  z-index: 1;
+  padding: 20px;
 }
 
-.message-text {
-  margin: 0 0 6px;
-  font-size: 15px;
-}
+/* ============================
+   NAVIGATION — DESKTOP + MOBILE
+============================ */
 
-.message-time {
-  font-size: 12px;
-  color: #ccc;
-  display: block;
-  text-align: right;
-}
-
-/* Conversation card */
-.conversation-card {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 16px;
-  background: #1a1a1a;
-  border-radius: 12px;
-  margin-bottom: 16px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.conversation-card:hover {
-  background: #2a2a2a;
-}
-
-.conversation-avatar {
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #C0C0C0;
-}
-
-.conversation-info {
-  flex: 1;
-}
-
-.conversation-name {
-  margin: 0;
-  font-size: 18px;
-  color: white;
-}
-
-.conversation-preview {
-  margin: 4px 0 0;
-  font-size: 14px;
-  color: #bbb;
-}
-
-.conversation-time {
-  font-size: 12px;
-  color: #888;
-  white-space: nowrap;
-}
-
-/* Inbox page */
-.inbox-page .page-container {
-  max-width: 700px;
-}
-
-/* new-message-link already styled globally */
-
-/* Thread page */
-.thread-page .page-container {
-  max-width: 700px;
-}
-
-.thread
-
-/* HAMBURGER NAV — GLOBAL */
 .navbar {
   width: 100%;
-  padding: 15px 20px;
+  background: rgba(0,0,0,0.85);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(0,0,0,0.75);
+  padding: 12px 20px;
   position: relative;
   z-index: 2000;
 }
 
 .nav-title {
-  font-size: 22px;
+  font-size: 1.4rem;
   font-weight: bold;
   color: #C0C0C0;
 }
 
-.hamburger {
-  font-size: 30px;
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  display: block;
+/* DESKTOP MENU (VISIBLE ON DESKTOP) */
+.desktop-menu {
+  display: flex;
+  gap: 20px;
+  align-items: center;
 }
 
-/* SLIDE-OUT DRAWER */
+.desktop-menu a {
+  color: #C0C0C0;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.2s ease;
+}
+
+.desktop-menu a:hover {
+  color: white;
+}
+
+/* HAMBURGER — HIDDEN ON DESKTOP */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: #C0C0C0;
+  cursor: pointer;
+}
+
+/* MOBILE MENU — HIDDEN BY DEFAULT */
 .mobile-menu {
-  position: fixed;
-  top: 0;
-  left: -260px;
-  width: 240px;
-  height: 100%;
-  background: rgba(0,0,0,0.95);
-  padding-top: 80px;
-  display: flex;
+  display: none;
   flex-direction: column;
-  gap: 20px;
-  transition: left 0.3s ease;
+  background: rgba(0,0,0,0.95);
+  padding: 20px;
+  position: absolute;
+  top: 60px;
+  right: 0;
+  width: 70%;
+  border-left: 2px solid #C0C0C0;
   z-index: 3000;
 }
 
 .mobile-menu a {
-  color: white;
+  color: #C0C0C0;
   text-decoration: none;
-  font-size: 20px;
-  padding: 12px 20px;
-  text-align: left;
-}
-
-.mobile-menu a:hover {
-  background: rgba(255,255,255,0.1);
+  padding: 12px 0;
+  font-size: 1.2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
 .mobile-menu.open {
-  left: 0;
+  display: flex;
 }
 
-/* DESKTOP NAV LINKS (hidden for now) */
-.nav-right a {
-  display: none;
-}
+/* ============================
+   MOBILE BREAKPOINT
+============================ */
 
-/* MOBILE ONLY */
 @media (max-width: 768px) {
+
+  /* Hide desktop menu */
+  .desktop-menu {
+    display: none;
+  }
+
+  /* Show hamburger */
   .hamburger {
     display: block;
   }
 }
 
-/* DESKTOP ONLY */
-@media (min-width: 769px) {
-  .mobile-menu {
-    display: none;
-  }
+/* ============================
+   TABLES
+============================ */
 
-  .hamburger {
-    display: none;
-  }
+table {
+  width: 95%;
+  margin: 20px auto;
+  border-collapse: collapse;
+  background: rgba(0,0,0,0.7);
+  color: white;
+}
 
-  .nav-right a {
-    display: inline-block;
-    margin-left: 20px;
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-  }
+th {
+  background: rgba(0,0,0,0.9);
+  color: #C0C0C0;
+  padding: 10px;
+  font-weight: bold;
+}
 
-  .nav-right a:hover {
-    color: #C0C0C0;
-  }
+td {
+  padding: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+/* ============================
+   BUTTONS
+============================ */
+
+button, .btn {
+  background: #8B0000;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover, .btn:hover {
+  background: #A00000;
+}
+
+/* ============================
+   GRID LAYOUTS (ARCHIVE)
+============================ */
+
+.archive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.archive-grid img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
 }
