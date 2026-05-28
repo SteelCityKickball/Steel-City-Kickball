@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Steel City Kickball – Waivers</title>
 
+    <!-- Load global CSS (hamburger + nav + buttons) -->
+    <link rel="stylesheet" href="src/styles/main.css">
+
     <style>
         html, body {
             height: 100%;
@@ -12,87 +15,124 @@
             padding: 0;
         }
 
-        /* Same as archive page */
         body {
             position: relative;
             background: #000;
             font-family: Arial, sans-serif;
             color: white;
             text-shadow: 1px 1px 2px black;
+            overflow-x: hidden;
         }
 
-        /* Same as archive page but with bigger logo */
+        /* Background with centered logo */
         body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(circle at center, rgba(140,0,0,0.55) 0%, rgba(0,0,0,0.90) 80%),
-    url("Amazinglogo.png") no-repeat center center fixed;
-  background-size: 80vmin; /* keeps logo perfectly round */
-  opacity: 0.80;
-  filter: none;
-  z-index: 0;
-}
+            content: "";
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at center, rgba(140,0,0,0.55) 0%, rgba(0,0,0,0.90) 80%),
+                url("Amazinglogo.png") no-repeat center center fixed;
+            background-size: 80vmin;
+            opacity: 0.80;
+            z-index: 0;
+        }
 
-        /* Same wrapper as archive page */
+        /* NAV ABOVE EVERYTHING */
+        #nav-container {
+            position: relative;
+            z-index: 2000;
+        }
+
         .page-content {
             position: relative;
             z-index: 1;
+            padding: 20px;
+            text-align: center;
         }
 
-        nav ul {
-            list-style: none;
-            padding: 10px;
-            margin: 0;
+        h1 {
+            margin-top: 30px;
+        }
+
+        .button-container {
+            margin-top: 30px;
             display: flex;
-            gap: 20px;
-            background: rgba(0,0,0,0.8);
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
         }
 
-        nav a {
-            color: white;
-            text-decoration: none;
+        /* Buttons use main.css styles */
+        .button {
+            padding: 12px 20px;
+            background: rgba(0,0,0,0.7);
+            color: #ffcc00;
+            border-radius: 8px;
             font-weight: bold;
+            text-decoration: none;
+            width: 280px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .button.primary {
+            background: #ffcc00;
+            color: black;
+        }
+
+        .button:hover {
+            opacity: 0.85;
         }
     </style>
 </head>
 
 <body>
+
+<!-- NAVIGATION -->
+<div id="nav-container"></div>
+
+<script>
+    // Load shared nav + hamburger
+    fetch("src/components/nav.html")
+        .then(res => res.text())
+        .then(html => {
+            const navContainer = document.getElementById("nav-container");
+            navContainer.innerHTML = html;
+
+            const hamburger = navContainer.querySelector(".hamburger");
+            const mobileMenu = navContainer.querySelector("#mobile-menu");
+
+            if (hamburger && mobileMenu) {
+                hamburger.addEventListener("click", () => {
+                    mobileMenu.classList.toggle("open");
+                });
+            }
+        })
+        .catch(err => console.error("Nav load failed:", err));
+</script>
+
 <div class="page-content">
 
-    <!-- Navigation -->
-    <nav>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="schedule.html">Schedule</a></li>
-            <li><a href="standings.html">Standings</a></li>
-            <li><a href="teams.html">Teams</a></li>
-            <li><a href="waivers.html" class="active">Waivers</a></li>
-        </ul>
-    </nav>
+    <h1>Player Waivers & Release Forms</h1>
+    <p>All players must complete the required waivers before participating in Steel City Kickball.</p>
 
-    <main>
-        <h1>Player Waivers & Release Forms</h1>
-        <p>All players must complete the required waivers before participating in Steel City Kickball.</p>
+    <div class="button-container">
 
-        <div class="button-container">
+        <a class="button" href="https://github.com/SteelCityKickball/Steel-City-Kickball/blob/main/City%20of%20Lorain%20Parks%20Recreation%20Facilities%20Waiver%20and%20Release%20Agreement.pdf" target="_blank">
+            Download City of Lorain Waiver
+        </a>
 
-            <a class="button" href="https://github.com/SteelCityKickball/Steel-City-Kickball/blob/main/City%20of%20Lorain%20Parks%20Recreation%20Facilities%20Waiver%20and%20Release%20Agreement.pdf" target="_blank">
-                Download City of Lorain Waiver
-            </a>
+        <a class="button" href="https://github.com/SteelCityKickball/Steel-City-Kickball/blob/main/LeagueWaivers.pdf" target="_blank">
+            Download Steel City Kickball League Waiver
+        </a>
 
-            <a class="button" href="https://github.com/SteelCityKickball/Steel-City-Kickball/blob/main/LeagueWaivers.pdf" target="_blank">
-                Download Steel City Kickball League Waiver
-            </a>
+        <a class="button primary" href="https://docs.google.com/forms/d/1ZVxijW_h6d_UfkGJJGzke2M3FQv1cHOhJu8Aj8JnVfA/preview" target="_blank">
+            Complete Digital Waiver Form
+        </a>
 
-            <a class="button primary" href="https://docs.google.com/forms/d/1ZVxijW_h6d_UfkGJJGzke2M3FQv1cHOhJu8Aj8JnVfA/preview" target="_blank">
-                Complete Digital Waiver Form
-            </a>
-
-        </div>
-    </main>
+    </div>
 
 </div>
+
 </body>
 </html>
