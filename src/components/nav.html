@@ -6,14 +6,14 @@
   <!-- DESKTOP MENU -->
   <div class="nav-right desktop-menu">
 
-    <!-- MAIN LINKS (always visible) -->
+    <!-- MAIN LINKS -->
     <a href="index.html">Home</a>
     <a href="standings.html">Standings</a>
     <a href="schedule.html">Schedule</a>
     <a href="teams.html">Teams</a>
 
     <!-- DROPDOWN -->
-    <div class="dropdown">
+    <div class="dropdown" id="moreDropdown">
       <span class="dropbtn">More ▼</span>
       <div class="dropdown-content">
         <a href="waivers.html">Waivers</a>
@@ -33,11 +33,11 @@
   </div>
 
   <!-- HAMBURGER -->
-  <div class="nav-right">
+  <div class="nav-right mobile-hamburger">
     <button class="hamburger">☰</button>
   </div>
 
-  <!-- MOBILE MENU (unchanged) -->
+  <!-- MOBILE MENU -->
   <div id="mobile-menu" class="mobile-menu">
     <img id="mobile-avatar" src="" alt="Avatar"
          style="width:60px; height:60px; border-radius:50%; margin:10px auto; display:none;">
@@ -58,3 +58,19 @@
 </nav>
 
 <script src="src/scripts/auth.js"></script>
+
+<!-- ⭐ REQUIRED FIX: CLICKABLE DROPDOWN ⭐ -->
+<script>
+  const dropdown = document.getElementById("moreDropdown");
+  const button = dropdown.querySelector(".dropbtn");
+
+  button.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("open");
+  });
+
+  // Close dropdown when clicking anywhere else
+  document.addEventListener("click", () => {
+    dropdown.classList.remove("open");
+  });
+</script>
