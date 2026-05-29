@@ -93,23 +93,34 @@
 <div id="nav-container"></div>
 
 <script>
-    // Load shared nav + hamburger
-    fetch("src/components/nav.html")
-        .then(res => res.text())
-        .then(html => {
-            const navContainer = document.getElementById("nav-container");
-            navContainer.innerHTML = html;
+  fetch("src/components/nav.html")
+    .then(res => res.text())
+    .then(html => {
+      const navContainer = document.getElementById("nav-container");
+      navContainer.innerHTML = html;
 
-            const hamburger = navContainer.querySelector(".hamburger");
-            const mobileMenu = navContainer.querySelector("#mobile-menu");
+      // ⭐ Identity (controls login/logout/avatar)
+      if (window.applyIdentityToUI) {
+        window.applyIdentityToUI();
+      }
 
-            if (hamburger && mobileMenu) {
-                hamburger.addEventListener("click", () => {
-                    mobileMenu.classList.toggle("open");
-                });
-            }
-        })
-        .catch(err => console.error("Nav load failed:", err));
+      // ⭐ Hamburger (mobile menu)
+      const hamburger = navContainer.querySelector("#hamburger-btn");
+      const mobileMenu = navContainer.querySelector("#mobile-menu");
+      if (hamburger && mobileMenu) {
+        hamburger.addEventListener("click", () => {
+          mobileMenu.classList.toggle("open");
+        });
+      }
+
+      // ⭐ Mobile dropdowns (More ▾)
+      navContainer.querySelectorAll(".mobile-menu .dropdown-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          btn.parentElement.classList.toggle("open");
+        });
+      });
+    })
+    .catch(err => console.error("Nav load failed:", err));
 </script>
 
 <div class="page-content">
