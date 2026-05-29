@@ -28,7 +28,7 @@ body::before {
 .page-content {
   position: relative;
   z-index: 1;
-  padding: 160px 20px 20px;
+  padding: 140px 16px 24px;
 }
 
 /* NAVBAR */
@@ -38,27 +38,27 @@ body::before {
   left: 0;
   right: 0;
   background: rgba(0,0,0,0.85);
-  padding: 12px 20px;
+  padding: 10px 16px;
   display: flex;
   align-items: center;
   z-index: 2000;
 }
 
 .nav-logo-img {
-  height: 40px;
+  height: 36px;
   width: auto;
 }
 
-/* DESKTOP / MOBILE VISIBILITY */
+/* MOBILE-FIRST VISIBILITY */
 .desktop-only {
-  display: flex;
-}
-
-.mobile-only {
   display: none;
 }
 
-/* NAV MENU */
+.mobile-only {
+  display: flex;
+}
+
+/* NAV MENU (DESKTOP) */
 .nav-menu {
   list-style: none;
   display: flex;
@@ -122,8 +122,8 @@ body::before {
 }
 
 .nav-avatar {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   border: 2px solid #C0C0C0;
 }
@@ -140,7 +140,7 @@ body::before {
 .hamburger {
   background: none;
   border: none;
-  font-size: 30px;
+  font-size: 28px;
   color: #C0C0C0;
   cursor: pointer;
 }
@@ -165,9 +165,9 @@ body::before {
 
 /* HOMEPAGE SECTIONS */
 .homepage-section {
-  margin: 40px auto;
+  margin: 32px auto;
   max-width: 800px;
-  padding: 20px;
+  padding: 16px;
   background: rgba(0,0,0,0.5);
   border-radius: 10px;
 }
@@ -177,11 +177,11 @@ body::before {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin: 30px 0;
+  margin: 24px 0;
 }
 
 .strip-photo {
-  width: 120px;
+  width: 45%;
   height: auto;
   border-radius: 6px;
 }
@@ -192,50 +192,34 @@ img {
   height: auto;
 }
 
-/* MOBILE FIXES */
-@media (max-width: 768px) {
-
-  /* Hide desktop elements */
-  .desktop-only {
-    display: none !important;
-  }
-
-  /* Show mobile elements */
-  .mobile-only {
-    display: flex !important;
-  }
-
-  /* Fix content hidden under navbar */
-  .page-content {
-    padding-top: 200px;
-  }
-
-  /* Resize photo strip images */
-  .strip-photo {
-    width: 45%;
-  }
-}
-
-/* DESKTOP FIXES */
+/* DESKTOP OVERRIDES */
 @media (min-width: 769px) {
 
-  /* Hide mobile bar */
-  .mobile-bar {
-    display: none !important;
+  .desktop-only {
+    display: flex;
   }
 
-  /* Hide mobile-only elements */
   .mobile-only {
-    display: none !important;
+    display: none;
   }
 
-  /* Ensure desktop nav stays aligned */
-  .nav-right {
-    display: flex !important;
+  .navbar {
+    padding: 12px 20px;
   }
 
-  /* Desktop content padding */
+  .nav-logo-img {
+    height: 40px;
+  }
+
   .page-content {
-    padding-top: 160px;
+    padding: 160px 20px 24px;
+  }
+
+  .photo-strip {
+    justify-content: flex-start;
+  }
+
+  .strip-photo {
+    width: 120px;
   }
 }
