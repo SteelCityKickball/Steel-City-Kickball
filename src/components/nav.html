@@ -1,6 +1,6 @@
 <nav class="navbar">
 
-  <!-- LOGO (always first in DOM so scripts don't break) -->
+  <!-- LOGO (must be first for DOM stability) -->
   <div class="nav-left">
     <a href="index.html" class="nav-logo">
       <img src="src/assets/Amazinglogo.png" class="nav-logo-img" alt="Steel City Kickball Logo">
@@ -38,7 +38,7 @@
     <button class="hamburger" id="hamburger-btn">☰</button>
   </div>
 
-  <!-- MOBILE MENU -->
+  <!-- MOBILE MENU (must be last) -->
   <ul class="mobile-menu" id="mobile-menu">
     <li><a href="index.html">Home</a></li>
     <li><a href="schedule.html">Schedule</a></li>
