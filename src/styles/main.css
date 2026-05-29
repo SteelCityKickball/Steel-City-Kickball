@@ -223,3 +223,10 @@ img {
     width: 120px;
   }
 }
+
+/* FIX: Prevent headings from being covered by the navbar on mobile */
+@media (max-width: 768px) {
+  .page-content {
+    padding-top: 200px !important;
+  }
+}
