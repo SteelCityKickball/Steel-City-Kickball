@@ -5,16 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Photo Archive — Steel City Kickball</title>
 
-  <!-- Load global CSS (hamburger + nav + buttons) -->
+  <!-- Global styles -->
   <link rel="stylesheet" href="src/styles/main.css">
 
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
+  <!-- Identity script (fixes logout/login visibility) -->
+  <script src="src/identity/global-identity.js" defer></script>
 
+  <style>
     body {
       position: relative;
       background: #000;
@@ -30,7 +27,7 @@
       inset: 0;
       background:
         radial-gradient(circle at center, rgba(140,0,0,0.55) 0%, rgba(0,0,0,0.90) 80%),
-        url("Amazinglogo.png") no-repeat center center fixed;
+        url("src/assets/Amazinglogo.png") no-repeat center center fixed;
       background-size: 70%;
       opacity: 0.80;
       z-index: 0;
@@ -41,10 +38,11 @@
       z-index: 2000;
     }
 
+    /* ⭐ FIX: Add top padding so content is NOT under navbar */
     .page-content {
       position: relative;
       z-index: 1;
-      padding: 20px;
+      padding: 80px 20px 20px;
     }
 
     h1, h2 {
@@ -73,21 +71,32 @@
 <div id="nav-container"></div>
 
 <script>
-  // Load shared nav + hamburger
   fetch("src/components/nav.html")
     .then(res => res.text())
     .then(html => {
       const navContainer = document.getElementById("nav-container");
       navContainer.innerHTML = html;
 
-      const hamburger = navContainer.querySelector(".hamburger");
-      const mobileMenu = navContainer.querySelector("#mobile-menu");
+      // Identity (fixes logout/login visibility)
+      if (window.applyIdentityToUI) {
+        window.applyIdentityToUI();
+      }
 
+      // Hamburger
+      const hamburger = navContainer.querySelector("#hamburger-btn");
+      const mobileMenu = navContainer.querySelector("#mobile-menu");
       if (hamburger && mobileMenu) {
         hamburger.addEventListener("click", () => {
           mobileMenu.classList.toggle("open");
         });
       }
+
+      // Mobile dropdowns
+      navContainer.querySelectorAll(".mobile-menu .dropdown-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          btn.parentElement.classList.toggle("open");
+        });
+      });
     })
     .catch(err => console.error("Nav load failed:", err));
 </script>
