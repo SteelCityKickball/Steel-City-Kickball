@@ -34,7 +34,8 @@
 
     let html = "<ul>";
     rules.forEach(r => {
-      html += `<li>${r[1]}</li>`;
+     const ruleText = r.slice(1).join(",").trim();
+html += `<li>${ruleText}</li>`;
     });
     html += "</ul>";
 
