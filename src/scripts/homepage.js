@@ -4,9 +4,22 @@
 const SHEET_CSV_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vRlQaQ9lUR2doOFO1CE5m0UGI49T569YYKWrSyuoSoMBlqRwhg-Rdk13IQFptMS_krfJzXqC8zKxYPl/pub?output=csv";
 
-const GOTW_FOLDER = "/Steel-City-Kickball/images/gotw/";
-const MVP_FOLDER = "/Steel-City-Kickball/images/mvp/";
-const PHOTO_FOLDER = "/Steel-City-Kickball/images/photos/";
+
+// -------------------------------
+// GITHUB API FILE LOADER
+// -------------------------------
+async function getLatestFromGitHub(path) {
+  const apiUrl = `https://api.github.com/repos/SteelCityKickball/Steel-City-Kickball/contents/${path}`;
+  const response = await fetch(apiUrl);
+  const files = await response.json();
+
+  const images = files.filter(f =>
+    f.name.match(/\.(jpg|jpeg|png|gif)$/i)
+  );
+
+  images.sort((a, b) => b.name.localeCompare(a.name));
+  return images;
+}
 
 
 // -------------------------------
@@ -43,24 +56,24 @@ async function loadHomepageText() {
 
 
 // -------------------------------
-// AUTO‑LOAD NEWEST IMAGE FROM FOLDER
+// LOAD NEWEST GOTW + MVP IMAGES
 // -------------------------------
-async function loadNewestImage(folder, imgElementId) {
+async function loadHomepageImages() {
   try {
-    const res = await fetch(folder);
-    const text = await res.text();
+    // GOTW
+    const gotw = await getLatestFromGitHub("images/gotw");
+    if (gotw.length > 0) {
+      document.getElementById("gotw-img").src = gotw[0].download_url;
+    }
 
-    const matches = [...text.matchAll(/href="([^"]+)"/g)]
-      .map(m => m[1])
-      .filter(name => /\.(jpg|jpeg|png|gif)$/i.test(name));
-
-    if (matches.length === 0) return;
-
-    const newest = matches.sort().reverse()[0];
-    document.getElementById(imgElementId).src = folder + newest;
+    // MVP
+    const mvp = await getLatestFromGitHub("images/mvp");
+    if (mvp.length > 0) {
+      document.getElementById("mvp-img").src = mvp[0].download_url;
+    }
 
   } catch (err) {
-    console.error("Error loading images:", err);
+    console.error("Error loading homepage images:", err);
   }
 }
 
@@ -70,19 +83,14 @@ async function loadNewestImage(folder, imgElementId) {
 // -------------------------------
 async function loadPhotoStrip() {
   try {
-    const res = await fetch(PHOTO_FOLDER);
-    const text = await res.text();
-
-    const matches = [...text.matchAll(/href="([^"]+)"/g)]
-      .map(m => m[1])
-      .filter(name => /\.(jpg|jpeg|png|gif)$/i.test(name));
-
+    const photos = await getLatestFromGitHub("images/photos");
     const strip = document.getElementById("photo-strip");
+
     strip.innerHTML = "";
 
-    matches.forEach(file => {
+    photos.forEach(file => {
       const img = document.createElement("img");
-      img.src = PHOTO_FOLDER + file;
+      img.src = file.download_url;
       img.className = "strip-photo";
       strip.appendChild(img);
     });
@@ -98,7 +106,6 @@ async function loadPhotoStrip() {
 // -------------------------------
 document.addEventListener("DOMContentLoaded", () => {
   loadHomepageText();
-  loadNewestImage(GOTW_FOLDER, "gotw-img");
-  loadNewestImage(MVP_FOLDER, "mvp-img");
+  loadHomepageImages();
   loadPhotoStrip();
 });
