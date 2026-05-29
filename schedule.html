@@ -62,28 +62,36 @@
   <div id="nav-container"></div>
 
   <script>
-    fetch("src/components/nav.html")
-      .then(res => res.text())
-      .then(html => {
-        const navContainer = document.getElementById("nav-container");
-        navContainer.innerHTML = html;
+  fetch("src/components/nav.html")
+    .then(res => res.text())
+    .then(html => {
+      const navContainer = document.getElementById("nav-container");
+      navContainer.innerHTML = html;
 
-        const hamburger = navContainer.querySelector("#hamburger-btn");
-        const mobileMenu = navContainer.querySelector("#mobile-menu");
+      // ⭐ Identity (controls login/logout/avatar)
+      if (window.applyIdentityToUI) {
+        window.applyIdentityToUI();
+      }
 
-        if (hamburger && mobileMenu) {
-          hamburger.addEventListener("click", () => {
-            mobileMenu.classList.toggle("open");
-          });
-        }
+      // ⭐ Hamburger (mobile menu)
+      const hamburger = navContainer.querySelector("#hamburger-btn");
+      const mobileMenu = navContainer.querySelector("#mobile-menu");
+      if (hamburger && mobileMenu) {
+        hamburger.addEventListener("click", () => {
+          mobileMenu.classList.toggle("open");
+        });
+      }
 
-        /* Identity MUST run after nav loads */
-        if (window.applyIdentityToUI) {
-          window.applyIdentityToUI();
-        }
+      // ⭐ Mobile dropdowns (More ▾)
+      navContainer.querySelectorAll(".mobile-menu .dropdown-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          btn.parentElement.classList.toggle("open");
+        });
       });
-  </script>
-
+    })
+    .catch(err => console.error("Nav load failed:", err));
+</script>
+  
   <!-- PAGE CONTENT -->
   <h1>Steel City Kickball — League Schedule</h1>
 
