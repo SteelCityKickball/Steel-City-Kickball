@@ -1,3 +1,54 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  color: white;
+  overflow-x: hidden;
+}
+
+/* BACKGROUND */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at center, rgba(140,0,0,0.55), rgba(0,0,0,0.9)),
+    url("../assets/Amazinglogo.png") no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed;
+  opacity: 0.8;
+  z-index: 0;
+}
+
+.page-content {
+  position: relative;
+  z-index: 1;
+  padding: 160px 20px 20px;
+}
+
+/* NAVBAR */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.85);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  z-index: 2000;
+}
+
+.nav-logo-img {
+  height: 40px;
+  width: auto;
+}
+
 /* DESKTOP / MOBILE VISIBILITY */
 .desktop-only {
   display: flex;
@@ -112,6 +163,29 @@
   display: flex;
 }
 
+/* HOMEPAGE SECTIONS */
+.homepage-section {
+  margin: 40px auto;
+  max-width: 800px;
+  padding: 20px;
+  background: rgba(0,0,0,0.5);
+  border-radius: 10px;
+}
+
+/* PHOTO STRIP */
+.photo-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 30px 0;
+}
+
+.strip-photo {
+  width: 120px;
+  height: auto;
+  border-radius: 6px;
+}
+
 /* UNIVERSAL IMAGE FIX */
 img {
   max-width: 100%;
@@ -138,30 +212,4 @@ img {
 
   /* Resize photo strip images */
   .strip-photo {
-    width: 45%;
-  }
-}
-
-/* DESKTOP FIXES */
-@media (min-width: 769px) {
-
-  /* Hide mobile bar */
-  .mobile-bar {
-    display: none !important;
-  }
-
-  /* Hide mobile-only elements */
-  .mobile-only {
-    display: none !important;
-  }
-
-  /* Ensure desktop nav stays aligned */
-  .nav-right {
-    display: flex !important;
-  }
-
-  /* Desktop content padding */
-  .page-content {
-    padding-top: 160px;
-  }
-}
+    width
