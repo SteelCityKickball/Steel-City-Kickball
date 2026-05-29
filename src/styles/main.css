@@ -196,3 +196,11 @@ body::before {
     display: flex !important;
   }
 }
+
+/* FORCE FIX — hide mobile bar on desktop */
+@media (min-width: 769px) {
+  .mobile-only,
+  .mobile-bar {
+    display: none !important;
+  }
+}
