@@ -3,31 +3,52 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Photo Archive — Steel City Kickball</title>
+  <title>Steel City Kickball — Schedule</title>
 
-  <!-- Global CSS -->
   <link rel="stylesheet" href="src/styles/main.css">
 
   <style>
     /* PAGE-SPECIFIC ONLY — no layout overrides */
 
-    h1, h2 {
-      margin-left: 20px;
-      text-shadow: 1px 1px 2px black;
-    }
+    .table-wrapper { overflow-x: auto; margin: 0 auto; width: 100%; }
 
-    .archive-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 20px;
-      padding: 20px;
-    }
-
-    .archive-grid img {
-      width: 100%;
-      height: auto;
+    table {
+      margin: 20px auto;
+      border-collapse: collapse;
+      width: 1000px;
+      background: rgba(0,0,0,0.6);
       border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+      overflow: hidden;
+      color: white;
+    }
+
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      text-align: center;
+      font-size: 14px;
+    }
+
+    th { background: rgba(0,0,0,0.9); color: #C0C0C0; font-weight: 700; }
+    tr.future td { background: rgba(0,128,0,0.25); }
+    tr.today td { background: rgba(255,215,0,0.35); font-weight: bold; }
+    tr.past td { background: rgba(255,0,0,0.20); }
+
+    .team-logo { width: 22px; height: 22px; margin-right: 4px; }
+    .team-link { color: #C0C0C0; font-weight: bold; font-size: 14px; }
+
+    .week-selector {
+      margin: 20px auto;
+      padding: 10px 15px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+    }
+
+    @media (max-width: 768px) {
+      table { width: 900px; }
+      th, td { padding: 8px; font-size: 13px; }
+      .team-logo { width: 18px; height: 18px; }
     }
   </style>
 </head>
@@ -59,65 +80,142 @@
         if (window.applyIdentityToUI) {
           window.applyIdentityToUI();
         }
-      })
-      .catch(err => console.error("Nav load failed:", err));
+      });
   </script>
 
   <!-- PAGE CONTENT -->
-  <h1>Photo Archive</h1>
+  <h1>Steel City Kickball — League Schedule</h1>
 
-  <h2>Homepage Photos</h2>
-  <div id="archive-grid" class="archive-grid"></div>
+  <select id="week-select" class="week-selector">
+    <option value="all">Show All Weeks</option>
+  </select>
 
-  <h2>Game of the Week Archive</h2>
-  <div id="gotw-archive-grid" class="archive-grid"></div>
+  <h2>Upcoming Games</h2>
+  <div class="table-wrapper">
+    <div id="schedule-container">Loading schedule...</div>
+  </div>
 
-  <h2>MVP Archive</h2>
-  <div id="mvp-archive-grid" class="archive-grid"></div>
+  <h2>Results</h2>
+  <div class="table-wrapper">
+    <div id="results-container">No results yet.</div>
+  </div>
 
 </div> <!-- end page-content -->
 
 <script>
-async function getLatestFromGitHub(path) {
-  const apiUrl = `https://api.github.com/repos/SteelCityKickball/Steel-City-Kickball/contents/${path}`;
-  const response = await fetch(apiUrl);
-  const files = await response.json();
+  const scheduleUrl =
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vQnsrFD-xSe7RDLO_PEcX6RMQ5HBPC9S3JhQ1i-Tek6m0Z6ZE0HeunDZ5xWNNkd5vwjJGFaN1EFubR9/pub?output=csv";
 
-  const images = files.filter(f =>
-    f.name.match(/\.(jpg|jpeg|png|gif)$/i)
-  );
+  const resultsUrl =
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vTt2eUK_a8_78KlrEtuZ_yeZs-jMxBP630-Q-2X69FGwEjN9oLsakD-w6xN6DdGGBa0CLEAjyqOCVBr/pub?output=csv";
 
-  images.sort((a, b) => b.name.localeCompare(a.name));
-  return images;
-}
+  function parseCSV(text) {
+    return text.split(/\r?\n/).filter(r => r.trim() !== "")
+      .map(row => row.split(",").map(cell => cell.trim()));
+  }
 
-async function loadArchive() {
-  const homepage = await getLatestFromGitHub("images/homepage");
-  const homepageGrid = document.getElementById("archive-grid");
-  homepage.forEach(file => {
-    const img = document.createElement("img");
-    img.src = file.download_url;
-    homepageGrid.appendChild(img);
-  });
+  function getTeamLogo(team) {
+    return `images/${team}-logo.png`;
+  }
 
-  const gotw = await getLatestFromGitHub("images/gotw-archive");
-  const gotwGrid = document.getElementById("gotw-archive-grid");
-  gotw.forEach(file => {
-    const img = document.createElement("img");
-    img.src = file.download_url;
-    gotwGrid.appendChild(img);
-  });
+  function teamLink(team) {
+    return `<a class="team-link" href="teams/${team}.html">${team}</a>`;
+  }
 
-  const mvp = await getLatestFromGitHub("images/mvp-archive");
-  const mvpGrid = document.getElementById("mvp-archive-grid");
-  mvp.forEach(file => {
-    const img = document.createElement("img");
-    img.src = file.download_url;
-    mvpGrid.appendChild(img);
-  });
-}
+  function fieldMapLink(field) {
+    return `<a href="https://www.google.com/maps/search/${encodeURIComponent(field)}" target="_blank">${field}</a>`;
+  }
 
-loadArchive();
+  function classifyRow(dateString) {
+    const today = new Date();
+    const gameDate = new Date(dateString);
+    if (isNaN(gameDate)) return "";
+    if (gameDate.toDateString() === today.toDateString()) return "today";
+    if (gameDate > today) return "future";
+    return "past";
+  }
+
+  function renderEnhancedTable(data, containerId) {
+    if (data.length < 2) {
+      document.getElementById(containerId).innerHTML = "No data available.";
+      return;
+    }
+
+    const headers = data[0];
+    let html = "<table><tr>";
+
+    headers.forEach(h => html += `<th>${h}</th>`);
+    html += "</tr>";
+
+    data.slice(1).forEach(row => {
+      const rowClass = classifyRow(row[0]);
+      html += `<tr class="${rowClass}">`;
+
+      row.forEach((cell, i) => {
+        let output = cell;
+
+        if (headers[i].toLowerCase().includes("team")) {
+          output = `<img class="team-logo" src="${getTeamLogo(cell)}" onerror="this.style.display='none'"> ${teamLink(cell)}`;
+        }
+
+        if (headers[i].toLowerCase().includes("field")) {
+          output = fieldMapLink(cell);
+        }
+
+        html += `<td>${output}</td>`;
+      });
+
+      html += "</tr>";
+    });
+
+    html += "</table>";
+    document.getElementById(containerId).innerHTML = html;
+  }
+
+  // LOAD SCHEDULE
+  fetch(scheduleUrl)
+    .then(res => res.text())
+    .then(text => {
+      const data = parseCSV(text);
+
+      const weekIndex = data[0].findIndex(h => h.toLowerCase() === "week");
+      const weeks = [...new Set(data.slice(1).map(r => r[weekIndex]))];
+
+      const select = document.getElementById("week-select");
+      weeks.forEach(w => {
+        const opt = document.createElement("option");
+        opt.value = w;
+        opt.textContent = "Week " + w;
+        select.appendChild(opt);
+      });
+
+      select.addEventListener("change", () => {
+        const selected = select.value;
+        if (selected === "all") {
+          renderEnhancedTable(data, "schedule-container");
+        } else {
+          const filtered = [data[0], ...data.slice(1).filter(r => r[weekIndex] === selected)];
+          renderEnhancedTable(filtered, "schedule-container");
+        }
+      });
+
+      renderEnhancedTable(data, "schedule-container");
+    });
+
+  // LOAD RESULTS
+  fetch(resultsUrl)
+    .then(res => res.text())
+    .then(text => {
+      const data = parseCSV(text);
+      if (data.length <= 1) {
+        document.getElementById("results-container").innerHTML = "No results yet.";
+      } else {
+        renderEnhancedTable(data, "results-container");
+      }
+    })
+    .catch(() => {
+      document.getElementById("results-container").innerHTML = "No results yet.";
+    });
 </script>
 
 </body>
