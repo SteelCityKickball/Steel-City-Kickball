@@ -5,11 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Steel City Kickball — Home</title>
 
-  <!-- Global Styles -->
   <link rel="stylesheet" href="src/styles/main.css">
-
-  <!-- Homepage Logic -->
-  <script src="src/scripts/homepage.js" defer></script>
 </head>
 
 <body class="home">
@@ -65,7 +61,7 @@
 
 </div>
 
-<!-- LOAD NAV -->
+<!-- LOAD NAV FIRST -->
 <script>
   fetch("src/components/nav.html")
     .then(res => res.text())
@@ -73,22 +69,32 @@
       const navContainer = document.getElementById("nav-container");
       navContainer.innerHTML = html;
 
-      // Apply identity AFTER nav loads
+      // Identity
       if (window.applyIdentityToUI) {
         window.applyIdentityToUI();
       }
 
+      // Hamburger
       const hamburger = navContainer.querySelector("#hamburger-btn");
       const mobileMenu = navContainer.querySelector("#mobile-menu");
-
       if (hamburger && mobileMenu) {
         hamburger.addEventListener("click", () => {
           mobileMenu.classList.toggle("open");
         });
       }
+
+      // Mobile dropdowns
+      navContainer.querySelectorAll(".mobile-menu .dropdown-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          btn.parentElement.classList.toggle("open");
+        });
+      });
     })
     .catch(err => console.error("Nav load failed:", err));
 </script>
+
+<!-- LOAD HOMEPAGE LOGIC AFTER NAV -->
+<script src="src/scripts/homepage.js"></script>
 
 </body>
 </html>
