@@ -204,3 +204,16 @@ body::before {
     display: none !important;
   }
 }
+
+/* Fix huge images on mobile */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Fix content hidden under navbar on mobile */
+@media (max-width: 768px) {
+  .page-content {
+    padding-top: 200px;
+  }
+}
