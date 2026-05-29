@@ -4,10 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Steel City Kickball — Home</title>
+
+  <!-- Global Styles -->
   <link rel="stylesheet" href="src/styles/main.css">
+
+  <!-- Homepage Logic (GOTW/MVP/Updates/Commissioner + GitHub API images) -->
+  <script src="src/scripts/homepage.js" defer></script>
+
+  <!-- Identity Script -->
+  <script type="module" src="src/scripts/global-identity.js"></script>
 </head>
 
-<body>
+<body class="home">
 
 <div class="page-content">
 
@@ -33,6 +41,18 @@
     <p id="mvp-text" class="blurb"></p>
   </section>
 
+  <!-- LEAGUE UPDATES -->
+  <section class="homepage-section">
+    <h2>League Updates</h2>
+    <p id="league-updates"></p>
+  </section>
+
+  <!-- COMMISSIONER MESSAGE -->
+  <section class="homepage-section">
+    <h2>Word from the Commissioner</h2>
+    <p id="commissioner-message"></p>
+  </section>
+
   <!-- PHOTO STRIP -->
   <div id="photo-strip" class="photo-strip"></div>
 
@@ -48,30 +68,29 @@
 
 </div>
 
-<!-- LOAD IDENTITY SCRIPT FIRST -->
-<script type="module" src="src/scripts/global-identity.js"></script>
-
-<!-- THEN LOAD NAV -->
+<!-- LOAD NAV -->
 <script>
   fetch("src/components/nav.html")
     .then(res => res.text())
     .then(html => {
-      document.getElementById("nav-container").innerHTML = html;
+      const navContainer = document.getElementById("nav-container");
+      navContainer.innerHTML = html;
 
-      // identity script is already loaded now
+      // Apply identity AFTER nav loads
       if (window.applyIdentityToUI) {
         window.applyIdentityToUI();
       }
 
-      const hamburger = document.getElementById("hamburger-btn");
-      const mobileMenu = document.getElementById("mobile-menu");
+      const hamburger = navContainer.querySelector("#hamburger-btn");
+      const mobileMenu = navContainer.querySelector("#mobile-menu");
 
       if (hamburger && mobileMenu) {
         hamburger.addEventListener("click", () => {
           mobileMenu.classList.toggle("open");
         });
       }
-    });
+    })
+    .catch(err => console.error("Nav load failed:", err));
 </script>
 
 </body>
