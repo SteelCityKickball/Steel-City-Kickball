@@ -77,12 +77,12 @@
       const navContainer = document.getElementById("nav-container");
       navContainer.innerHTML = html;
 
-      // Identity (fixes logout/login visibility)
+      // ⭐ Identity (controls login/logout/avatar)
       if (window.applyIdentityToUI) {
         window.applyIdentityToUI();
       }
 
-      // Hamburger
+      // ⭐ Hamburger (mobile menu)
       const hamburger = navContainer.querySelector("#hamburger-btn");
       const mobileMenu = navContainer.querySelector("#mobile-menu");
       if (hamburger && mobileMenu) {
@@ -91,7 +91,7 @@
         });
       }
 
-      // Mobile dropdowns
+      // ⭐ Mobile dropdowns (More ▾)
       navContainer.querySelectorAll(".mobile-menu .dropdown-btn").forEach(btn => {
         btn.addEventListener("click", () => {
           btn.parentElement.classList.toggle("open");
