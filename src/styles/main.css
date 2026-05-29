@@ -212,4 +212,30 @@ img {
 
   /* Resize photo strip images */
   .strip-photo {
-    width
+    width: 45%;
+  }
+}
+
+/* DESKTOP FIXES */
+@media (min-width: 769px) {
+
+  /* Hide mobile bar */
+  .mobile-bar {
+    display: none !important;
+  }
+
+  /* Hide mobile-only elements */
+  .mobile-only {
+    display: none !important;
+  }
+
+  /* Ensure desktop nav stays aligned */
+  .nav-right {
+    display: flex !important;
+  }
+
+  /* Desktop content padding */
+  .page-content {
+    padding-top: 160px;
+  }
+}
