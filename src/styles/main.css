@@ -131,9 +131,9 @@ body::before {
 /* MOBILE BAR */
 .mobile-bar {
   width: 100%;
-  display: flex;
   justify-content: space-between;
   align-items: center;
+  display: flex;
 }
 
 /* HAMBURGER */
@@ -186,34 +186,47 @@ body::before {
   border-radius: 6px;
 }
 
-/* MOBILE RESPONSIVE FIX — THIS IS THE IMPORTANT PART */
-@media (max-width: 768px) {
-  .desktop-only {
-    display: none !important;
-  }
-
-  .mobile-only {
-    display: flex !important;
-  }
-}
-
-/* FORCE FIX — hide mobile bar on desktop */
-@media (min-width: 769px) {
-  .mobile-only,
-  .mobile-bar {
-    display: none !important;
-  }
-}
-
-/* Fix huge images on mobile */
+/* UNIVERSAL IMAGE FIX */
 img {
   max-width: 100%;
   height: auto;
 }
 
-/* Fix content hidden under navbar on mobile */
+/* MOBILE FIXES */
 @media (max-width: 768px) {
+
+  /* Hide desktop elements */
+  .desktop-only {
+    display: none !important;
+  }
+
+  /* Show mobile elements */
+  .mobile-only {
+    display: flex !important;
+  }
+
+  /* Fix content hidden under navbar */
   .page-content {
-    padding-top: 200px;
+    padding-top: 220px;
+  }
+
+  /* Resize photo strip images */
+  .strip-photo {
+    width: 45%;
+  }
+}
+
+/* DESKTOP FIXES */
+@media (min-width: 769px) {
+
+  /* Hide mobile bar and mobile-only elements */
+  .mobile-only,
+  .mobile-bar {
+    display: none !important;
+  }
+
+  /* Ensure desktop nav stays aligned */
+  .nav-right {
+    display: flex !important;
   }
 }
