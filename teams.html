@@ -49,35 +49,36 @@
   <!-- NAVIGATION -->
   <div id="nav-container"></div>
 
-  <script>
-    fetch("src/components/nav.html")
-      .then(res => res.text())
-      .then(html => {
-        const navContainer = document.getElementById("nav-container");
-        navContainer.innerHTML = html;
+ <script>
+  fetch("src/components/nav.html")
+    .then(res => res.text())
+    .then(html => {
+      const navContainer = document.getElementById("nav-container");
+      navContainer.innerHTML = html;
 
-        // Identity
-        if (window.applyIdentityToUI) {
-          window.applyIdentityToUI();
-        }
+      // ⭐ Identity (controls login/logout/avatar)
+      if (window.applyIdentityToUI) {
+        window.applyIdentityToUI();
+      }
 
-        // Hamburger
-        const hamburger = navContainer.querySelector("#hamburger-btn");
-        const mobileMenu = navContainer.querySelector("#mobile-menu");
-        if (hamburger && mobileMenu) {
-          hamburger.addEventListener("click", () => {
-            mobileMenu.classList.toggle("open");
-          });
-        }
+      // ⭐ Hamburger (mobile menu)
+      const hamburger = navContainer.querySelector("#hamburger-btn");
+      const mobileMenu = navContainer.querySelector("#mobile-menu");
+      if (hamburger && mobileMenu) {
+        hamburger.addEventListener("click", () => {
+          mobileMenu.classList.toggle("open");
+        });
+      }
 
-        // Mobile dropdowns
-        navContainer.querySelectorAll(".mobile-menu .dropdown-btn").forEach(btn => {
-          btn.addEventListener("click", () => {
-            btn.parentElement.classList.toggle("open");
-          });
+      // ⭐ Mobile dropdowns (More ▾)
+      navContainer.querySelectorAll(".mobile-menu .dropdown-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          btn.parentElement.classList.toggle("open");
         });
       });
-  </script>
+    })
+    .catch(err => console.error("Nav load failed:", err));
+</script>
 
   <!-- PAGE CONTENT -->
   <h1>Steel City Kickball — Teams</h1>
