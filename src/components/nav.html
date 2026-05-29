@@ -15,7 +15,7 @@
     <li><a href="archives.html">Archives</a></li>
 
     <li class="dropdown">
-      <button class="dropdown-btn" type="button">More ▾</button>
+      <button class="dropdown-btn" type="button" aria-expanded="false">More ▾</button>
       <ul class="dropdown-menu">
         <li><a href="registration.html">Registration</a></li>
         <li><a href="rules.html">Rules</a></li>
@@ -26,18 +26,18 @@
 
   <!-- DESKTOP AUTH -->
   <div class="nav-right desktop-only">
-    <img id="nav-avatar" class="nav-avatar" src="src/assets/default-avatar.png" alt="Avatar">
+    <img id="nav-avatar" class="nav-avatar hidden" src="src/assets/default-avatar.png" alt="Avatar">
     <a id="nav-login" href="src/identity/login.html" class="nav-auth">Login</a>
     <a id="nav-profile" href="src/identity/profile.html" class="nav-auth hidden">Profile</a>
     <a id="nav-logout" href="#" class="nav-auth hidden">Logout</a>
   </div>
 
- <!-- MOBILE BAR (avatar left, login middle, hamburger right) -->
-<div class="mobile-bar mobile-only">
-  <img id="mobile-avatar" class="nav-avatar" src="src/assets/default-avatar.png" alt="Avatar">
-  <a id="mobile-login" href="src/identity/login.html" class="nav-auth">Login</a>
-  <button class="hamburger" id="hamburger-btn">☰</button>
-</div>
+  <!-- MOBILE BAR (avatar left, login middle, hamburger right) -->
+  <div class="mobile-bar mobile-only">
+    <img id="mobile-avatar" class="nav-avatar hidden" src="src/assets/default-avatar.png" alt="Avatar">
+    <a id="mobile-login" href="src/identity/login.html" class="nav-auth">Login</a>
+    <button class="hamburger" id="hamburger-btn">☰</button>
+  </div>
 
   <!-- MOBILE MENU (must be last) -->
   <ul class="mobile-menu" id="mobile-menu">
