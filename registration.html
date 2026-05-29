@@ -45,17 +45,31 @@
   fetch("src/components/nav.html")
     .then(res => res.text())
     .then(html => {
-      document.getElementById("nav-container").innerHTML = html;
+      const navContainer = document.getElementById("nav-container");
+      navContainer.innerHTML = html;
 
-      const hamburger = document.querySelector(".hamburger");
-      const mobileMenu = document.querySelector("#mobile-menu");
+      // ⭐ Identity (controls login/logout/avatar)
+      if (window.applyIdentityToUI) {
+        window.applyIdentityToUI();
+      }
 
+      // ⭐ Hamburger (mobile menu)
+      const hamburger = navContainer.querySelector("#hamburger-btn");
+      const mobileMenu = navContainer.querySelector("#mobile-menu");
       if (hamburger && mobileMenu) {
         hamburger.addEventListener("click", () => {
           mobileMenu.classList.toggle("open");
         });
       }
-    });
+
+      // ⭐ Mobile dropdowns (More ▾)
+      navContainer.querySelectorAll(".mobile-menu .dropdown-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          btn.parentElement.classList.toggle("open");
+        });
+      });
+    })
+    .catch(err => console.error("Nav load failed:", err));
 </script>
 
 <div class="page-content">
