@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Steel City Kickball — Rules</title>
+
+  <link rel="stylesheet" href="src/styles/main.css">
+  <script src="src/identity/global-identity.js" defer></script>
+</head>
+
+<body>
+
+<div id="nav-container"></div>
+
+<div class="page-content">
+  <h1>League Rules</h1>
+  <div id="rules-list">Loading rules...</div>
+</div>
+
+<script>
+  const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRlQaQ9lUR2doOFO1CE5m0UGI49T569YYKWrSyuoSoMBlqRwhg-Rdk13IQFptMS_krfJzXqC8zKxYPl/pub?output=csv";
+
+  async function loadRules() {
+    const res = await fetch(csvUrl);
+    const text = await res.text();
+    const rows = text.split(/\r?\n/).map(r => r.split(","));
+
+    const rules = rows.filter(r => r[0].startsWith("rule_"));
+
+    let html = "<ul>";
+    rules.forEach(r => {
+      html += `<li>${r[1]}</li>`;
+    });
+    html += "</ul>";
+
+    document.getElementById("rules-list").innerHTML = html;
+  }
+
+  // Load nav
+  fetch("src/components/nav.html")
+    .then(res => res.text())
+    .then(html => {
+      const navContainer = document.getElementById("nav-container");
+      navContainer.innerHTML = html;
+
+      if (window.applyIdentityToUI) window.applyIdentityToUI();
+
+      const hamburger = navContainer.querySelector("#hamburger-btn");
+      const mobileMenu = navContainer.querySelector("#mobile-menu");
+      if (hamburger && mobileMenu) {
+        hamburger.addEventListener("click", () => {
+          mobileMenu.classList.toggle("open");
+        });
+      }
+    });
+
+  loadRules();
+</script>
+
+</body>
+</html>
