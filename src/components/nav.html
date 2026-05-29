@@ -1,9 +1,16 @@
 <nav class="navbar">
 
-  <!-- MOBILE HAMBURGER LEFT -->
-  <button class="hamburger mobile-only" id="hamburger-btn">☰</button>
+  <!-- MOBILE LEFT: LOGIN -->
+  <div class="mobile-left mobile-only">
+    <a id="mobile-login" href="src/identity/login.html" class="nav-auth">Login</a>
+  </div>
 
-  <!-- LEFT: LOGO -->
+  <!-- MOBILE RIGHT: HAMBURGER -->
+  <div class="mobile-right mobile-only">
+    <button class="hamburger" id="hamburger-btn">☰</button>
+  </div>
+
+  <!-- LOGO (CENTERED ON MOBILE) -->
   <div class="nav-left">
     <a href="index.html" class="nav-logo">
       <img src="src/assets/Amazinglogo.png" class="nav-logo-img" alt="Steel City Kickball Logo">
@@ -35,7 +42,7 @@
     <a id="nav-logout" href="#" class="nav-auth hidden">Logout</a>
   </div>
 
-  <!-- MOBILE MENU (NO mobile-only HERE ON PURPOSE) -->
+  <!-- MOBILE MENU (NO mobile-only HERE) -->
   <ul class="mobile-menu" id="mobile-menu">
     <li><a href="index.html">Home</a></li>
     <li><a href="schedule.html">Schedule</a></li>
