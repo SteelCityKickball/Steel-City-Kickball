@@ -15,10 +15,13 @@
 
 <div class="page-content">
   <h1>League Rules</h1>
+  <p>These rules update automatically when commissioners edit the Google Sheet.</p>
+
   <div id="rules-list">Loading rules...</div>
 </div>
 
 <script>
+  // Your single CSV for the entire sheet
   const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRlQaQ9lUR2doOFO1CE5m0UGI49T569YYKWrSyuoSoMBlqRwhg-Rdk13IQFptMS_krfJzXqC8zKxYPl/pub?output=csv";
 
   async function loadRules() {
@@ -26,7 +29,8 @@
     const text = await res.text();
     const rows = text.split(/\r?\n/).map(r => r.split(","));
 
-    const rules = rows.filter(r => r[0].startsWith("rule_"));
+    // Filter rows where first column starts with "rule_"
+    const rules = rows.filter(r => r[0] && r[0].trim().startsWith("rule_"));
 
     let html = "<ul>";
     rules.forEach(r => {
@@ -37,7 +41,7 @@
     document.getElementById("rules-list").innerHTML = html;
   }
 
-  // Load nav
+  // Load nav + identity
   fetch("src/components/nav.html")
     .then(res => res.text())
     .then(html => {
