@@ -48,13 +48,17 @@
 
 </div>
 
-<!-- LOAD NAV -->
+<!-- LOAD IDENTITY SCRIPT FIRST -->
+<script type="module" src="src/scripts/global-identity.js"></script>
+
+<!-- THEN LOAD NAV -->
 <script>
   fetch("src/components/nav.html")
     .then(res => res.text())
     .then(html => {
       document.getElementById("nav-container").innerHTML = html;
 
+      // identity script is already loaded now
       if (window.applyIdentityToUI) {
         window.applyIdentityToUI();
       }
@@ -69,8 +73,6 @@
       }
     });
 </script>
-
-<script type="module" src="src/scripts/global-identity.js"></script>
 
 </body>
 </html>
