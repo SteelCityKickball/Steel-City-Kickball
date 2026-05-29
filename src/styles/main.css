@@ -230,3 +230,57 @@ img {
     padding-top: 200px !important;
   }
 }
+
+/* FORCE MOBILE NAV ELEMENTS TO SHOW */
+@media (max-width: 768px) {
+
+  /* Hide desktop items */
+  .desktop-only {
+    display: none !important;
+  }
+
+  /* Show mobile bar (avatar + login + hamburger) */
+  .mobile-bar {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Show mobile menu when opened */
+  .mobile-menu {
+    display: none;
+    flex-direction: column;
+    background: rgba(0,0,0,0.9);
+    padding: 10px;
+  }
+
+  .mobile-menu.open {
+    display: flex !important;
+  }
+
+  /* Show mobile-only elements */
+  .mobile-only {
+    display: flex !important;
+  }
+
+  /* Mobile More dropdown */
+  .mobile-menu .dropdown-btn {
+    background: none;
+    border: none;
+    color: #C0C0C0;
+    font-size: 18px;
+    text-align: left;
+    padding: 10px 0;
+    width: 100%;
+  }
+
+  .mobile-menu .dropdown-menu {
+    display: none;
+    flex-direction: column;
+    padding-left: 15px;
+  }
+
+  .mobile-menu .dropdown.open .dropdown-menu {
+    display: flex;
+  }
+}
