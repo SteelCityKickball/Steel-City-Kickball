@@ -5,56 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Steel City Kickball — Standings & Stats</title>
 
-  <!-- Load global CSS (required for hamburger menu + nav styles) -->
+  <!-- Global Styles -->
   <link rel="stylesheet" href="src/styles/main.css">
 
   <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      position: relative;
-      background: #000;
-      font-family: Arial, sans-serif;
-      color: white;
-      text-shadow: 1px 1px 2px black;
-      text-align: center;
-      overflow-x: hidden;
-    }
-
-    /* Background overlay */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(circle at center, rgba(140,0,0,0.55) 0%, rgba(0,0,0,0.90) 80%),
-        url("Amazinglogo.png") no-repeat center center fixed;
-      background-size: 90%;
-      opacity: 0.80;
-      z-index: 0;
-    }
-
-    /* NAV ABOVE EVERYTHING */
-    #nav-container {
-      position: relative;
-      z-index: 2000;
-    }
-
-    .page-content {
-      position: relative;
-      z-index: 1;
-      padding: 20px;
-    }
-
+    /* PAGE-SPECIFIC STYLES ONLY */
     h1, h2 {
       margin-top: 30px;
+      text-shadow: 1px 1px 2px black;
     }
 
-    /* ⭐ MOBILE-FRIENDLY TABLE WRAPPER */
+    /* Mobile-friendly table wrapper */
     .table-wrapper {
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
@@ -62,7 +23,6 @@
       margin: 0 auto;
     }
 
-    /* Wide tables so they scroll instead of squish */
     table {
       margin: 20px auto;
       border-collapse: collapse;
@@ -93,7 +53,6 @@
       background: rgba(255,255,255,0.12);
     }
 
-    /* ⭐ MOBILE OPTIMIZATION */
     @media (max-width: 768px) {
       table {
         width: 900px;
@@ -109,31 +68,37 @@
 
 <body>
 
-<!-- NAVIGATION -->
-<div id="nav-container"></div>
-
-<script>
-  // Load shared nav and attach hamburger click
-  fetch("src/components/nav.html")
-    .then(res => res.text())
-    .then(html => {
-      const navContainer = document.getElementById("nav-container");
-      navContainer.innerHTML = html;
-
-      const hamburger = navContainer.querySelector(".hamburger");
-      const mobileMenu = navContainer.querySelector("#mobile-menu");
-
-      if (hamburger && mobileMenu) {
-        hamburger.addEventListener("click", () => {
-          mobileMenu.classList.toggle("open");
-        });
-      }
-    })
-    .catch(err => console.error("Nav load failed:", err));
-</script>
-
+<!-- EVERYTHING MUST BE INSIDE page-content -->
 <div class="page-content">
 
+  <!-- NAVIGATION -->
+  <div id="nav-container"></div>
+
+  <script>
+    fetch("src/components/nav.html")
+      .then(res => res.text())
+      .then(html => {
+        const navContainer = document.getElementById("nav-container");
+        navContainer.innerHTML = html;
+
+        const hamburger = navContainer.querySelector("#hamburger-btn");
+        const mobileMenu = navContainer.querySelector("#mobile-menu");
+
+        if (hamburger && mobileMenu) {
+          hamburger.addEventListener("click", () => {
+            mobileMenu.classList.toggle("open");
+          });
+        }
+
+        /* Identity MUST run AFTER nav loads */
+        if (window.applyIdentityToUI) {
+          window.applyIdentityToUI();
+        }
+      })
+      .catch(err => console.error("Nav load failed:", err));
+  </script>
+
+  <!-- PAGE CONTENT -->
   <h1>Steel City Kickball — Standings & Stats</h1>
 
   <h2>Standings</h2>
@@ -151,7 +116,7 @@
     <div id="advanced-container">Loading...</div>
   </div>
 
-</div>
+</div> <!-- END page-content -->
 
 <script>
   /* MVP AUTO‑BACKGROUND LOGIC */
