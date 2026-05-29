@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Steel City Kickball — Home</title>
-
   <link rel="stylesheet" href="src/styles/main.css">
 </head>
 
@@ -14,27 +13,6 @@
 
   <!-- NAVIGATION -->
   <div id="nav-container"></div>
-
-  <script>
-    fetch("src/components/nav.html")
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("nav-container").innerHTML = html;
-
-        if (window.applyIdentityToUI) {
-          window.applyIdentityToUI();
-        }
-
-        const hamburger = document.getElementById("hamburger-btn");
-        const mobileMenu = document.getElementById("mobile-menu");
-
-        if (hamburger && mobileMenu) {
-          hamburger.addEventListener("click", () => {
-            mobileMenu.classList.toggle("open");
-          });
-        }
-      });
-  </script>
 
   <!-- HERO -->
   <div class="hero">
@@ -70,41 +48,26 @@
 
 </div>
 
+<!-- LOAD NAV -->
 <script>
-async function getLatestFromGitHub(path) {
-  const apiUrl = `https://api.github.com/repos/SteelCityKickball/Steel-City-Kickball/contents/${path}`;
-  const response = await fetch(apiUrl);
-  const files = await response.json();
+  fetch("src/components/nav.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("nav-container").innerHTML = html;
 
-  const images = files.filter(f => f.name.match(/\.(jpg|jpeg|png|gif)$/i));
-  images.sort((a, b) => b.name.localeCompare(a.name));
-  return images;
-}
+      if (window.applyIdentityToUI) {
+        window.applyIdentityToUI();
+      }
 
-async function loadImages() {
-  document.getElementById("gotw-text").innerText =
-    "Week 3 — Red Rockets vs Blue Bombers. A wild 9–8 finish with a walk-off kick!";
+      const hamburger = document.getElementById("hamburger-btn");
+      const mobileMenu = document.getElementById("mobile-menu");
 
-  document.getElementById("mvp-text").innerText =
-    "Jordan M. — 3 RBIs, 2 catches, and a game-saving play!";
-
-  const gotw = await getLatestFromGitHub("images/gotw");
-  if (gotw.length > 0) document.getElementById("gotw-img").src = gotw[0].download_url;
-
-  const mvp = await getLatestFromGitHub("images/mvp");
-  if (mvp.length > 0) document.getElementById("mvp-img").src = mvp[0].download_url;
-
-  const homepage = await getLatestFromGitHub("images/homepage");
-  const strip = document.getElementById("photo-strip");
-
-  homepage.slice(0, 3).forEach(file => {
-    const img = document.createElement("img");
-    img.src = file.download_url;
-    strip.appendChild(img);
-  });
-}
-
-loadImages();
+      if (hamburger && mobileMenu) {
+        hamburger.addEventListener("click", () => {
+          mobileMenu.classList.toggle("open");
+        });
+      }
+    });
 </script>
 
 <script type="module" src="src/scripts/global-identity.js"></script>
