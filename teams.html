@@ -8,49 +8,7 @@
   <link rel="stylesheet" href="src/styles/main.css">
 
   <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      position: relative;
-      background: #000;
-      font-family: Arial, sans-serif;
-      color: white;
-      text-shadow: 1px 1px 2px black;
-      text-align: center;
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(circle at center, rgba(140,0,0,0.55) 0%, rgba(0,0,0,0.90) 80%),
-        url("Amazinglogo.png") no-repeat center center fixed;
-      background-size: 90%;
-      opacity: 0.80;
-      z-index: 0;
-    }
-
-    /* ⭐ FIX: nav must be above everything */
-    #nav-container {
-      position: relative;
-      z-index: 2000;
-    }
-
-    .page-content {
-      position: relative;
-      z-index: 1;
-      padding: 20px;
-    }
-
-    h1 {
-      margin-top: 30px;
-    }
+    /* PAGE-SPECIFIC ONLY — no layout overrides */
 
     .team-card {
       background: rgba(0,0,0,0.6);
@@ -85,59 +43,74 @@
 
 <body>
 
-<!-- NAVIGATION -->
-<div id="nav-container"></div>
-
-<script>
-  fetch("src/components/nav.html")
-    .then(res => res.text())
-    .then(html => {
-      const navContainer = document.getElementById("nav-container");
-      navContainer.innerHTML = html;
-
-      const hamburger = navContainer.querySelector(".hamburger");
-      const mobileMenu = navContainer.querySelector("#mobile-menu");
-
-      hamburger.addEventListener("click", () => {
-        mobileMenu.classList.toggle("open");
-      });
-    });
-</script>
-
 <div class="page-content">
 
-<h1>Steel City Kickball — Teams</h1>
-<p>Select a team to view more details.</p>
+  <!-- NAVIGATION -->
+  <div id="nav-container"></div>
 
-<div class="team-card">
-  <h3>Bonnies Babies</h3>
-  <a href="teams/bonnies-babies.html">View Team Page</a>
-</div>
+  <script>
+    fetch("src/components/nav.html")
+      .then(res => res.text())
+      .then(html => {
+        const navContainer = document.getElementById("nav-container");
+        navContainer.innerHTML = html;
 
-<div class="team-card">
-  <h3>J4K</h3>
-  <a href="teams/j4k.html">View Team Page</a>
-</div>
+        // Identity
+        if (window.applyIdentityToUI) {
+          window.applyIdentityToUI();
+        }
 
-<div class="team-card">
-  <h3>Warriors</h3>
-  <a href="teams/warriors.html">View Team Page</a>
-</div>
+        // Hamburger
+        const hamburger = navContainer.querySelector("#hamburger-btn");
+        const mobileMenu = navContainer.querySelector("#mobile-menu");
+        if (hamburger && mobileMenu) {
+          hamburger.addEventListener("click", () => {
+            mobileMenu.classList.toggle("open");
+          });
+        }
 
-<div class="team-card">
-  <h3>Gonzalez</h3>
-  <a href="teams/gonzalez.html">View Team Page</a>
-</div>
+        // Mobile dropdowns
+        navContainer.querySelectorAll(".mobile-menu .dropdown-btn").forEach(btn => {
+          btn.addEventListener("click", () => {
+            btn.parentElement.classList.toggle("open");
+          });
+        });
+      });
+  </script>
 
-<div class="team-card">
-  <h3>The Club</h3>
-  <a href="teams/the-club.html">View Team Page</a>
-</div>
+  <!-- PAGE CONTENT -->
+  <h1>Steel City Kickball — Teams</h1>
+  <p>Select a team to view more details.</p>
 
-<div class="team-card">
-  <h3>Kickaholics</h3>
-  <a href="teams/kickaholics.html">View Team Page</a>
-</div>
+  <div class="team-card">
+    <h3>Bonnies Babies</h3>
+    <a href="teams/bonnies-babies.html">View Team Page</a>
+  </div>
+
+  <div class="team-card">
+    <h3>J4K</h3>
+    <a href="teams/j4k.html">View Team Page</a>
+  </div>
+
+  <div class="team-card">
+    <h3>Warriors</h3>
+    <a href="teams/warriors.html">View Team Page</a>
+  </div>
+
+  <div class="team-card">
+    <h3>Gonzalez</h3>
+    <a href="teams/gonzalez.html">View Team Page</a>
+  </div>
+
+  <div class="team-card">
+    <h3>The Club</h3>
+    <a href="teams/the-club.html">View Team Page</a>
+  </div>
+
+  <div class="team-card">
+    <h3>Kickaholics</h3>
+    <a href="teams/kickaholics.html">View Team Page</a>
+  </div>
 
 </div>
 
