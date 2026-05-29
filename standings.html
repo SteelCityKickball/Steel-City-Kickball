@@ -75,29 +75,36 @@
   <!-- NAVIGATION -->
   <div id="nav-container"></div>
 
-  <script>
-    fetch("src/components/nav.html")
-      .then(res => res.text())
-      .then(html => {
-        const navContainer = document.getElementById("nav-container");
-        navContainer.innerHTML = html;
+ <script>
+  fetch("src/components/nav.html")
+    .then(res => res.text())
+    .then(html => {
+      const navContainer = document.getElementById("nav-container");
+      navContainer.innerHTML = html;
 
-        const hamburger = navContainer.querySelector("#hamburger-btn");
-        const mobileMenu = navContainer.querySelector("#mobile-menu");
+      // ⭐ Identity (controls login/logout/avatar)
+      if (window.applyIdentityToUI) {
+        window.applyIdentityToUI();
+      }
 
-        if (hamburger && mobileMenu) {
-          hamburger.addEventListener("click", () => {
-            mobileMenu.classList.toggle("open");
-          });
-        }
+      // ⭐ Hamburger (mobile menu)
+      const hamburger = navContainer.querySelector("#hamburger-btn");
+      const mobileMenu = navContainer.querySelector("#mobile-menu");
+      if (hamburger && mobileMenu) {
+        hamburger.addEventListener("click", () => {
+          mobileMenu.classList.toggle("open");
+        });
+      }
 
-        /* Identity MUST run AFTER nav loads */
-        if (window.applyIdentityToUI) {
-          window.applyIdentityToUI();
-        }
-      })
-      .catch(err => console.error("Nav load failed:", err));
-  </script>
+      // ⭐ Mobile dropdowns (More ▾)
+      navContainer.querySelectorAll(".mobile-menu .dropdown-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          btn.parentElement.classList.toggle("open");
+        });
+      });
+    })
+    .catch(err => console.error("Nav load failed:", err));
+</script>
 
   <!-- PAGE CONTENT -->
   <h1>Steel City Kickball — Standings & Stats</h1>
