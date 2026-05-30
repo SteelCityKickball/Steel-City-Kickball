@@ -30,13 +30,18 @@ async function loadHomepageText() {
     const res = await fetch(SHEET_CSV_URL);
     const csv = await res.text();
 
+    // Parse CSV into rows
     const rows = csv.trim().split("\n").map(r => r.split(","));
-    const data = {};
 
-    rows.forEach(([key, value]) => {
-      data[key] = value;
+    // Convert to key/value object
+    const data = {};
+    rows.forEach(r => {
+      const key = r[0]?.trim();
+      const value = r[1]?.trim() || "";
+      if (key) data[key] = value;
     });
 
+    // Apply to homepage
     document.getElementById("gotw-text").textContent =
       data.gotw_text || "No update available.";
 
