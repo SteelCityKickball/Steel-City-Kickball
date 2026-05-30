@@ -12,7 +12,6 @@
       padding: 0;
     }
 
-    /* Dark glowing theme */
     body {
       position: relative;
       background: #000;
@@ -22,7 +21,6 @@
       text-align: center;
     }
 
-    /* TEAM LOGO BACKGROUND */
     body::before {
       content: "";
       position: fixed;
@@ -30,7 +28,7 @@
       background:
         radial-gradient(circle at center, rgba(140,0,0,0.55) 0%, rgba(0,0,0,0.90) 80%),
         url("../images/team-logos/gonzalez-logo.png") no-repeat center center fixed;
-      background-size: 120vmin; /* bigger, perfectly round */
+      background-size: 120vmin;
       opacity: 0.80;
       z-index: 0;
     }
@@ -41,32 +39,11 @@
       padding: 20px;
     }
 
-    nav ul {
-      list-style: none;
-      padding: 10px;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      background: rgba(0,0,0,0.8);
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    nav a:hover {
-      text-decoration: underline;
-    }
-
     h1 {
       margin-top: 30px;
       font-size: 2.5rem;
     }
 
-    /* Captain Section */
     .captain-section {
       margin: 40px auto;
       max-width: 500px;
@@ -85,7 +62,6 @@
       margin-bottom: 10px;
     }
 
-    /* Roster Grid */
     .roster-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -111,7 +87,6 @@
       margin-bottom: 8px;
     }
 
-    /* Stats Box */
     .stats-box {
       background: rgba(0,0,0,0.6);
       padding: 20px;
@@ -133,7 +108,6 @@
       margin: 4px 0;
     }
 
-    /* Team Blurb */
     .team-blurb {
       max-width: 800px;
       margin: 40px auto;
@@ -145,49 +119,63 @@
       line-height: 1.6;
     }
   </style>
+
+  <script src="../src/identity/global-identity.js" defer></script>
 </head>
 
 <body>
 <div class="page-content">
 
-<nav>
-  <ul>
-    <li><a href="/Steel-City-Kickball/">Home</a></li>
-    <li><a href="../schedule.html">Schedule</a></li>
-    <li><a href="../standings.html">Standings</a></li>
-    <li><a href="../teams.html">Teams</a></li>
-    <li><a href="../waivers.html">Waivers</a></li>
-  </ul>
-</nav>
+<!-- ⭐ NEW DYNAMIC NAV -->
+<div id="nav-container"></div>
+
+<script>
+fetch("../src/components/nav.html")
+  .then(res => res.text())
+  .then(html => {
+    const navContainer = document.getElementById("nav-container");
+    navContainer.innerHTML = html;
+
+    if (window.applyIdentityToUI) window.applyIdentityToUI();
+
+    const hamburger = navContainer.querySelector("#hamburger-btn");
+    const mobileMenu = navContainer.querySelector("#mobile-menu");
+    if (hamburger && mobileMenu) {
+      hamburger.addEventListener("click", () => {
+        mobileMenu.classList.toggle("open");
+      });
+    }
+
+    navContainer.querySelectorAll(".mobile-menu .dropdown-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        btn.parentElement.classList.toggle("open");
+      });
+    });
+  });
+</script>
+<!-- END NEW NAV -->
 
 <h1>Gonzalez</h1>
 
-<!-- TEAM CAPTAIN -->
 <div class="captain-section">
   <img src="../images/team-logos/gonzalez-logo.png" class="captain-photo" alt="Captain Photo" />
   <h2>Team Captain: (Add Name)</h2>
 </div>
 
-<!-- TEAM ROSTER -->
 <h2>Roster</h2>
 <div class="roster-grid">
-  <!-- Example Player -->
   <div class="player-card">
     <img src="../images/players/example.png" class="player-photo" />
     <h3>Player Name</h3>
     <p>#00 • Position</p>
   </div>
-
-  <!-- Add more players here -->
 </div>
 
-<!-- TEAM STATS (LIVE FROM GOOGLE SHEET) -->
 <div id="team-stats" class="stats-box">
   <h2>Season Stats</h2>
   <div id="stats-content" class="loading">Loading stats…</div>
 </div>
 
-<!-- TEAM BLURB -->
 <div class="team-blurb">
   <p>
     Write a short description about Gonzalez here — team personality, history,
