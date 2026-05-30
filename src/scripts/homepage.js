@@ -1,7 +1,8 @@
 // -------------------------------
 // CONFIG
 // -------------------------------
-const csvUrl = "https://docs.google.com/spreadsheets/d/1a9LOLxB13xRGLso51ez7xN_9DT7qdhy_wWKxNuOxNzI/export?format=csv&gid=1916317791";
+const csvUrl =
+  "https://docs.google.com/spreadsheets/d/1a9LOLxB13xRGLso51ez7xN_9DT7qdhy_wWKxNuOxNzI/export?format=csv&gid=1916317791";
 
 
 // -------------------------------
@@ -26,7 +27,7 @@ async function getLatestFromGitHub(path) {
 // -------------------------------
 async function loadHomepageText() {
   try {
-    const res = await fetch(SHEET_CSV_URL);
+    const res = await fetch(csvUrl);   // ⭐ FIXED — now uses the correct sheet
     const csv = await res.text();
 
     // Parse CSV into rows
