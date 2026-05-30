@@ -21,8 +21,9 @@
 </div>
 
 <script>
-  // Your single CSV for the entire sheet
-  const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRlQaQ9lUR2doOFO1CE5m0UGI49T569YYKWrSyuoSoMBlqRwhg-Rdk13IQFptMS_krfJzXqC8zKxYPl/pub?output=csv";
+  // ⭐ CORRECT RULES SHEET + CORRECT TAB (YOUR URL)
+  const csvUrl =
+    "https://docs.google.com/spreadsheets/d/1a9LOLxB13xRGLso51ez7xN_9DT7qdhy_wWKxNuOxNzI/export?format=csv&gid=1916317791";
 
   async function loadRules() {
     const res = await fetch(csvUrl);
@@ -34,8 +35,8 @@
 
     let html = "<ul>";
     rules.forEach(r => {
-     const ruleText = r.slice(1).join(",").trim();
-html += `<li>${ruleText}</li>`;
+      const ruleText = r[1] ? r[1].trim() : "";
+      html += `<li>${ruleText}</li>`;
     });
     html += "</ul>";
 
