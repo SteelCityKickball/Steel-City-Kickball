@@ -169,6 +169,7 @@ fetch("../src/components/nav.html")
 
 </div>
 
+<!-- STATS SCRIPT -->
 <script>
 const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRjCOIOADqzgiT9RPU9tBGBkpvnL2DP7gXrjkMhwY0DWuNK65XLuBjKV-d1sVXRsQzAbAXBEauAwoT7/pub?output=csv";
 const teamName = "Bonnies Babies";
@@ -196,6 +197,40 @@ fetch(sheetUrl)
     }
 
     renderStats(teamRow, headers);
+  });
+</script>
+
+<!-- BLURB SCRIPT -->
+<script>
+const blurbSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRjwB8-qL3XSI2BlxBsp_ZzusZX7nhltJE4LmDHOPMUUpOQJ5f2EOsJv0sN4wqbbyKVaCIHpn7p9BB8/pub?output=csv";
+const blurbTeamName = "Bonnies Babies";
+
+function parseCSVBlurb(text) {
+  return text.split(/\r?\n/).map(r => r.split(","));
+}
+
+fetch(blurbSheetUrl)
+  .then(r => r.text())
+  .then(text => {
+    const data = parseCSVBlurb(text);
+
+    const headerIndex = data.findIndex(r => r[0] === "Team Name");
+    if (headerIndex === -1) {
+      document.getElementById("team-blurb-text").innerText =
+        "Blurb sheet header not found.";
+      return;
+    }
+
+    const rows = data.slice(headerIndex + 1);
+    const row = rows.find(r => r[0] === blurbTeamName);
+
+    if (!row || !row[1]) {
+      document.getElementById("team-blurb-text").innerText =
+        "No blurb submitted yet.";
+      return;
+    }
+
+    document.getElementById("team-blurb-text").innerText = row[1];
   });
 </script>
 
