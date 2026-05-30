@@ -5,12 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gonzalez — Steel City Kickball</title>
 
+  <!-- MAIN SITE STYLES -->
+  <link rel="stylesheet" href="../src/styles/main.css">
+
   <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
+    html, body { height: 100%; margin: 0; padding: 0; }
 
     body {
       position: relative;
@@ -33,16 +32,9 @@
       z-index: 0;
     }
 
-    .page-content {
-      position: relative;
-      z-index: 1;
-      padding: 20px;
-    }
+    .page-content { position: relative; z-index: 1; padding: 20px; }
 
-    h1 {
-      margin-top: 30px;
-      font-size: 2.5rem;
-    }
+    h1 { margin-top: 30px; font-size: 2.5rem; }
 
     .captain-section {
       margin: 40px auto;
@@ -54,69 +46,46 @@
     }
 
     .captain-photo {
-      width: 180px;
-      height: 180px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid white;
-      margin-bottom: 10px;
+      width: 180px; height: 180px; border-radius: 50%;
+      object-fit: cover; border: 3px solid white; margin-bottom: 10px;
     }
 
     .roster-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 20px;
-      padding: 20px;
-      max-width: 900px;
-      margin: auto;
+      gap: 20px; padding: 20px; max-width: 900px; margin: auto;
     }
 
     .player-card {
       background: rgba(0,0,0,0.6);
-      padding: 15px;
-      border-radius: 10px;
+      padding: 15px; border-radius: 10px;
       border: 1px solid rgba(255,255,255,0.2);
     }
 
     .player-photo {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid white;
-      margin-bottom: 8px;
+      width: 120px; height: 120px; border-radius: 50%;
+      object-fit: cover; border: 2px solid white; margin-bottom: 8px;
     }
 
     .stats-box {
       background: rgba(0,0,0,0.6);
-      padding: 20px;
-      margin: 30px auto;
-      max-width: 500px;
-      border-radius: 10px;
+      padding: 20px; margin: 30px auto;
+      max-width: 500px; border-radius: 10px;
       border: 1px solid rgba(255,255,255,0.2);
       text-align: left;
     }
 
-    .stats-box h2 {
-      text-align: center;
-      margin-top: 0;
-    }
+    .stats-box h2 { text-align: center; margin-top: 0; }
 
     .stat-row {
-      display: flex;
-      justify-content: space-between;
-      margin: 4px 0;
+      display: flex; justify-content: space-between; margin: 4px 0;
     }
 
     .team-blurb {
-      max-width: 800px;
-      margin: 40px auto;
-      background: rgba(0,0,0,0.6);
-      padding: 20px;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.2);
-      font-size: 1.2rem;
-      line-height: 1.6;
+      max-width: 800px; margin: 40px auto;
+      background: rgba(0,0,0,0.6); padding: 20px;
+      border-radius: 10px; border: 1px solid rgba(255,255,255,0.2);
+      font-size: 1.2rem; line-height: 1.6;
     }
   </style>
 
@@ -128,37 +97,35 @@
 
 <!-- ⭐ NEW DYNAMIC NAV -->
 <div id="nav-container"></div>
-
 <script>
 fetch("../src/components/nav.html")
-  .then(res => res.text())
+  .then(r => r.text())
   .then(html => {
-    const navContainer = document.getElementById("nav-container");
-    navContainer.innerHTML = html;
+    const nav = document.getElementById("nav-container");
+    nav.innerHTML = html;
 
     if (window.applyIdentityToUI) window.applyIdentityToUI();
 
-    const hamburger = navContainer.querySelector("#hamburger-btn");
-    const mobileMenu = navContainer.querySelector("#mobile-menu");
+    const hamburger = nav.querySelector("#hamburger-btn");
+    const mobileMenu = nav.querySelector("#mobile-menu");
     if (hamburger && mobileMenu) {
       hamburger.addEventListener("click", () => {
         mobileMenu.classList.toggle("open");
       });
     }
 
-    navContainer.querySelectorAll(".mobile-menu .dropdown-btn").forEach(btn => {
+    nav.querySelectorAll(".mobile-menu .dropdown-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         btn.parentElement.classList.toggle("open");
       });
     });
   });
 </script>
-<!-- END NEW NAV -->
 
 <h1>Gonzalez</h1>
 
 <div class="captain-section">
-  <img src="../images/team-logos/gonzalez-logo.png" class="captain-photo" alt="Captain Photo" />
+  <img src="../images/team-logos/gonzalez-logo.png" class="captain-photo" />
   <h2>Team Captain: (Add Name)</h2>
 </div>
 
@@ -173,7 +140,7 @@ fetch("../src/components/nav.html")
 
 <div id="team-stats" class="stats-box">
   <h2>Season Stats</h2>
-  <div id="stats-content" class="loading">Loading stats…</div>
+  <div id="stats-content">Loading stats…</div>
 </div>
 
 <div class="team-blurb">
@@ -186,40 +153,33 @@ fetch("../src/components/nav.html")
 </div>
 
 <script>
-  const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRjCOIOADqzgiT9RPU9tBGBkpvnL2DP7gXrjkMhwY0DWuNK65XLuBjKV-d1sVXRsQzAbAXBEauAwoT7/pub?output=csv";
-  const teamName = "Gonzalez";
+const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRjCOIOADqzgiT9RPU9tBGBkpvnL2DP7gXrjkMhwY0DWuNK65XLuBjKV-d1sVXRsQzAbAXBEauAwoT7/pub?output=csv";
+const teamName = "Gonzalez";
 
-  function parseCSV(text) {
-    return text.split(/\r?\n/).map(r => r.split(","));
-  }
+function parseCSV(t){ return t.split(/\r?\n/).map(r=>r.split(",")); }
+function findHeaderRow(d){ return d.findIndex(r=>r[0]==="Team"); }
 
-  function findHeaderRow(data) {
-    return data.findIndex(r => r[0] && r[0].trim() === "Team");
-  }
+function renderStats(row, headers){
+  document.getElementById("stats-content").innerHTML =
+    headers.map((h,i)=>`<div class="stat-row"><span>${h}:</span><span>${row[i]}</span></div>`).join("");
+}
 
-  function renderStats(row, headers) {
-    const box = document.getElementById("stats-content");
-    box.innerHTML = headers.map((h, i) =>
-      `<div class="stat-row"><span>${h}:</span><span>${row[i]}</span></div>`
-    ).join("");
-  }
+fetch(sheetUrl)
+  .then(r=>r.text())
+  .then(text=>{
+    const data = parseCSV(text);
+    const headerIndex = findHeaderRow(data);
+    const headers = data[headerIndex];
+    const rows = data.slice(headerIndex+1);
+    const teamRow = rows.find(r=>r[0]===teamName);
 
-  fetch(sheetUrl)
-    .then(r => r.text())
-    .then(text => {
-      const data = parseCSV(text);
-      const headerIndex = findHeaderRow(data);
-      const headers = data[headerIndex];
-      const rows = data.slice(headerIndex + 1);
-      const teamRow = rows.find(r => r[0] === teamName);
+    if(!teamRow){
+      document.getElementById("stats-content").innerHTML="No stats found yet.";
+      return;
+    }
 
-      if (!teamRow) {
-        document.getElementById("stats-content").innerHTML = "No stats found yet.";
-        return;
-      }
-
-      renderStats(teamRow, headers);
-    });
+    renderStats(teamRow, headers);
+  });
 </script>
 
 </body>
