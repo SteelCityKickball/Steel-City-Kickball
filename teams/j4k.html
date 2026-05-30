@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kickaholics — Steel City Kickball</title>
+  <title>J4K — Steel City Kickball</title>
 
   <!-- MAIN SITE STYLES -->
   <link rel="stylesheet" href="../src/styles/main.css">
@@ -30,7 +30,7 @@
       inset: 0;
       background:
         radial-gradient(circle at center, rgba(140,0,0,0.55) 0%, rgba(0,0,0,0.90) 80%),
-        url("../images/team-logos/kickaholics-logo.png") no-repeat center center fixed;
+        url("../images/team-logos/j4k-logo.png") no-repeat center center fixed;
       background-size: 120vmin;
       opacity: 0.80;
       z-index: 0;
@@ -176,10 +176,10 @@ fetch("../src/components/nav.html")
   });
 </script>
 
-<h1>Kickaholics</h1>
+<h1>J4K</h1>
 
 <div class="captain-section">
-  <img src="../images/team-logos/kickaholics-logo.png" class="captain-photo" />
+  <img src="../images/team-logos/j4k-logo.png" class="captain-photo" />
   <h2>Team Captain: (Add Name)</h2>
 </div>
 
@@ -199,7 +199,7 @@ fetch("../src/components/nav.html")
 
 <div class="team-blurb">
   <p>
-    Write a short description about Kickaholics here — team personality, history,
+    Write a short description about J4K here — team personality, history,
     strengths, or anything fun you want fans to know.
   </p>
 </div>
@@ -208,7 +208,7 @@ fetch("../src/components/nav.html")
 
 <script>
 const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRjCOIOADqzgiT9RPU9tBGBkpvnL2DP7gXrjkMhwY0DWuNK65XLuBjKV-d1sVXRsQzAbAXBEauAwoT7/pub?output=csv";
-const teamName = "Kickaholics";
+const teamName = "J4K";
 
 function parseCSV(t){ return t.split(/\r?\n/).map(r=>r.split(",")); }
 function findHeaderRow(d){ return d.findIndex(r=>r[0]==="Team"); }
