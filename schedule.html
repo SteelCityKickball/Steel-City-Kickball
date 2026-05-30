@@ -8,8 +8,6 @@
   <link rel="stylesheet" href="src/styles/main.css">
 
   <style>
-    /* PAGE-SPECIFIC ONLY — no layout overrides */
-
     .table-wrapper { overflow-x: auto; margin: 0 auto; width: 100%; }
 
     table {
@@ -51,6 +49,7 @@
       .team-logo { width: 18px; height: 18px; }
     }
   </style>
+
   <script src="src/identity/global-identity.js" defer></script>
 </head>
 
@@ -58,7 +57,6 @@
 
 <div class="page-content">
 
-  <!-- NAVIGATION -->
   <div id="nav-container"></div>
 
   <script>
@@ -68,12 +66,8 @@
       const navContainer = document.getElementById("nav-container");
       navContainer.innerHTML = html;
 
-      // ⭐ Identity (controls login/logout/avatar)
-      if (window.applyIdentityToUI) {
-        window.applyIdentityToUI();
-      }
+      if (window.applyIdentityToUI) window.applyIdentityToUI();
 
-      // ⭐ Hamburger (mobile menu)
       const hamburger = navContainer.querySelector("#hamburger-btn");
       const mobileMenu = navContainer.querySelector("#mobile-menu");
       if (hamburger && mobileMenu) {
@@ -82,17 +76,14 @@
         });
       }
 
-      // ⭐ Mobile dropdowns (More ▾)
       navContainer.querySelectorAll(".mobile-menu .dropdown-btn").forEach(btn => {
         btn.addEventListener("click", () => {
           btn.parentElement.classList.toggle("open");
         });
       });
-    })
-    .catch(err => console.error("Nav load failed:", err));
-</script>
-  
-  <!-- PAGE CONTENT -->
+    });
+  </script>
+
   <h1>Steel City Kickball — League Schedule</h1>
 
   <select id="week-select" class="week-selector">
@@ -109,7 +100,7 @@
     <div id="results-container">No results yet.</div>
   </div>
 
-</div> <!-- end page-content -->
+</div>
 
 <script>
   const scheduleUrl =
@@ -157,7 +148,7 @@
     html += "</tr>";
 
     data.slice(1).forEach(row => {
-      const rowClass = classifyRow(row[0]);
+      const rowClass = classifyRow(row[1]); // FIXED: date is column B
       html += `<tr class="${rowClass}">`;
 
       row.forEach((cell, i) => {
@@ -181,7 +172,34 @@
     document.getElementById(containerId).innerHTML = html;
   }
 
+  // -------------------------------
+  // CURRENT WEEK DETECTION
+  // -------------------------------
+  function getCurrentWeek(scheduleRows) {
+    const today = new Date();
+
+    for (let i = 1; i < scheduleRows.length; i++) {
+      const row = scheduleRows[i];
+      const dateStr = row[1]; // Column B = Date
+      if (!dateStr) continue;
+
+      const gameDate = new Date(dateStr);
+
+      if (gameDate >= today) {
+        return row[0]; // Column A = Week number
+      }
+    }
+
+    return scheduleRows[scheduleRows.length - 1][0];
+  }
+
+  function filterResultsByWeek(resultsRows, currentWeek) {
+    return resultsRows.filter(r => r[0] == currentWeek);
+  }
+
+  // -------------------------------
   // LOAD SCHEDULE
+  // -------------------------------
   fetch(scheduleUrl)
     .then(res => res.text())
     .then(text => {
@@ -211,56 +229,39 @@
       renderEnhancedTable(data, "schedule-container");
     });
 
-  function getCurrentWeek(scheduleRows) {
-  const today = new Date();
+  // -------------------------------
+  // LOAD RESULTS WITH FALLBACK
+  // -------------------------------
+  Promise.all([
+    fetch(scheduleUrl).then(r => r.text()),
+    fetch(resultsUrl).then(r => r.text())
+  ])
+  .then(([scheduleText, resultsText]) => {
+    const scheduleRows = parseCSV(scheduleText);
+    const resultsRows = parseCSV(resultsText);
 
-  // Find the first game date >= today
-  for (let i = 1; i < scheduleRows.length; i++) {
-    const row = scheduleRows[i];
-    const dateStr = row[1]; // Column B = Date
-    if (!dateStr) continue;
+    let currentWeek = getCurrentWeek(scheduleRows);
 
-    const gameDate = new Date(dateStr);
+    const resultWeeks = [...new Set(resultsRows.slice(1).map(r => r[0]))];
 
-    if (gameDate >= today) {
-      return row[0]; // Column A = Week number
+    if (!resultWeeks.includes(currentWeek)) {
+      currentWeek = resultWeeks[resultWeeks.length - 1];
     }
-  }
 
-  // If all games are in the past, return last week
-  return scheduleRows[scheduleRows.length - 1][0];
-}
-function filterResultsByWeek(resultsRows, currentWeek) {
-  return resultsRows.filter(r => r[0] == currentWeek);
-}
+    const filteredResults = [
+      resultsRows[0],
+      ...filterResultsByWeek(resultsRows.slice(1), currentWeek)
+    ];
 
- // LOAD RESULTS (AUTO FILTER TO CURRENT WEEK)
-Promise.all([
-  fetch(scheduleUrl).then(r => r.text()),
-  fetch(resultsUrl).then(r => r.text())
-])
-.then(([scheduleText, resultsText]) => {
-  const scheduleRows = parseCSV(scheduleText);
-  const resultsRows = parseCSV(resultsText);
-
-  // Determine current week
-  const currentWeek = getCurrentWeek(scheduleRows);
-
-  // Filter results for that week
-  const filteredResults = [
-    resultsRows[0], // header row
-    ...filterResultsByWeek(resultsRows.slice(1), currentWeek)
-  ];
-
-  if (filteredResults.length <= 1) {
+    if (filteredResults.length <= 1) {
+      document.getElementById("results-container").innerHTML = "No results yet.";
+    } else {
+      renderEnhancedTable(filteredResults, "results-container");
+    }
+  })
+  .catch(() => {
     document.getElementById("results-container").innerHTML = "No results yet.";
-  } else {
-    renderEnhancedTable(filteredResults, "results-container");
-  }
-})
-.catch(() => {
-  document.getElementById("results-container").innerHTML = "No results yet.";
-});
+  });
 </script>
 
 </body>
