@@ -193,36 +193,30 @@
   // -------------------------------
   // LOAD SCHEDULE (DEFAULT TO UPCOMING WEEK)
   // -------------------------------
-  fetch(scheduleUrl)
-    .then(res => res.text())
-    .then(text => {
-      const data = parseCSV(text);
+ function getUpcomingWeek(scheduleRows) {
+  const today = new Date();
 
-      const weekIndex = data[0].findIndex(h => h.toLowerCase() === "week");
-      const weeks = [...new Set(data.slice(1).map(r => r[weekIndex]))];
+  // Build list of { week, date } from rows
+  const games = scheduleRows
+    .slice(1) // skip header
+    .map(row => {
+      const week = row[0];
+      const dateStr = row[1];
+      const d = new Date(dateStr);
+      return isNaN(d) ? null : { week, date: d };
+    })
+    .filter(x => x !== null)
+    .sort((a, b) => a.date - b.date); // sort by date ascending
 
-      const select = document.getElementById("week-select");
-      weeks.forEach(w => {
-        const opt = document.createElement("option");
-        opt.value = w;
-        opt.textContent = "Week " + w;
-        select.appendChild(opt);
-      });
+  if (games.length === 0) return null;
 
-      select.addEventListener("change", () => {
-        const selected = select.value;
-        if (selected === "all") {
-          renderEnhancedTable(data, "schedule-container");
-        } else {
-          const filtered = [data[0], ...data.slice(1).filter(r => r[weekIndex] === selected)];
-          renderEnhancedTable(filtered, "schedule-container");
-        }
-      });
+  // Find first game on or after today
+  const upcoming = games.find(g => g.date >= today);
+  if (upcoming) return upcoming.week;
 
-      const upcomingWeek = getUpcomingWeek(data);
-      const filtered = [data[0], ...data.slice(1).filter(r => r[weekIndex] === upcomingWeek)];
-      renderEnhancedTable(filtered, "schedule-container");
-    });
+  // If all games are in the past, return the last week
+  return games[games.length - 1].week;
+}
 
   // -------------------------------
   // LOAD RESULTS
