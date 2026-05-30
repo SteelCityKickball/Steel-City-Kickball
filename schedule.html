@@ -230,21 +230,37 @@
   // If all games are in the past, return last week
   return scheduleRows[scheduleRows.length - 1][0];
 }
+function filterResultsByWeek(resultsRows, currentWeek) {
+  return resultsRows.filter(r => r[0] == currentWeek);
+}
 
-  // LOAD RESULTS
-  fetch(resultsUrl)
-    .then(res => res.text())
-    .then(text => {
-      const data = parseCSV(text);
-      if (data.length <= 1) {
-        document.getElementById("results-container").innerHTML = "No results yet.";
-      } else {
-        renderEnhancedTable(data, "results-container");
-      }
-    })
-    .catch(() => {
-      document.getElementById("results-container").innerHTML = "No results yet.";
-    });
+ // LOAD RESULTS (AUTO FILTER TO CURRENT WEEK)
+Promise.all([
+  fetch(scheduleUrl).then(r => r.text()),
+  fetch(resultsUrl).then(r => r.text())
+])
+.then(([scheduleText, resultsText]) => {
+  const scheduleRows = parseCSV(scheduleText);
+  const resultsRows = parseCSV(resultsText);
+
+  // Determine current week
+  const currentWeek = getCurrentWeek(scheduleRows);
+
+  // Filter results for that week
+  const filteredResults = [
+    resultsRows[0], // header row
+    ...filterResultsByWeek(resultsRows.slice(1), currentWeek)
+  ];
+
+  if (filteredResults.length <= 1) {
+    document.getElementById("results-container").innerHTML = "No results yet.";
+  } else {
+    renderEnhancedTable(filteredResults, "results-container");
+  }
+})
+.catch(() => {
+  document.getElementById("results-container").innerHTML = "No results yet.";
+});
 </script>
 
 </body>
