@@ -173,13 +173,13 @@
   }
 
   // -------------------------------
-  // FIXED: UPCOMING WEEK DETECTION
+  // UPCOMING WEEK DETECTION (single, fixed version)
   // -------------------------------
   function getUpcomingWeek(scheduleRows) {
     const today = new Date();
 
     const games = scheduleRows
-      .slice(1)
+      .slice(1) // skip header
       .map(row => {
         const week = row[0];
         const dateStr = row[1];
@@ -208,10 +208,10 @@
     const scheduleRows = parseCSV(scheduleText);
     const resultsRows = parseCSV(resultsText);
 
-    // Build week dropdown
     const weekSelect = document.getElementById("week-select");
-    const weeks = [...new Set(scheduleRows.slice(1).map(r => r[0]))];
 
+    // Build week dropdown from schedule
+    const weeks = [...new Set(scheduleRows.slice(1).map(r => r[0]))];
     weeks.forEach(w => {
       const opt = document.createElement("option");
       opt.value = w;
@@ -219,10 +219,10 @@
       weekSelect.appendChild(opt);
     });
 
-    // Detect upcoming week
-    let currentWeek = getUpcomingWeek(scheduleRows);
+    // Determine upcoming week
+    let currentWeek = getUpcomingWeek(scheduleRows) || "all";
 
-    // Render schedule for that week
+    // Render schedule for a given week
     function renderSchedule(week) {
       let filtered = scheduleRows;
 
@@ -236,32 +236,52 @@
       renderEnhancedTable(filtered, "schedule-container");
     }
 
+    // Initial schedule render
     renderSchedule(currentWeek);
-    weekSelect.value = currentWeek;
+    if (currentWeek !== "all") {
+      weekSelect.value = currentWeek;
+    }
 
+    // Change week on dropdown change
     weekSelect.addEventListener("change", () => {
-      renderSchedule(weekSelect.value);
+      const selectedWeek = weekSelect.value;
+      currentWeek = selectedWeek;
+      renderSchedule(selectedWeek);
+      renderResults(selectedWeek);
     });
 
-    // RESULTS
-    const resultWeeks = [...new Set(resultsRows.slice(1).map(r => r[0]))];
+    // Render results for a given week
+    function renderResults(week) {
+      if (resultsRows.length < 2) {
+        document.getElementById("results-container").innerHTML = "No results yet.";
+        return;
+      }
 
-    if (!resultWeeks.includes(currentWeek)) {
-      currentWeek = resultWeeks[resultWeeks.length - 1];
+      const resultWeeks = [...new Set(resultsRows.slice(1).map(r => r[0]))];
+
+      let weekToUse = week;
+      if (weekToUse === "all" || !resultWeeks.includes(weekToUse)) {
+        // If selected week has no results, fall back to latest results week
+        weekToUse = resultWeeks[resultWeeks.length - 1];
+      }
+
+      const filteredResults = [
+        resultsRows[0],
+        ...resultsRows.slice(1).filter(r => r[0] == weekToUse)
+      ];
+
+      if (filteredResults.length <= 1) {
+        document.getElementById("results-container").innerHTML = "No results yet.";
+      } else {
+        renderEnhancedTable(filteredResults, "results-container");
+      }
     }
 
-    const filteredResults = [
-      resultsRows[0],
-      ...resultsRows.slice(1).filter(r => r[0] == currentWeek)
-    ];
-
-    if (filteredResults.length <= 1) {
-      document.getElementById("results-container").innerHTML = "No results yet.";
-    } else {
-      renderEnhancedTable(filteredResults, "results-container");
-    }
+    // Initial results render using upcoming week
+    renderResults(currentWeek);
   })
   .catch(() => {
+    document.getElementById("schedule-container").innerHTML = "Unable to load schedule.";
     document.getElementById("results-container").innerHTML = "No results yet.";
   });
 </script>
