@@ -106,8 +106,8 @@
   const scheduleUrl =
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vQnsrFD-xSe7RDLO_PEcX6RMQ5HBPC9S3JhQ1i-Tek6m0Z6ZE0HeunDZ5xWNNkd5vwjJGFaN1EFubR9/pub?output=csv";
 
- const resultsUrl =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vS1iJY8XgcXtvO-p1fMzfhH77uLbub8KE9Z2HL6zAznAe688I5uLY61kvZQfHSU4N7sJU8b3TD33Yr_/pub?output=csv";
+  const resultsUrl =
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vS1iJY8XgcXtvO-p1fMzfhH77uLbub8KE9Z2HL6zAznAe688I5uLY61kvZQfHSU4N7sJU8b3TD33Yr_/pub?output=csv";
 
   function parseCSV(text) {
     return text.split(/\r?\n/).filter(r => r.trim() !== "")
@@ -148,7 +148,7 @@
     html += "</tr>";
 
     data.slice(1).forEach(row => {
-      const rowClass = classifyRow(row[1]); // FIXED: date is column B
+      const rowClass = classifyRow(row[1]);
       html += `<tr class="${rowClass}">`;
 
       row.forEach((cell, i) => {
@@ -173,32 +173,25 @@
   }
 
   // -------------------------------
-  // CURRENT WEEK DETECTION
+  // UPCOMING WEEK DETECTION
   // -------------------------------
-  function getCurrentWeek(scheduleRows) {
+  function getUpcomingWeek(scheduleRows) {
     const today = new Date();
 
     for (let i = 1; i < scheduleRows.length; i++) {
       const row = scheduleRows[i];
-      const dateStr = row[1]; // Column B = Date
+      const dateStr = row[1];
       if (!dateStr) continue;
 
       const gameDate = new Date(dateStr);
-
-      if (gameDate >= today) {
-        return row[0]; // Column A = Week number
-      }
+      if (gameDate >= today) return row[0];
     }
 
     return scheduleRows[scheduleRows.length - 1][0];
   }
 
-  function filterResultsByWeek(resultsRows, currentWeek) {
-    return resultsRows.filter(r => r[0] == currentWeek);
-  }
-
   // -------------------------------
-  // LOAD SCHEDULE
+  // LOAD SCHEDULE (DEFAULT TO UPCOMING WEEK)
   // -------------------------------
   fetch(scheduleUrl)
     .then(res => res.text())
@@ -226,11 +219,13 @@
         }
       });
 
-      renderEnhancedTable(data, "schedule-container");
+      const upcomingWeek = getUpcomingWeek(data);
+      const filtered = [data[0], ...data.slice(1).filter(r => r[weekIndex] === upcomingWeek)];
+      renderEnhancedTable(filtered, "schedule-container");
     });
 
   // -------------------------------
-  // LOAD RESULTS WITH FALLBACK
+  // LOAD RESULTS
   // -------------------------------
   Promise.all([
     fetch(scheduleUrl).then(r => r.text()),
@@ -240,7 +235,7 @@
     const scheduleRows = parseCSV(scheduleText);
     const resultsRows = parseCSV(resultsText);
 
-    let currentWeek = getCurrentWeek(scheduleRows);
+    let currentWeek = getUpcomingWeek(scheduleRows);
 
     const resultWeeks = [...new Set(resultsRows.slice(1).map(r => r[0]))];
 
@@ -250,7 +245,7 @@
 
     const filteredResults = [
       resultsRows[0],
-      ...filterResultsByWeek(resultsRows.slice(1), currentWeek)
+      ...resultsRows.slice(1).filter(r => r[0] == currentWeek)
     ];
 
     if (filteredResults.length <= 1) {
