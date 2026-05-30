@@ -97,15 +97,35 @@
 
 <!-- ⭐ NEW DYNAMIC NAV -->
 <div id="nav-container"></div>
+
 <script>
+// Fix nav links ONLY for team pages
+function fixTeamPageLinks() {
+  const links = document.querySelectorAll("#nav-container a");
+  links.forEach(link => {
+    const href = link.getAttribute("href");
+
+    // Skip absolute URLs and identity paths
+    if (!href || href.startsWith("http") || href.startsWith("src/")) return;
+
+    // Prepend ../ so links work from /teams/
+    link.setAttribute("href", "../" + href);
+  });
+}
+
 fetch("../src/components/nav.html")
   .then(r => r.text())
   .then(html => {
     const nav = document.getElementById("nav-container");
     nav.innerHTML = html;
 
+    // Apply identity styling
     if (window.applyIdentityToUI) window.applyIdentityToUI();
 
+    // Fix paths for team pages
+    fixTeamPageLinks();
+
+    // Mobile menu
     const hamburger = nav.querySelector("#hamburger-btn");
     const mobileMenu = nav.querySelector("#mobile-menu");
     if (hamburger && mobileMenu) {
