@@ -173,53 +173,32 @@
   }
 
   // -------------------------------
-  // UPCOMING WEEK DETECTION
+  // FIXED: UPCOMING WEEK DETECTION
   // -------------------------------
   function getUpcomingWeek(scheduleRows) {
     const today = new Date();
 
-    for (let i = 1; i < scheduleRows.length; i++) {
-      const row = scheduleRows[i];
-      const dateStr = row[1];
-      if (!dateStr) continue;
+    const games = scheduleRows
+      .slice(1)
+      .map(row => {
+        const week = row[0];
+        const dateStr = row[1];
+        const d = new Date(dateStr);
+        return isNaN(d) ? null : { week, date: d };
+      })
+      .filter(x => x !== null)
+      .sort((a, b) => a.date - b.date);
 
-      const gameDate = new Date(dateStr);
-      if (gameDate >= today) return row[0];
-    }
+    if (games.length === 0) return null;
 
-    return scheduleRows[scheduleRows.length - 1][0];
+    const upcoming = games.find(g => g.date >= today);
+    if (upcoming) return upcoming.week;
+
+    return games[games.length - 1].week;
   }
 
   // -------------------------------
-  // LOAD SCHEDULE (DEFAULT TO UPCOMING WEEK)
-  // -------------------------------
- function getUpcomingWeek(scheduleRows) {
-  const today = new Date();
-
-  // Build list of { week, date } from rows
-  const games = scheduleRows
-    .slice(1) // skip header
-    .map(row => {
-      const week = row[0];
-      const dateStr = row[1];
-      const d = new Date(dateStr);
-      return isNaN(d) ? null : { week, date: d };
-    })
-    .filter(x => x !== null)
-    .sort((a, b) => a.date - b.date); // sort by date ascending
-
-  if (games.length === 0) return null;
-
-  // Find first game on or after today
-  const upcoming = games.find(g => g.date >= today);
-  if (upcoming) return upcoming.week;
-
-  // If all games are in the past, return the last week
-  return games[games.length - 1].week;
-}
-
-  // -------------------------------
-  // LOAD RESULTS
+  // LOAD SCHEDULE + RESULTS
   // -------------------------------
   Promise.all([
     fetch(scheduleUrl).then(r => r.text()),
@@ -229,8 +208,42 @@
     const scheduleRows = parseCSV(scheduleText);
     const resultsRows = parseCSV(resultsText);
 
+    // Build week dropdown
+    const weekSelect = document.getElementById("week-select");
+    const weeks = [...new Set(scheduleRows.slice(1).map(r => r[0]))];
+
+    weeks.forEach(w => {
+      const opt = document.createElement("option");
+      opt.value = w;
+      opt.textContent = "Week " + w;
+      weekSelect.appendChild(opt);
+    });
+
+    // Detect upcoming week
     let currentWeek = getUpcomingWeek(scheduleRows);
 
+    // Render schedule for that week
+    function renderSchedule(week) {
+      let filtered = scheduleRows;
+
+      if (week !== "all") {
+        filtered = [
+          scheduleRows[0],
+          ...scheduleRows.slice(1).filter(r => r[0] == week)
+        ];
+      }
+
+      renderEnhancedTable(filtered, "schedule-container");
+    }
+
+    renderSchedule(currentWeek);
+    weekSelect.value = currentWeek;
+
+    weekSelect.addEventListener("change", () => {
+      renderSchedule(weekSelect.value);
+    });
+
+    // RESULTS
     const resultWeeks = [...new Set(resultsRows.slice(1).map(r => r[0]))];
 
     if (!resultWeeks.includes(currentWeek)) {
