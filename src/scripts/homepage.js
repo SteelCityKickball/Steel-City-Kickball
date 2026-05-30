@@ -1,8 +1,7 @@
 // -------------------------------
 // CONFIG
 // -------------------------------
-const SHEET_CSV_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRlQaQ9lUR2doOFO1CE5m0UGI49T569YYKWrSyuoSoMBlqRwhg-Rdk13IQFptMS_krfJzXqC8zKxYPl/pub?output=csv";
+const csvUrl = "https://docs.google.com/spreadsheets/d/1a9LOLxB13xRGLso51ez7xN_9DT7qdhy_wWKxNuOxNzI/export?format=csv&gid=1916317791";
 
 
 // -------------------------------
