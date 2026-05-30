@@ -1,8 +1,8 @@
 // -------------------------------
-// CONFIG
+// CONFIG — HOMEPAGE CONTENT CSV
 // -------------------------------
-const csvUrl =
-  "https://docs.google.com/spreadsheets/d/1a9LOLxB13xRGLso51ez7xN_9DT7qdhy_wWKxNuOxNzI/export?format=csv&gid=1916317791";
+const SHEET_CSV_URL =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQr-ZqGFpZS9KtIZhXq0elsRssVso4HrH6fDx6ingBMo2PljxD0CeIdfPjmx4KT7zh-Rh0sildBK35V/pub?output=csv";
 
 
 // -------------------------------
@@ -27,13 +27,11 @@ async function getLatestFromGitHub(path) {
 // -------------------------------
 async function loadHomepageText() {
   try {
-    const res = await fetch(csvUrl);   // ⭐ FIXED — now uses the correct sheet
+    const res = await fetch(SHEET_CSV_URL);
     const csv = await res.text();
 
-    // Parse CSV into rows
     const rows = csv.trim().split("\n").map(r => r.split(","));
 
-    // Convert to key/value object
     const data = {};
     rows.forEach(r => {
       const key = r[0]?.trim();
@@ -41,7 +39,6 @@ async function loadHomepageText() {
       if (key) data[key] = value;
     });
 
-    // Apply to homepage
     document.getElementById("gotw-text").textContent =
       data.gotw_text || "No update available.";
 
@@ -65,13 +62,11 @@ async function loadHomepageText() {
 // -------------------------------
 async function loadHomepageImages() {
   try {
-    // GOTW
     const gotw = await getLatestFromGitHub("images/gotw");
     if (gotw.length > 0) {
       document.getElementById("gotw-img").src = gotw[0].download_url;
     }
 
-    // MVP
     const mvp = await getLatestFromGitHub("images/mvp");
     if (mvp.length > 0) {
       document.getElementById("mvp-img").src = mvp[0].download_url;
