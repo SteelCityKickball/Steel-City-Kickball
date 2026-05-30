@@ -211,6 +211,26 @@
       renderEnhancedTable(data, "schedule-container");
     });
 
+  function getCurrentWeek(scheduleRows) {
+  const today = new Date();
+
+  // Find the first game date >= today
+  for (let i = 1; i < scheduleRows.length; i++) {
+    const row = scheduleRows[i];
+    const dateStr = row[1]; // Column B = Date
+    if (!dateStr) continue;
+
+    const gameDate = new Date(dateStr);
+
+    if (gameDate >= today) {
+      return row[0]; // Column A = Week number
+    }
+  }
+
+  // If all games are in the past, return last week
+  return scheduleRows[scheduleRows.length - 1][0];
+}
+
   // LOAD RESULTS
   fetch(resultsUrl)
     .then(res => res.text())
