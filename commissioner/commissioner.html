@@ -832,4 +832,282 @@
         document.getElementById('hp-mvp-name').value = v.MVPName || "";
         document.getElementById('hp-mvp-team').value = v.MVPTeam || "";
         document.getElementById('hp-mvp-blurb').value = v.MVPBlurb || "";
+      } catch (err) {
+        setStatus('status-homepage', 'Error loading', 'error');
+      }
+    }
+
+    async function saveHomepageContent() {
+      setStatus('status-homepage', 'Saving…');
+      const payload = {
+        CommissionerMessage: document.getElementById('hp-commissioner-message').value,
+        LeagueUpdates: document.getElementById('hp-league-updates').value,
+        BannerHeadline: document.getElementById('hp-banner-headline').value,
+        GOTWTitle: document.getElementById('hp-gotw-title').value,
+        GOTWBlurb: document.getElementById('hp-gotw-blurb').value,
+        MVPName: document.getElementById('hp-mvp-name').value,
+        MVPTeam: document.getElementById('hp-mvp-team').value,
+        MVPBlurb: document.getElementById('hp-mvp-blurb').value
+      };
+
+      try {
+        await fetch(WEB_APP_URL + "?action=saveHomepageContent", {
+          method: "POST",
+          body: JSON.stringify(payload)
+        });
+        setStatus('status-homepage', 'Saved', 'idle');
+        setMeta('status-homepage-meta', 'Last saved: ' + formatTimestamp());
+      } catch (err) {
+        setStatus('status-homepage', 'Error saving', 'error');
+      }
+    }
+
+    document.getElementById('btn-homepage-refresh').onclick = loadHomepageContent;
+    document.getElementById('btn-homepage-save').onclick = saveHomepageContent;
+
+    /* RULES LOAD/SAVE */
+    let rulesData = [];
+
+    function renderRules() {
+      const tbody = document.getElementById('rules-tbody');
+      tbody.innerHTML = "";
+      rulesData.forEach((r, i) => {
+        const tr = document.createElement('tr');
+
+        tr.innerHTML = `
+          <td>${i + 1}</td>
+          <td><input class="table-input" value="${r.section || ""}"></td>
+          <td><input class="table-input" value="${r.title || ""}"></td>
+          <td><textarea class="table-input">${r.text || ""}</textarea></td>
+          <td>
+            <button class="btn" onclick="moveRule(${i}, -1)">↑</button>
+            <button class="btn" onclick="moveRule(${i}, 1)">↓</button>
+            <button class="btn btn-danger" onclick="deleteRule(${i})">✕</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function syncRules() {
+      const rows = [...document.querySelectorAll('#rules-tbody tr')];
+      rulesData = rows.map(row => {
+        const inputs = row.querySelectorAll('.table-input');
+        return {
+          section: inputs[0].value,
+          title: inputs[1].value,
+          text: inputs[2].value
+        };
+      });
+    }
+
+    function addRule() {
+      syncRules();
+      rulesData.push({ section: "", title: "", text: "" });
+      renderRules();
+    }
+
+    function deleteRule(i) {
+      syncRules();
+      rulesData.splice(i, 1);
+      renderRules();
+    }
+
+    function moveRule(i, dir) {
+      syncRules();
+      const ni = i + dir;
+      if (ni < 0 || ni >= rulesData.length) return;
+      const [item] = rulesData.splice(i, 1);
+      rulesData.splice(ni, 0, item);
+      renderRules();
+    }
+
+    async function loadRules() {
+      setStatus('status-rules', 'Loading…');
+      try {
+        const res = await fetch(WEB_APP_URL + "?action=getRules");
+        const data = await res.json();
+        rulesData = data.rules || [];
+        renderRules();
+        setStatus('status-rules', 'Loaded', 'idle');
+        setMeta('status-rules-meta', 'Last loaded: ' + formatTimestamp());
+      } catch (err) {
+        setStatus('status-rules', 'Error loading', 'error');
+      }
+    }
+
+    async function saveRules() {
+      syncRules();
+      setStatus('status-rules', 'Saving…');
+      try {
+        await fetch(WEB_APP_URL + "?action=saveRules", {
+          method: "POST",
+          body: JSON.stringify({ rules: rulesData })
+        });
+        setStatus('status-rules', 'Saved', 'idle');
+        setMeta('status-rules-meta', 'Last saved: ' + formatTimestamp());
+      } catch (err) {
+        setStatus('status-rules', 'Error saving', 'error');
+      }
+    }
+
+    document.getElementById('btn-rules-add-row').onclick = addRule;
+    document.getElementById('btn-rules-clear-empty').onclick = () => {
+      syncRules();
+      rulesData = rulesData.filter(r => r.section || r.title || r.text);
+      renderRules();
+    };
+    document.getElementById('btn-rules-refresh').onclick = loadRules;
+    document.getElementById('btn-rules-save').onclick = saveRules;
+
+    /* CAPTAINS & ROLES */
+    let allUsers = [];
+    let pendingCaptainChanges = {};
+
+    function renderCaptainsForTeam(teamId) {
+      const tbody = document.getElementById('captains-tbody');
+      tbody.innerHTML = "";
+
+      if (!teamId) return;
+
+      const teamUsers = allUsers.filter(u => (u.PrimaryTeamID || "") === teamId);
+
+      teamUsers.forEach((u, idx) => {
+        const currentType = pendingCaptainChanges[u.Email] || u.UserType || "";
+        const isCaptain = currentType === "Captain";
+        const isCommissioner = currentType === "Commissioner" || currentType === "Admin";
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${idx + 1}</td>
+          <td>${u.Nickname || ""}</td>
+          <td>${u.Email || ""}</td>
+          <td>${currentType || ""}</td>
+          <td>
+            ${
+              isCommissioner
+                ? `<span class="chip"><span class="dot"></span> Commissioner</span>`
+                : isCaptain
+                  ? `<button class="btn btn-danger" data-email="${u.Email}" data-action="remove-captain">Remove Captain</button>`
+                  : `<button class="btn" data-email="${u.Email}" data-action="make-captain">Make Captain</button>`
+            }
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      tbody.querySelectorAll('button[data-email]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const email = btn.getAttribute('data-email');
+          const action = btn.getAttribute('data-action');
+          const user = allUsers.find(u => u.Email === email);
+          if (!user) return;
+
+          const baseType = user.UserType || "Player";
+          if (action === "make-captain") {
+            pendingCaptainChanges[email] = "Captain";
+          } else if (action === "remove-captain") {
+            pendingCaptainChanges[email] = baseType === "Captain" ? "Player" : baseType;
+          }
+          renderCaptainsForTeam(teamId);
+        });
+      });
+    }
+
+    async function loadUsersForCaptains() {
+      setStatus('status-captains', 'Loading…');
+      try {
+        const res = await fetch(WEB_APP_URL + "?action=getUsers");
+        const data = await res.json();
+        allUsers = data.users || [];
+        pendingCaptainChanges = {};
+        setStatus('status-captains', 'Loaded', 'idle');
+        setMeta('status-captains-meta', 'Last loaded: ' + formatTimestamp());
+
+        const teamSelect = document.getElementById('captains-team-select');
+        if (teamSelect && teamSelect.value) {
+          renderCaptainsForTeam(teamSelect.value);
+        }
+      } catch (err) {
+        setStatus('status-captains', 'Error loading users', 'error');
+      }
+    }
+
+    async function saveCaptainChanges() {
+      const changes = Object.entries(pendingCaptainChanges).map(([email, newUserType]) => ({
+        Email: email,
+        UserType: newUserType
+      }));
+
+      if (!changes.length) {
+        setStatus('status-captains', 'No changes to save', 'idle');
+        return;
+      }
+
+      setStatus('status-captains', 'Saving…');
+      try {
+        await fetch(WEB_APP_URL + "?action=updateCaptainStatus", {
+          method: "POST",
+          body: JSON.stringify({ changes })
+        });
+        setStatus('status-captains', 'Saved', 'idle');
+        setMeta('status-captains-meta', 'Last saved: ' + formatTimestamp());
+
+        changes.forEach(ch => {
+          const u = allUsers.find(u => u.Email === ch.Email);
+          if (u) u.UserType = ch.UserType;
+        });
+        pendingCaptainChanges = {};
+
+        const teamSelect = document.getElementById('captains-team-select');
+        if (teamSelect && teamSelect.value) {
+          renderCaptainsForTeam(teamSelect.value);
+        }
+      } catch (err) {
+        setStatus('status-captains', 'Error saving', 'error');
+      }
+    }
+
+    const teamSelectEl = document.getElementById('captains-team-select');
+    if (teamSelectEl) {
+      teamSelectEl.addEventListener('change', () => {
+        const teamId = teamSelectEl.value;
+        renderCaptainsForTeam(teamId);
+      });
+    }
+
+    const btnCaptainsRefresh = document.getElementById('btn-captains-refresh');
+    if (btnCaptainsRefresh) {
+      btnCaptainsRefresh.onclick = loadUsersForCaptains;
+    }
+
+    const btnCaptainsSave = document.getElementById('btn-captains-save');
+    if (btnCaptainsSave) {
+      btnCaptainsSave.onclick = saveCaptainChanges;
+    }
+
+    /* SETTINGS TEST */
+    document.getElementById('btn-settings-test').onclick = async () => {
+      setStatus('status-settings', 'Testing…');
+      try {
+        const res = await fetch(WEB_APP_URL + "?action=ping");
+        const data = await res.json();
+        if (data.success) {
+          setStatus('status-settings', 'Connected', 'idle');
+          setMeta('status-settings-meta', 'Connection OK • ' + formatTimestamp());
+        } else {
+          throw new Error();
+        }
+      } catch {
+        setStatus('status-settings', 'Failed', 'error');
+        setMeta('status-settings-meta', 'Connection failed');
+      }
+    };
+
+    /* INITIAL LOAD */
+    window.onload = () => {
+      loadHomepageContent();
+      loadRules();
+      loadUsersForCaptains();
+    };
 
