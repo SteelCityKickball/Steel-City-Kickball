@@ -612,31 +612,73 @@
         </div>
       </section>
 
-      <!-- CAPTAINS TAB (placeholder wiring) -->
-      <section class="tab-panel" id="tab-captains">
-        <div class="panel-header">
-          <div>
-            <h2>Captains & Roles</h2>
-            <p>Assign captains and commissioner roles. (Structure ready; hook to sheets when you’re ready.)</p>
-          </div>
-          <div class="panel-actions">
-            <button class="btn btn-primary" disabled>Coming Soon</button>
-          </div>
-        </div>
+      <!-- CAPTAINS TAB -->
+<section class="tab-panel" id="tab-captains">
+  <div class="panel-header">
+    <div>
+      <h2>Captains & Roles</h2>
+      <p>Assign captains per team. Uses the SCK_Identity / Users sheet.</p>
+    </div>
+    <div class="panel-actions">
+      <button class="btn" id="btn-captains-refresh">
+        ⟳ Refresh Roster
+      </button>
+      <button class="btn btn-primary" id="btn-captains-save">
+        💾 Save Changes
+      </button>
+    </div>
+  </div>
 
-        <p style="font-size: 0.85rem; opacity: 0.85;">
-          This section is scaffolded for:
-        </p>
-        <ul style="font-size: 0.8rem; opacity: 0.85; margin-top: 4px;">
-          <li>Assigning captains per team</li>
-          <li>Granting/removing commissioner-level access</li>
-          <li>Storing roles in a dedicated sheet (e.g., <code>Roles</code> or <code>Captains</code>)</li>
-        </ul>
-        <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 6px;">
-          Once you confirm the exact sheet layout for captains/roles, we can wire this tab to new Apps Script
-          endpoints like <code>getRoles</code> / <code>saveRoles</code>.
-        </p>
-      </section>
+  <div class="field-group">
+    <div class="field-label">
+      <span class="key">Select Team</span>
+      <span class="hint">Filters roster by PrimaryTeamID</span>
+    </div>
+    <select id="captains-team-select" style="width:100%;padding:7px 8px;border-radius:6px;border:1px solid var(--border);background:rgba(10,12,18,0.95);color:var(--text-strong);font-size:0.85rem;">
+      <option value="">— Choose a team —</option>
+      <option value="Bonnies Babies">Bonnies Babies</option>
+      <option value="Gonzalez">Gonzalez</option>
+      <option value="J4K">J4K</option>
+      <option value="Kickaholics">Kickaholics</option>
+      <option value="The Club">The Club</option>
+      <option value="Warriors">Warriors</option>
+    </select>
+  </div>
+
+  <div class="pill-row">
+    <span class="pill">Sheet: Users / SCK_Identity</span>
+    <span class="pill">Name: Nickname</span>
+    <span class="pill">Team: PrimaryTeamID</span>
+    <span class="pill">Role: UserType</span>
+  </div>
+
+  <div style="margin-top: 8px; overflow-x: auto;">
+    <table id="captains-table">
+      <thead>
+        <tr>
+          <th style="width: 40px;">#</th>
+          <th style="width: 160px;">Nickname</th>
+          <th style="width: 220px;">Email</th>
+          <th style="width: 120px;">UserType</th>
+          <th style="width: 140px;">Action</th>
+        </tr>
+      </thead>
+      <tbody id="captains-tbody">
+        <!-- Filled by JS -->
+      </tbody>
+    </table>
+  </div>
+
+  <div class="status-bar">
+    <div class="status-message muted" id="status-captains">
+      <span class="status-dot"></span>
+      <span>Idle</span>
+    </div>
+    <div class="status-right" id="status-captains-meta">
+      Last loaded: — • Last saved: —
+    </div>
+  </div>
+</section>
 
       <!-- ROSTERS TAB (placeholder wiring) -->
       <section class="tab-panel" id="tab-rosters">
