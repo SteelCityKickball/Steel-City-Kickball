@@ -761,11 +761,107 @@
       </section>
     </div>
   </div>
+  
+<script>
+   /* RULES LOAD/SAVE */
+    let rulesData = [];
+
+    function renderRules() {
+      const tbody = document.getElementById('rules-tbody');
+      tbody.innerHTML = "";
+      rulesData.forEach((r, i) => {
+        const tr = document.createElement('tr');
+
+        tr.innerHTML = `
+          <td>${i + 1}</td>
+          <td><input class="table-input" value="${r.section || ""}"></td>
+          <td><input class="table-input" value="${r.title || ""}"></td>
+          <td><textarea class="table-input">${r.text || ""}</textarea></td>
+          <td>
+            <button class="btn" onclick="moveRule(${i}, -1)">↑</button>
+            <button class="btn" onclick="moveRule(${i}, 1)">↓</button>
+            <button class="btn btn-danger" onclick="deleteRule(${i})">✕</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function syncRules() {
+      const rows = [...document.querySelectorAll('#rules-tbody tr')];
+      rulesData = rows.map(row => {
+        const inputs = row.querySelectorAll('.table-input');
+        return {
+          section: inputs[0].value,
+          title: inputs[1].value,
+          text: inputs[2].value
+        };
+      });
+    }
+
+    function addRule() {
+      syncRules();
+      rulesData.push({ section: "", title: "", text: "" });
+      renderRules();
+    }
+
+    function deleteRule(i) {
+      syncRules();
+      rulesData.splice(i, 1);
+      renderRules();
+    }
+
+    function moveRule(i, dir) {
+      syncRules();
+      const ni = i + dir;
+      if (ni < 0 || ni >= rulesData.length) return;
+      const [item] = rulesData.splice(i, 1);
+      rulesData.splice(ni, 0, item);
+      renderRules();
+    }
+
+    async function loadRules() {
+      setStatus('status-rules', 'Loading…');
+      try {
+        const res = await fetch(WEB_APP_URL + "?action=getRules");
+        const data = await res.json();
+        rulesData = data.rules || [];
+        renderRules();
+        setStatus('status-rules', 'Loaded', 'idle');
+        setMeta('status-rules-meta', 'Last loaded: ' + formatTimestamp());
+      } catch (err) {
+        setStatus('status-rules', 'Error loading', 'error');
+      }
+    }
+
+    async function saveRules() {
+      syncRules();
+      setStatus('status-rules', 'Saving…');
+      try {
+        await fetch(WEB_APP_URL + "?action=saveRules", {
+          method: "POST",
+          body: JSON.stringify({ rules: rulesData })
+        });
+        setStatus('status-rules', 'Saved', 'idle');
+        setMeta('status-rules-meta', 'Last saved: ' + formatTimestamp());
+      } catch (err) {
+        setStatus('status-rules', 'Error saving', 'error');
+      }
+    }
+
+    document.getElementById('btn-rules-add-row').onclick = addRule;
+    document.getElementById('btn-rules-clear-empty').onclick = () => {
+      syncRules();
+      rulesData = rulesData.filter(r => r.section || r.title || r.text);
+      renderRules();
+    };
+    document.getElementById('btn-rules-refresh').onclick = loadRules;
+    document.getElementById('btn-rules-save').onclick = saveRules;
+        </script>
 
  <!-- Identity / access control -->
 <!-- Identity removed because no identity.js file exists -->
 
-<script>
   /* HARD-CODED APPS SCRIPT URL */
   let WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzDR3Vo7LMFxYYsSxr73KL-LXHTSNRZOn7ybEWsyWhLsGiKLI6SrETyBs5--mVchv9X/exec";
 
@@ -867,103 +963,8 @@
 
     document.getElementById('btn-homepage-refresh').onclick = loadHomepageContent;
     document.getElementById('btn-homepage-save').onclick = saveHomepageContent;
-
-    /* RULES LOAD/SAVE */
-    let rulesData = [];
-
-    function renderRules() {
-      const tbody = document.getElementById('rules-tbody');
-      tbody.innerHTML = "";
-      rulesData.forEach((r, i) => {
-        const tr = document.createElement('tr');
-
-        tr.innerHTML = `
-          <td>${i + 1}</td>
-          <td><input class="table-input" value="${r.section || ""}"></td>
-          <td><input class="table-input" value="${r.title || ""}"></td>
-          <td><textarea class="table-input">${r.text || ""}</textarea></td>
-          <td>
-            <button class="btn" onclick="moveRule(${i}, -1)">↑</button>
-            <button class="btn" onclick="moveRule(${i}, 1)">↓</button>
-            <button class="btn btn-danger" onclick="deleteRule(${i})">✕</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function syncRules() {
-      const rows = [...document.querySelectorAll('#rules-tbody tr')];
-      rulesData = rows.map(row => {
-        const inputs = row.querySelectorAll('.table-input');
-        return {
-          section: inputs[0].value,
-          title: inputs[1].value,
-          text: inputs[2].value
-        };
-      });
-    }
-
-    function addRule() {
-      syncRules();
-      rulesData.push({ section: "", title: "", text: "" });
-      renderRules();
-    }
-
-    function deleteRule(i) {
-      syncRules();
-      rulesData.splice(i, 1);
-      renderRules();
-    }
-
-    function moveRule(i, dir) {
-      syncRules();
-      const ni = i + dir;
-      if (ni < 0 || ni >= rulesData.length) return;
-      const [item] = rulesData.splice(i, 1);
-      rulesData.splice(ni, 0, item);
-      renderRules();
-    }
-
-    async function loadRules() {
-      setStatus('status-rules', 'Loading…');
-      try {
-        const res = await fetch(WEB_APP_URL + "?action=getRules");
-        const data = await res.json();
-        rulesData = data.rules || [];
-        renderRules();
-        setStatus('status-rules', 'Loaded', 'idle');
-        setMeta('status-rules-meta', 'Last loaded: ' + formatTimestamp());
-      } catch (err) {
-        setStatus('status-rules', 'Error loading', 'error');
-      }
-    }
-
-    async function saveRules() {
-      syncRules();
-      setStatus('status-rules', 'Saving…');
-      try {
-        await fetch(WEB_APP_URL + "?action=saveRules", {
-          method: "POST",
-          body: JSON.stringify({ rules: rulesData })
-        });
-        setStatus('status-rules', 'Saved', 'idle');
-        setMeta('status-rules-meta', 'Last saved: ' + formatTimestamp());
-      } catch (err) {
-        setStatus('status-rules', 'Error saving', 'error');
-      }
-    }
-
-    document.getElementById('btn-rules-add-row').onclick = addRule;
-    document.getElementById('btn-rules-clear-empty').onclick = () => {
-      syncRules();
-      rulesData = rulesData.filter(r => r.section || r.title || r.text);
-      renderRules();
-    };
-    document.getElementById('btn-rules-refresh').onclick = loadRules;
-    document.getElementById('btn-rules-save').onclick = saveRules;
-        </script>
-
+ </script>
+  
     /* CAPTAINS & ROLES */
     let allUsers = [];
     let pendingCaptainChanges = {};
