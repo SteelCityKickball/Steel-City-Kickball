@@ -1,39 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Your Profile – Steel City Kickball</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Profile – Steel City Kickball</title>
 
-    <link rel="stylesheet" href="/src/styles/main.css" />
+  <!-- Styles -->
+  <link rel="stylesheet" href="../styles/main.css" />
+
+  <!-- Identity Scripts -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="global-identity.js" defer></script>
 </head>
 
 <body class="profile-page">
 
-    <div class="page-container">
+<div class="page-content">
 
-        <h1 class="page-title">Your Profile</h1>
+  <h1 class="page-title">Your Profile</h1>
 
-        <!-- Profile Card -->
-        <div class="profile-card">
-            <img class="profile-avatar" src="/src/assets/default-avatar.png" alt="Avatar" />
+  <!-- PROFILE CARD -->
+  <div class="profile-card" style="
+      background: rgba(0,0,0,0.5);
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 420px;
+      margin: 0 auto 30px;
+      text-align: center;
+  ">
+      <img id="profile-avatar-preview"
+           src="../assets/default-avatar.png"
+           alt="Avatar"
+           style="width:140px; height:140px; border-radius:50%; object-fit:cover; border:3px solid #45a29e; margin-bottom:12px;">
 
-            <div class="profile-info">
-                <h2 class="profile-name">Player Name</h2>
-                <p class="profile-team">Team Name</p>
-            </div>
-        </div>
+      <h2 id="profile-name-display" style="margin-bottom:6px;">Player Name</h2>
+      <p id="profile-email-display" style="font-size:0.9rem; color:#c5c6c7;"></p>
+  </div>
 
-        <a href="/src/identity/settings.html" class="edit-button">Edit Profile</a>
+  <!-- EDIT FORM -->
+  <form id="profile-form" style="max-width:420px; margin:0 auto;">
 
-    </div>
+      <label style="font-weight:bold;">Display Name</label><br>
+      <input type="text" id="profile-name" style="
+          width:100%; padding:8px; margin:6px 0 16px;
+          border-radius:6px; border:none;
+      ">
 
-    <script src="/src/identity/profile.js"></script>
+      <label style="font-weight:bold;">Avatar (optional)</label><br>
+      <input type="file" id="profile-avatar" accept="image/*" style="margin:6px 0 16px;">
 
-</body>
-    <script src="/src/identity/session.js"></script>
+      <button type="submit" style="
+          padding:10px 20px;
+          background:#45a29e;
+          border:none;
+          border-radius:6px;
+          color:white;
+          cursor:pointer;
+          font-size:1rem;
+      ">
+        Save Profile
+      </button>
+
+      <p id="profile-status" style="margin-top:12px; font-size:0.9rem;"></p>
+  </form>
+
+</div>
+
 <script>
-    const user = requireLogin();
+const WEB_APP_URL =
+  "https://script.google.com/macros/s/AKfycbyofNQOa8YJkRticXHtVV4p3BTscvK2qKu9kZKR9qpAu4XefGrjNcuQD818DaCyqCS4/exec";
+
+async function initProfilePage() {
+    const email = localStorage.getItem("sck_user_email");
+    const emailDisplay = document.getElementById("profile-email-display");
+    const nameDisplay = document.getElementById("profile-name-display");
+    const nameInput = document.getElementById("profile-name");
+    const avatarPreview = document.getElementById("profile-avatar-preview");
+
+    if (!email) {
+        emailDisplay.textContent = "You are not logged in.";
+        return;
+    }
+
+    emailDisplay.textContent = email;
+
+    // Load profile
+    try {
+        const res = await fetch(
+            `${WEB_APP_URL}?action=getProfile&email=${encodeURIComponent(email)}`
+        );
+        const profile = await res.json();
+
+        if (profile.name) {
+            nameDisplay.textContent = profile.name;
+            nameInput.value = profile.name;
+        }
+
+        if (profile.avatarUrl) {
+            avatarPreview.src = profile.avatarUrl;
+        }
+    } catch (e) {
+        console.error("Profile load failed:", e);
+    }
+
+    // Form submit
+    document.getElementById("profile-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        await saveProfile();
+    });
+}
+
+async function saveProfile() {
+    const email = localStorage.getItem("sck_user_email");
+    const name = document.getElementById("profile-name").value.trim();
+    const fileInput = document.getElementById("profile-avatar");
+    const statusEl = document.getElementById("profile-status");
+    const avatarPreview = document.getElementById("profile-avatar-preview");
+    const nameDisplay = document.getElementById("profile-name-display");
+
+    if (!email) {
+        statusEl.textContent = "Not logged in.";
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("action", "saveProfile");
+    formData.append("email", email);
+    formData.append("name", name);
+
+    if (fileInput.files[0]) {
+        formData.append("avatar", fileInput.files[0]);
+    }
+
+    statusEl.textContent = "Saving...";
+
+    try {
+        const res = await fetch(WEB_APP_URL, {
+            method: "POST",
+            body: formData
+        });
+        const result = await res.json();
+
+        if (result.status === "ok") {
+            statusEl.textContent = "Profile saved.";
+
+            if (result.avatarUrl) {
+                avatarPreview.src = result.avatarUrl;
+            }
+
+            if (name) {
+                nameDisplay.textContent = name;
+            }
+
+            // Refresh nav identity
+            if (window.applyIdentityToUI) {
+                await window.applyIdentityToUI();
+            }
+        } else {
+            statusEl.textContent = "Error: " + (result.message || "Unknown error");
+        }
+    } catch (e) {
+        console.error("saveProfile failed:", e);
+        statusEl.textContent = "Error saving profile.";
+    }
+}
+
+window.onload = initProfilePage;
 </script>
 
+</body>
 </html>
