@@ -409,9 +409,40 @@
         text-align: left;
       }
     }
-  </style>
+ </style>
 </head>
+
 <body>
+
+<!-- ⭐ COMMISSIONER LOCKDOWN SCRIPT -->
+<script>
+  let WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyofNQOa8YJkRticXHtVV4p3BTscvK2qKu9kZKR9qpAu4XefGrjNcuQD818DaCyqCS4/exec";
+
+  (async function enforceCommissionerAccess() {
+    const email = localStorage.getItem("sck_user_email");
+
+    if (!email) {
+      window.location.href = "/Steel-City-Kickball/login/login.html";
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        WEB_APP_URL + "?action=checkRole&email=" + encodeURIComponent(email)
+      );
+      const data = await res.json();
+
+      if (data.status !== "ok") {
+        localStorage.removeItem("sck_user_email");
+        window.location.href = "/Steel-City-Kickball/login/login.html";
+      }
+    } catch (err) {
+      console.error("Role check failed", err);
+      window.location.href = "/Steel-City-Kickball/login/login.html";
+    }
+  })();
+</script>
+
   <div class="page-wrap">
     <header>
       <div class="title-block">
