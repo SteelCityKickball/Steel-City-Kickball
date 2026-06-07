@@ -10,98 +10,16 @@
   <!-- Google Identity Services -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
-  <!-- Identity Logic -->
-  <script>
-    const WEB_APP_URL =
-      "https://script.google.com/macros/s/AKfycbyofNQOa8YJkRticXHtVV4p3BTscvK2qKu9kZKR9qpAu4XefGrjNcuQD818DaCyqCS4/exec";
-
-    // Runs on page load
-    async function initIdentity() {
-      const email = localStorage.getItem("sck_user_email");
-
-      const loginBtn = document.getElementById("login-btn");
-      const logoutBtn = document.getElementById("logout-btn");
-      const welcome = document.getElementById("welcome-msg");
-
-      if (!email) {
-        // Not logged in
-        loginBtn.style.display = "block";
-        logoutBtn.style.display = "none";
-        welcome.textContent = "";
-        return;
-      }
-
-      // Logged in — show welcome
-      welcome.textContent = "Welcome, " + email;
-      loginBtn.style.display = "none";
-      logoutBtn.style.display = "block";
-
-      // Check if commissioner → redirect
-      const check = await fetch(
-        WEB_APP_URL + "?action=checkRole&email=" + encodeURIComponent(email)
-      ).then(r => r.json());
-
-      if (check.status === "ok") {
-        // Commissioner → send to dashboard
-        window.location.href = "/Steel-City-Kickball/commissioner/commissioner.html";
-      }
-    }
-
-    function logout() {
-      localStorage.removeItem("sck_user_email");
-      window.location.reload();
-    }
-  </script>
-
-  <!-- Google Login Handler -->
-  <script>
-    function handleCredentialResponse(response) {
-      const payload = JSON.parse(atob(response.credential.split('.')[1]));
-      const email = payload.email;
-
-      localStorage.setItem("sck_user_email", email);
-      window.location.reload();
-    }
-  </script>
-
+  <!-- Global identity logic (login, avatar, redirect) -->
+  <script src="src/identity/global-identity.js" defer></script>
 </head>
 
-<body class="home" onload="initIdentity()">
+<body class="home">
 
 <div class="page-content">
 
   <!-- NAVIGATION -->
   <div id="nav-container"></div>
-
-  <!-- LOGIN AREA -->
-  <div style="text-align:center; margin-top:20px;">
-    <div id="welcome-msg" style="color:#66fcf1; font-size:1.1rem; margin-bottom:10px;"></div>
-
-    <!-- Google Sign-In button -->
-    <div id="login-btn" style="display:none;">
-      <div id="g_id_onload"
-           data-client_id="645103089081-ptp0jc7uurf9msh8ehuflcp9kljjsjgs.apps.googleusercontent.com"
-           data-callback="handleCredentialResponse"
-           data-auto_prompt="false">
-      </div>
-
-      <div class="g_id_signin"
-           data-type="standard"
-           data-size="large"
-           data-theme="outline"
-           data-text="signin_with"
-           data-shape="rectangular"
-           data-logo_alignment="left">
-      </div>
-    </div>
-
-    <!-- Logout button -->
-    <button id="logout-btn"
-            onclick="logout()"
-            style="display:none; margin-top:10px; padding:8px 16px; background:#45a29e; border:none; border-radius:6px; color:white; cursor:pointer;">
-      Logout
-    </button>
-  </div>
 
   <!-- HERO -->
   <div class="hero">
@@ -149,7 +67,7 @@
 
 </div>
 
-<!-- LOAD NAV FIRST -->
+<!-- LOAD NAV -->
 <script>
   fetch("src/components/nav.html")
     .then(res => res.text())
@@ -178,7 +96,7 @@
     .catch(err => console.error("Nav load failed:", err));
 </script>
 
-<!-- LOAD HOMEPAGE LOGIC AFTER NAV -->
+<!-- HOMEPAGE LOGIC -->
 <script src="src/scripts/homepage.js"></script>
 
 </body>
