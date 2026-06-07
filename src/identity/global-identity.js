@@ -1,5 +1,6 @@
 // Your Apps Script Web App URL
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyTQYyErJ-TfOxdV99vC8w2PqpEEMT5o5ZIZb5CYckheDG_4USllAIM_F8vkuJcXlzG/exec";
+const WEB_APP_URL =
+  "https://script.google.com/macros/s/AKfycbyTQYyErJ-TfOxdV99vC8w2PqpEEMT5o5ZIZb5CYckheDG_4USllAIM_F8vkuJcXlzG/exec";
 
 const DEFAULT_AVATAR = "src/assets/default-avatar.png";
 
@@ -14,7 +15,7 @@ async function applyIdentityToUI() {
   const navUser = document.getElementById("nav-user");
   const navName = document.getElementById("nav-name");
   const navAvatar = document.getElementById("nav-avatar");
-  const navAuthActions = document.getElementById("nav-auth-actions");
+  const navLogoutBtn = document.getElementById("nav-logout-btn");
 
   // Mobile elements
   const mobileGoogleLogin = document.getElementById("mobile-google-login");
@@ -27,10 +28,12 @@ async function applyIdentityToUI() {
   // NOT LOGGED IN
   // -------------------------------
   if (!email) {
+    // Desktop
     if (navGoogleLogin) navGoogleLogin.style.display = "block";
     if (navUser) navUser.style.display = "none";
-    if (navAuthActions) navAuthActions.style.display = "none";
+    if (navLogoutBtn) navLogoutBtn.style.display = "none";
 
+    // Mobile
     if (mobileGoogleLogin) mobileGoogleLogin.style.display = "block";
     if (mobileAvatar) mobileAvatar.style.display = "none";
     if (mobileName) mobileName.style.display = "none";
@@ -65,7 +68,7 @@ async function applyIdentityToUI() {
     if (navAvatar) navAvatar.src = avatarUrl;
   }
   if (navGoogleLogin) navGoogleLogin.style.display = "none";
-  if (navAuthActions) navAuthActions.style.display = "flex";
+  if (navLogoutBtn) navLogoutBtn.style.display = "inline-block";
 
   // -------------------------------
   // UPDATE MOBILE UI
