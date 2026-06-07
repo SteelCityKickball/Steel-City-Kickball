@@ -33,7 +33,7 @@ body::before {
 
 /* UTILITY */
 .hidden {
-  display: none !important;
+  display: none;
 }
 
 /* NAVBAR */
