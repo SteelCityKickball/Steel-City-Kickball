@@ -1,36 +1,131 @@
-export function getUser() {
-    const user = localStorage.getItem("sck_user");
-    return user ? JSON.parse(user) : null;
-}
+// Your Apps Script Web App URL
+const WEB_APP_URL =
+  "https://script.google.com/macros/s/AKfycbyofNQOa8YJkRticXHtVV4p3BTscvK2qKu9kZKR9qpAu4XefGrjNcuQD818DaCyqCS4/exec";
 
-export function logout() {
-    localStorage.removeItem("sck_user");
-    window.location.href = "index.html";
-}
+const DEFAULT_AVATAR = "src/assets/default-avatar.png";
 
-export function applyIdentityToUI() {
-    const user = getUser();
-    const defaultAvatar = "src/assets/default-avatar.png";
+// -------------------------------
+// MAIN UI UPDATE FUNCTION
+// -------------------------------
+async function applyIdentityToUI() {
+  const email = localStorage.getItem("sck_user_email");
 
-    const ids = {
-        login: ["nav-login", "mobile-login"],
-        profile: ["nav-profile", "mobile-profile"],
-        logout: ["nav-logout", "mobile-logout"],
-        avatar: ["nav-avatar", "mobile-avatar"]
-    };
+  // Desktop elements
+  const navGoogleLogin = document.getElementById("nav-google-login");
+  const navUser = document.getElementById("nav-user");
+  const navName = document.getElementById("nav-name");
+  const navAvatar = document.getElementById("nav-avatar");
+  const navAuthActions = document.getElementById("nav-auth-actions");
 
-    if (user) {
-        ids.login.forEach(id => document.getElementById(id)?.classList.add("hidden"));
-        ids.profile.forEach(id => document.getElementById(id)?.classList.remove("hidden"));
-        ids.logout.forEach(id => document.getElementById(id)?.classList.remove("hidden"));
-        ids.avatar.forEach(id => document.getElementById(id).src = user.avatar || defaultAvatar);
-    } else {
-        ids.login.forEach(id => document.getElementById(id)?.classList.remove("hidden"));
-        ids.profile.forEach(id => document.getElementById(id)?.classList.add("hidden"));
-        ids.logout.forEach(id => document.getElementById(id)?.classList.add("hidden"));
-        ids.avatar.forEach(id => document.getElementById(id).src = defaultAvatar);
+  // Mobile elements
+  const mobileGoogleLogin = document.getElementById("mobile-google-login");
+  const mobileAvatar = document.getElementById("mobile-avatar");
+  const mobileName = document.getElementById("mobile-name");
+  const mobileLogoutBtn = document.getElementById("mobile-logout-btn");
+  const mobileProfileRow = document.getElementById("mobile-profile-row");
+
+  // -------------------------------
+  // NOT LOGGED IN
+  // -------------------------------
+  if (!email) {
+    if (navGoogleLogin) navGoogleLogin.style.display = "block";
+    if (navUser) navUser.style.display = "none";
+    if (navAuthActions) navAuthActions.style.display = "none";
+
+    if (mobileGoogleLogin) mobileGoogleLogin.style.display = "block";
+    if (mobileAvatar) mobileAvatar.style.display = "none";
+    if (mobileName) mobileName.style.display = "none";
+    if (mobileLogoutBtn) mobileLogoutBtn.style.display = "none";
+    if (mobileProfileRow) mobileProfileRow.style.display = "none";
+
+    return;
+  }
+
+  // -------------------------------
+  // LOGGED IN — FETCH PROFILE
+  // -------------------------------
+  let profile = null;
+  try {
+    const res = await fetch(
+      `${WEB_APP_URL}?action=getProfile&email=${encodeURIComponent(email)}`
+    );
+    profile = await res.json();
+  } catch (e) {
+    console.error("Profile fetch failed:", e);
+  }
+
+  const displayName = profile?.name || email;
+  const avatarUrl = profile?.avatarUrl || DEFAULT_AVATAR;
+
+  // -------------------------------
+  // UPDATE DESKTOP UI
+  // -------------------------------
+  if (navUser) {
+    navUser.style.display = "flex";
+    if (navName) navName.textContent = displayName;
+    if (navAvatar) navAvatar.src = avatarUrl;
+  }
+  if (navGoogleLogin) navGoogleLogin.style.display = "none";
+  if (navAuthActions) navAuthActions.style.display = "flex";
+
+  // -------------------------------
+  // UPDATE MOBILE UI
+  // -------------------------------
+  if (mobileAvatar) {
+    mobileAvatar.style.display = "block";
+    mobileAvatar.src = avatarUrl;
+  }
+  if (mobileName) {
+    mobileName.style.display = "inline";
+    mobileName.textContent = displayName;
+  }
+  if (mobileGoogleLogin) mobileGoogleLogin.style.display = "none";
+  if (mobileLogoutBtn) mobileLogoutBtn.style.display = "inline-block";
+  if (mobileProfileRow) mobileProfileRow.style.display = "list-item";
+
+  // -------------------------------
+  // COMMISSIONER REDIRECT
+  // -------------------------------
+  try {
+    const check = await fetch(
+      `${WEB_APP_URL}?action=checkRole&email=${encodeURIComponent(email)}`
+    ).then(r => r.json());
+
+    if (check.status === "ok" && check.role === "commissioner") {
+      if (!window.location.pathname.includes("/commissioner/")) {
+        window.location.href =
+          "/Steel-City-Kickball/commissioner/commissioner.html";
+      }
     }
-
-    document.getElementById("nav-logout")?.addEventListener("click", logout);
-    document.getElementById("mobile-logout")?.addEventListener("click", logout);
+  } catch (e) {
+    console.error("Role check failed:", e);
+  }
 }
+
+// -------------------------------
+// GOOGLE LOGIN CALLBACK
+// -------------------------------
+function handleCredentialResponse(response) {
+  try {
+    const payload = JSON.parse(atob(response.credential.split(".")[1]));
+    const email = payload.email;
+
+    localStorage.setItem("sck_user_email", email);
+    window.location.reload();
+  } catch (e) {
+    console.error("Failed to parse Google credential:", e);
+  }
+}
+
+// -------------------------------
+// LOGOUT
+// -------------------------------
+function logout() {
+  localStorage.removeItem("sck_user_email");
+  window.location.reload();
+}
+
+// Expose globally
+window.applyIdentityToUI = applyIdentityToUI;
+window.handleCredentialResponse = handleCredentialResponse;
+window.logout = logout;
