@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login – Steel City Kickball</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google Identity Services -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0b0c10;
+      color: #c5c6c7;
+      font-family: system-ui, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-card {
+      background: rgba(255,255,255,0.05);
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      width: 320px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    h1 {
+      margin-top: 0;
+      color: #66fcf1;
+      font-size: 1.4rem;
+    }
+
+    #error {
+      margin-top: 12px;
+      color: #ff4b5c;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-card">
+    <h1>Commissioner Login</h1>
+    <p>Please sign in with your Google account</p>
+
+    <!-- Google Sign-In button -->
+    <div id="g_id_onload"
+         data-client_id="YOUR_GOOGLE_CLIENT_ID"
+         data-callback="handleCredentialResponse"
+         data-auto_prompt="false">
+    </div>
+
+    <div class="g_id_signin"
+         data-type="standard"
+         data-size="large"
+         data-theme="outline"
+         data-text="signin_with"
+         data-shape="rectangular"
+         data-logo_alignment="left">
+    </div>
+
+    <div id="error">Access denied. Commissioner only.</div>
+  </div>
+
+  <script>
+    async function handleCredentialResponse(response) {
+      // Decode the JWT to extract the email
+      const payload = JSON.parse(atob(response.credential.split('.')[1]));
+      const email = payload.email;
+
+      // Save email locally
+      localStorage.setItem("sck_user_email", email);
+
+      // Verify role with backend
+      const check = await fetch(
+        "YOUR_WEBAPP_URL?action=checkRole&email=" + encodeURIComponent(email)
+      ).then(r => r.json());
+
+      if (check.status === "ok") {
+        window.location.href = "/Steel-City-Kickball/commissioner/commissioner.html";
+      } else {
+        document.getElementById("error").style.display = "block";
+        localStorage.removeItem("sck_user_email");
+      }
+    }
+  </script>
+</body>
+</html>
