@@ -1,5 +1,4 @@
 <!-- no cache -->
-
 <!-- redeploy fix -->
 
 <nav class="navbar">
@@ -60,32 +59,47 @@
     <button id="nav-logout-btn" class="hidden nav-logout">Logout</button>
   </div>
 
-  <!-- MOBILE BAR -->
+  <!-- MOBILE BAR (CLEANED UP) -->
   <div class="mobile-bar mobile-only">
 
-    <img id="mobile-avatar" src="src/assets/default-avatar.png" class="mobile-avatar hidden">
-    <span id="mobile-name" class="hidden"></span>
+    <!-- ONLY LOGO + HAMBURGER ON MOBILE TOP BAR -->
+    <a href="index.html" class="nav-logo">
+      <img src="src/assets/Amazinglogo.png" class="nav-logo-img" alt="Steel City Kickball Logo">
+    </a>
 
-    <div id="mobile-google-login" class="hidden">
-      <div class="g_id_signin"
-           data-type="standard"
-           data-size="medium"
-           data-theme="outline"
-           data-text="signin_with"
-           data-shape="rectangular"
-           data-logo_alignment="left">
-      </div>
-    </div>
-
-    <button id="mobile-logout-btn" class="hidden nav-logout">Logout</button>
-
-    <!-- Hamburger ONLY on mobile -->
     <button class="hamburger" id="hamburger-btn">☰</button>
   </div>
 
   <!-- MOBILE MENU -->
   <ul class="mobile-menu" id="mobile-menu">
 
+    <!-- MOBILE AUTH SECTION -->
+    <li id="mobile-auth-section">
+
+      <!-- Avatar + Name -->
+      <div id="mobile-user" class="hidden">
+        <img id="mobile-avatar" src="src/assets/default-avatar.png" class="mobile-avatar">
+        <span id="mobile-name"></span>
+      </div>
+
+      <!-- Google Login -->
+      <div id="mobile-google-login" class="hidden">
+        <div class="g_id_signin"
+             data-type="standard"
+             data-size="medium"
+             data-theme="outline"
+             data-text="signin_with"
+             data-shape="rectangular"
+             data-logo_alignment="left">
+        </div>
+      </div>
+
+      <!-- Logout -->
+      <button id="mobile-logout-btn" class="hidden nav-logout">Logout</button>
+
+    </li>
+
+    <!-- MENU LINKS -->
     <li><a href="index.html">Home</a></li>
     <li><a href="schedule.html">Schedule</a></li>
     <li><a href="standings.html">Standings</a></li>
