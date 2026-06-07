@@ -6,13 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Steel City Kickball — Home</title>
 
-  <link rel="stylesheet" href="src/styles/main.css">
+  <!-- FIXED CSS PATH -->
+  <link rel="stylesheet" href="/Steel-City-Kickball/src/styles/main.css">
 
   <!-- Google Identity Services -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
-  <!-- Global identity logic (login, avatar, redirect) -->
-  <script src="src/identity/global-identity.js" defer></script>
+  <!-- FIXED GLOBAL IDENTITY PATH -->
+  <script src="/Steel-City-Kickball/src/identity/global-identity.js" defer></script>
 </head>
 
 <body class="home">
@@ -24,7 +25,7 @@
 
   <!-- HERO -->
   <div class="hero">
-    <img src="src/assets/Amazinglogo.png" alt="Steel City Kickball Logo">
+    <img src="/Steel-City-Kickball/src/assets/Amazinglogo.png" alt="Steel City Kickball Logo">
   </div>
 
   <!-- GAME OF THE WEEK -->
@@ -68,9 +69,9 @@
 
 </div>
 
-<!-- LOAD NAV -->
+<!-- FIXED NAV FETCH PATH -->
 <script>
-  fetch("src/components/nav.html")
+  fetch("/Steel-City-Kickball/src/components/nav.html")
     .then(res => res.text())
     .then(html => {
       const navContainer = document.getElementById("nav-container");
@@ -97,8 +98,8 @@
     .catch(err => console.error("Nav load failed:", err));
 </script>
 
-<!-- HOMEPAGE LOGIC -->
-<script src="src/scripts/homepage.js"></script>
+<!-- FIXED HOMEPAGE JS PATH -->
+<script src="/Steel-City-Kickball/src/scripts/homepage.js"></script>
 
 </body>
 </html>
