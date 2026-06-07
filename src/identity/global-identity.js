@@ -24,21 +24,25 @@ async function applyIdentityToUI() {
   const mobileLogoutBtn = document.getElementById("mobile-logout-btn");
   const mobileProfileRow = document.getElementById("mobile-profile-row");
 
+  // Helper functions
+  const show = el => el && el.classList.remove("hidden");
+  const hide = el => el && el.classList.add("hidden");
+
   // -------------------------------
   // NOT LOGGED IN
   // -------------------------------
   if (!email) {
     // Desktop
-    if (navGoogleLogin) navGoogleLogin.style.display = "block";
-    if (navUser) navUser.style.display = "none";
-    if (navLogoutBtn) navLogoutBtn.style.display = "none";
+    show(navGoogleLogin);
+    hide(navUser);
+    hide(navLogoutBtn);
 
     // Mobile
-    if (mobileGoogleLogin) mobileGoogleLogin.style.display = "block";
-    if (mobileAvatar) mobileAvatar.style.display = "none";
-    if (mobileName) mobileName.style.display = "none";
-    if (mobileLogoutBtn) mobileLogoutBtn.style.display = "none";
-    if (mobileProfileRow) mobileProfileRow.style.display = "none";
+    show(mobileGoogleLogin);
+    hide(mobileAvatar);
+    hide(mobileName);
+    hide(mobileLogoutBtn);
+    hide(mobileProfileRow);
 
     return;
   }
@@ -63,27 +67,27 @@ async function applyIdentityToUI() {
   // UPDATE DESKTOP UI
   // -------------------------------
   if (navUser) {
-    navUser.style.display = "flex";
+    show(navUser);
     if (navName) navName.textContent = displayName;
     if (navAvatar) navAvatar.src = avatarUrl;
   }
-  if (navGoogleLogin) navGoogleLogin.style.display = "none";
-  if (navLogoutBtn) navLogoutBtn.style.display = "inline-block";
+  hide(navGoogleLogin);
+  show(navLogoutBtn);
 
   // -------------------------------
   // UPDATE MOBILE UI
   // -------------------------------
   if (mobileAvatar) {
-    mobileAvatar.style.display = "block";
+    show(mobileAvatar);
     mobileAvatar.src = avatarUrl;
   }
   if (mobileName) {
-    mobileName.style.display = "inline";
+    show(mobileName);
     mobileName.textContent = displayName;
   }
-  if (mobileGoogleLogin) mobileGoogleLogin.style.display = "none";
-  if (mobileLogoutBtn) mobileLogoutBtn.style.display = "inline-block";
-  if (mobileProfileRow) mobileProfileRow.style.display = "list-item";
+  hide(mobileGoogleLogin);
+  show(mobileLogoutBtn);
+  show(mobileProfileRow);
 
   // -------------------------------
   // COMMISSIONER REDIRECT
