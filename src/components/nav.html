@@ -26,18 +26,12 @@
   </ul>
 
   <!-- DESKTOP AUTH -->
-  <div class="nav-right desktop-only" style="display:flex; align-items:center; gap:14px;">
+  <div class="nav-right desktop-only" style="display:flex; align-items:center; gap:12px;">
 
-    <!-- Avatar + Name -->
-    <div id="nav-user" style="display:none; align-items:center; gap:10px;">
-      <img id="nav-avatar"
-           src="src/assets/default-avatar.png"
-           alt="Avatar"
-           style="width:48px; height:48px; border-radius:50%; object-fit:cover; border:2px solid #45a29e;">
-      <span id="nav-name" style="color:#66fcf1; font-size:0.95rem;"></span>
-    </div>
+    <!-- Welcome text -->
+    <span id="nav-welcome" style="color:#66fcf1; display:none;"></span>
 
-    <!-- Google Sign-In -->
+    <!-- Google Sign-In button -->
     <div id="nav-google-login" style="display:none;">
       <div id="g_id_onload"
            data-client_id="645103089081-ptp0jc7uurf9msh8ehuflcp9kljjsjgs.apps.googleusercontent.com"
@@ -55,29 +49,20 @@
       </div>
     </div>
 
-    <!-- Profile + Logout -->
-    <div id="nav-auth-actions" style="display:none; align-items:center; gap:10px;">
-      <a href="src/identity/profile.html"
-         style="color:#c5c6c7; font-size:0.9rem; text-decoration:none;">
-        Profile
-      </a>
-      <button id="nav-logout-btn"
-              onclick="logout()"
-              style="padding:6px 12px; background:#45a29e; border:none; border-radius:6px; color:white; cursor:pointer;">
-        Logout
-      </button>
-    </div>
+    <!-- Logout -->
+    <button id="nav-logout-btn"
+            onclick="logout()"
+            style="display:none; padding:6px 12px; background:#45a29e; border:none; border-radius:6px; color:white; cursor:pointer;">
+      Logout
+    </button>
   </div>
 
   <!-- MOBILE BAR -->
   <div class="mobile-bar mobile-only" style="display:flex; align-items:center; gap:10px;">
-    <img id="mobile-avatar"
-         src="src/assets/default-avatar.png"
-         alt="Avatar"
-         style="display:none; width:36px; height:36px; border-radius:50%; object-fit:cover; border:2px solid #45a29e;">
-    <span id="mobile-name" style="display:none; color:#66fcf1; font-size:0.85rem;"></span>
 
-    <div id="mobile-google-login" style="margin-left:auto; display:none;">
+    <span id="mobile-welcome" style="color:#66fcf1; display:none; font-size:0.9rem;"></span>
+
+    <div id="mobile-google-login" style="display:none;">
       <div class="g_id_signin"
            data-type="standard"
            data-size="medium"
@@ -90,10 +75,11 @@
 
     <button id="mobile-logout-btn"
             onclick="logout()"
-            style="display:none; margin-left:auto; padding:6px 12px; background:#45a29e; border:none; border-radius:6px; color:white; cursor:pointer;">
+            style="display:none; padding:6px 12px; background:#45a29e; border:none; border-radius:6px; color:white; cursor:pointer;">
       Logout
     </button>
 
+    <!-- Hamburger ONLY for mobile -->
     <button class="hamburger" id="hamburger-btn">☰</button>
   </div>
 
@@ -115,9 +101,63 @@
       </ul>
     </li>
 
-    <li id="mobile-profile-row" style="display:none;">
-      <a href="src/identity/profile.html">Profile</a>
-    </li>
   </ul>
 
 </nav>
+
+<script>
+  const WEB_APP_URL =
+    "https://script.google.com/macros/s/AKfycbyofNQOa8YJkRticXHtVV4p3BTscvK2qKu9kZKR9qpAu4XefGrjNcuQD818DaCyqCS4/exec";
+
+  async function applyIdentityToUI() {
+    const email = localStorage.getItem("sck_user_email");
+
+    const welcome = document.getElementById("nav-welcome");
+    const mobileWelcome = document.getElementById("mobile-welcome");
+    const loginBtn = document.getElementById("nav-google-login");
+    const mobileLoginBtn = document.getElementById("mobile-google-login");
+    const logoutBtn = document.getElementById("nav-logout-btn");
+    const mobileLogoutBtn = document.getElementById("mobile-logout-btn");
+
+    if (!email) {
+      loginBtn.style.display = "block";
+      mobileLoginBtn.style.display = "block";
+      logoutBtn.style.display = "none";
+      mobileLogoutBtn.style.display = "none";
+      welcome.style.display = "none";
+      mobileWelcome.style.display = "none";
+      return;
+    }
+
+    welcome.textContent = email;
+    mobileWelcome.textContent = email;
+    welcome.style.display = "inline";
+    mobileWelcome.style.display = "inline";
+
+    loginBtn.style.display = "none";
+    mobileLoginBtn.style.display = "none";
+    logoutBtn.style.display = "inline-block";
+    mobileLogoutBtn.style.display = "inline-block";
+
+    const check = await fetch(
+      WEB_APP_URL + "?action=checkRole&email=" + encodeURIComponent(email)
+    ).then(r => r.json());
+
+    if (check.status === "ok") {
+      window.location.href = "/Steel-City-Kickball/commissioner/commissioner.html";
+    }
+  }
+
+  function logout() {
+    localStorage.removeItem("sck_user_email");
+    window.location.reload();
+  }
+
+  function handleCredentialResponse(response) {
+    const payload = JSON.parse(atob(response.credential.split('.')[1]));
+    const email = payload.email;
+
+    localStorage.setItem("sck_user_email", email);
+    window.location.reload();
+  }
+</script>
