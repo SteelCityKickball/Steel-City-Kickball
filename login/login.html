@@ -79,7 +79,8 @@
 
       // Verify role with backend
       const check = await fetch(
-        "YOUR_WEBAPP_URL?action=checkRole&email=" + encodeURIComponent(email)
+        "https://script.google.com/macros/s/AKfycbzDR3Vo7LMFxYYsSxr73KL-LXHTSNRZOn7ybEWsyWhLsGiKLI6SrETyBs5--mVchv9X/exec?action=checkRole&email=" 
+        + encodeURIComponent(email)
       ).then(r => r.json());
 
       if (check.status === "ok") {
