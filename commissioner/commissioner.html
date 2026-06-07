@@ -722,141 +722,149 @@
         </ul>
       </section>
 
-      <!-- SETTINGS TAB -->
-      <section class="tab-panel" id="tab-settings">
-        <div class="panel-header">
-          <div>
-            <h2>Settings</h2>
-            <p>Technical configuration for this dashboard.</p>
-          </div>
-          <div class="panel-actions">
-            <button class="btn" id="btn-settings-test">
-              🔌 Test Connection
-            </button>
-          </div>
-        </div>
-
-        <div class="field-group">
-          <div class="field-label">
-            <span class="key">Apps Script Web App URL</span>
-            <span class="hint">Deployed as “Execute as me, accessible to anyone with link”</span>
-          </div>
-          <input type="text" id="settings-webapp-url" placeholder="https://script.google.com/macros/s/.../exec">
-        </div>
-
-        <p style="font-size: 0.8rem; opacity: 0.8; margin-top: 4px;">
-          This value is only used in your browser (not stored anywhere). For convenience, we also hard-coded the
-          same URL in the script block below—update both in one go when you redeploy.
-        </p>
-
-        <div class="status-bar">
-          <div class="status-message muted" id="status-settings">
-            <span class="status-dot"></span>
-            <span>Idle</span>
-          </div>
-          <div class="status-right" id="status-settings-meta">
-            Connection: unknown
-          </div>
-        </div>
-      </section>
+     <!-- SETTINGS TAB -->
+<section class="tab-panel" id="tab-settings">
+  <div class="panel-header">
+    <div>
+      <h2>Settings</h2>
+      <p>Technical configuration for this dashboard.</p>
+    </div>
+    <div class="panel-actions">
+      <button class="btn" id="btn-settings-test">🔌 Test Connection</button>
     </div>
   </div>
-  
+
+  <div class="field-group">
+    <div class="field-label">
+      <span class="key">Apps Script Web App URL</span>
+      <span class="hint">Deployed as “Execute as me, accessible to anyone with link”</span>
+    </div>
+    <input type="text" id="settings-webapp-url" placeholder="https://script.google.com/macros/s/.../exec">
+  </div>
+
+  <p style="font-size: 0.8rem; opacity: 0.8; margin-top: 4px;">
+    This value is only used in your browser (not stored anywhere). For convenience, we also hard‑coded the
+    same URL in the script block below—update both in one go when you redeploy.
+  </p>
+
+  <div class="status-bar">
+    <div class="status-message muted" id="status-settings">
+      <span class="status-dot"></span>
+      <span>Idle</span>
+    </div>
+    <div class="status-right" id="status-settings-meta">
+      Connection: unknown
+    </div>
+  </div>
+</section>
+</div>
+</div>
+
 <script>
-   /* RULES LOAD/SAVE */
-    let rulesData = [];
+/* RULES LOAD/SAVE */
+let rulesData = [];
 
-    function renderRules() {
-      const tbody = document.getElementById('rules-tbody');
-      tbody.innerHTML = "";
-      rulesData.forEach((r, i) => {
-        const tr = document.createElement('tr');
+function renderRules() {
+  const tbody = document.getElementById('rules-tbody');
+  if (!tbody) return;
 
-        tr.innerHTML = `
-          <td>${i + 1}</td>
-          <td><input class="table-input" value="${r.section || ""}"></td>
-          <td><input class="table-input" value="${r.title || ""}"></td>
-          <td><textarea class="table-input">${r.text || ""}</textarea></td>
-          <td>
-            <button class="btn" onclick="moveRule(${i}, -1)">↑</button>
-            <button class="btn" onclick="moveRule(${i}, 1)">↓</button>
-            <button class="btn btn-danger" onclick="deleteRule(${i})">✕</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
+  tbody.innerHTML = "";
 
-    function syncRules() {
-      const rows = [...document.querySelectorAll('#rules-tbody tr')];
-      rulesData = rows.map(row => {
-        const inputs = row.querySelectorAll('.table-input');
-        return {
-          section: inputs[0].value,
-          title: inputs[1].value,
-          text: inputs[2].value
-        };
-      });
-    }
+  rulesData.forEach((r, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${i + 1}</td>
+      <td><input class="table-input" value="${r.section || ""}"></td>
+      <td><input class="table-input" value="${r.title || ""}"></td>
+      <td><textarea class="table-input">${r.text || ""}</textarea></td>
+      <td>
+        <button class="btn" onclick="moveRule(${i}, -1)">↑</button>
+        <button class="btn" onclick="moveRule(${i}, 1)">↓</button>
+        <button class="btn btn-danger" onclick="deleteRule(${i})">✕</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
 
-    function addRule() {
-      syncRules();
-      rulesData.push({ section: "", title: "", text: "" });
-      renderRules();
-    }
-
-    function deleteRule(i) {
-      syncRules();
-      rulesData.splice(i, 1);
-      renderRules();
-    }
-
-    function moveRule(i, dir) {
-      syncRules();
-      const ni = i + dir;
-      if (ni < 0 || ni >= rulesData.length) return;
-      const [item] = rulesData.splice(i, 1);
-      rulesData.splice(ni, 0, item);
-      renderRules();
-    }
-
-    async function loadRules() {
-      setStatus('status-rules', 'Loading…');
-      try {
-        const res = await fetch(WEB_APP_URL + "?action=getRules");
-        const data = await res.json();
-        rulesData = data.rules || [];
-        renderRules();
-        setStatus('status-rules', 'Loaded', 'idle');
-        setMeta('status-rules-meta', 'Last loaded: ' + formatTimestamp());
-      } catch (err) {
-        setStatus('status-rules', 'Error loading', 'error');
-      }
-    }
-
-    async function saveRules() {
-      syncRules();
-      setStatus('status-rules', 'Saving…');
-      try {
-        await fetch(WEB_APP_URL + "?action=saveRules", {
-          method: "POST",
-          body: JSON.stringify({ rules: rulesData })
-        });
-        setStatus('status-rules', 'Saved', 'idle');
-        setMeta('status-rules-meta', 'Last saved: ' + formatTimestamp());
-      } catch (err) {
-        setStatus('status-rules', 'Error saving', 'error');
-      }
-    }
-
-    document.getElementById('btn-rules-add-row').onclick = addRule;
-    document.getElementById('btn-rules-clear-empty').onclick = () => {
-      syncRules();
-      rulesData = rulesData.filter(r => r.section || r.title || r.text);
-      renderRules();
+function syncRules() {
+  const rows = [...document.querySelectorAll('#rules-tbody tr')];
+  rulesData = rows.map(row => {
+    const inputs = row.querySelectorAll('.table-input');
+    return {
+      section: inputs[0].value,
+      title: inputs[1].value,
+      text: inputs[2].value
     };
-    document.getElementById('btn-rules-refresh').onclick = loadRules;
-    document.getElementById('btn-rules-save').onclick = saveRules;
+  });
+}
+
+function addRule() {
+  syncRules();
+  rulesData.push({ section: "", title: "", text: "" });
+  renderRules();
+}
+
+function deleteRule(i) {
+  syncRules();
+  rulesData.splice(i, 1);
+  renderRules();
+}
+
+function moveRule(i, dir) {
+  syncRules();
+  const ni = i + dir;
+  if (ni < 0 || ni >= rulesData.length) return;
+  const [item] = rulesData.splice(i, 1);
+  rulesData.splice(ni, 0, item);
+  renderRules();
+}
+
+async function loadRules() {
+  setStatus('status-rules', 'Loading…');
+  try {
+    const res = await fetch(WEB_APP_URL + "?action=getRules");
+    const data = await res.json();
+    rulesData = data.rules || [];
+    renderRules();
+    setStatus('status-rules', 'Loaded', 'idle');
+    setMeta('status-rules-meta', 'Last loaded: ' + formatTimestamp());
+  } catch (err) {
+    setStatus('status-rules', 'Error loading', 'error');
+  }
+}
+
+async function saveRules() {
+  syncRules();
+  setStatus('status-rules', 'Saving…');
+  try {
+    await fetch(WEB_APP_URL + "?action=saveRules", {
+      method: "POST",
+      body: JSON.stringify({ rules: rulesData })
+    });
+    setStatus('status-rules', 'Saved', 'idle');
+    setMeta('status-rules-meta', 'Last saved: ' + formatTimestamp());
+  } catch (err) {
+    setStatus('status-rules', 'Error saving', 'error');
+  }
+}
+
+/* SAFE EVENT BINDINGS */
+const btnAdd = document.getElementById('btn-rules-add-row');
+if (btnAdd) btnAdd.onclick = addRule;
+
+const btnClear = document.getElementById('btn-rules-clear-empty');
+if (btnClear) btnClear.onclick = () => {
+  syncRules();
+  rulesData = rulesData.filter(r => r.section || r.title || r.text);
+  renderRules();
+};
+
+const btnRefresh = document.getElementById('btn-rules-refresh');
+if (btnRefresh) btnRefresh.onclick = loadRules;
+
+const btnSave = document.getElementById('btn-rules-save');
+if (btnSave) btnSave.onclick = saveRules;
 </script>
 
  <script>
