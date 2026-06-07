@@ -13,7 +13,7 @@
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
   <!-- FIXED GLOBAL IDENTITY PATH -->
-  <script src="/Steel-City-Kickball/src/identity/global-identity.js" defer></script>
+  <script src="/Steel-City-Kickball/src/identity/global-identity.js?v=10" defer></script>
 </head>
 
 <body class="home">
@@ -87,7 +87,7 @@
 
 <!-- FIXED NAV FETCH PATH (NO LEADING SLASH) -->
 <script>
-  fetch("src/components/nav.html")
+  fetch("src/components/nav.html?v=10")
     .then(res => res.text())
     .then(html => {
       const navContainer = document.getElementById("nav-container");
