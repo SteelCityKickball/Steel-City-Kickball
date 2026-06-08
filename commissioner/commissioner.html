@@ -980,34 +980,37 @@ if (btnSave) btnSave.onclick = saveRules;
       }
     }
 
-    async function saveHomepageContent() {
-      setStatus('status-homepage', 'Saving…');
-      const payload = {
-        CommissionerMessage: document.getElementById('hp-commissioner-message').value,
-        LeagueUpdates: document.getElementById('hp-league-updates').value,
-        BannerHeadline: document.getElementById('hp-banner-headline').value,
-        GOTWTitle: document.getElementById('hp-gotw-title').value,
-        GOTWBlurb: document.getElementById('hp-gotw-blurb').value,
-        MVPName: document.getElementById('hp-mvp-name').value,
-        MVPTeam: document.getElementById('hp-mvp-team').value,
-        MVPBlurb: document.getElementById('hp-mvp-blurb').value
-      };
+   async function saveHomepageContent() {
+  setStatus('status-homepage', 'Saving…');
 
-      try {
+  const payload = {
+    CommissionerMessage: document.getElementById('hp-commissioner-message').value,
+    LeagueUpdates: document.getElementById('hp-league-updates').value,
+    BannerHeadline: document.getElementById('hp-banner-headline').value,
+    GOTWTitle: document.getElementById('hp-gotw-title').value,
+    GOTWBlurb: document.getElementById('hp-gotw-blurb').value,
+    MVPName: document.getElementById('hp-mvp-name').value,
+    MVPTeam: document.getElementById('hp-mvp-team').value,
+    MVPBlurb: document.getElementById('hp-mvp-blurb').value
+  };
+
+  try {
     await fetch(WEB_APP_URL + "?action=saveHomepageContent", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(payload)
-});
-        setStatus('status-homepage', 'Saved', 'idle');
-        setMeta('status-homepage-meta', 'Last saved: ' + formatTimestamp());
-      } catch (err) {
-        setStatus('status-homepage', 'Error saving', 'error');
-      }
-    }
+      method: "POST",
+      mode: "no-cors",
+      body: JSON.stringify(payload)
+    });
 
-    document.getElementById('btn-homepage-refresh').onclick = loadHomepageContent;
-    document.getElementById('btn-homepage-save').onclick = saveHomepageContent;
+    // We can't read the response in no-cors mode, but Apps Script WILL receive it.
+    setStatus('status-homepage', 'Saved', 'idle');
+    setMeta('status-homepage-meta', 'Last saved: ' + formatTimestamp());
+  } catch (err) {
+    setStatus('status-homepage', 'Error saving', 'error');
+  }
+}
+
+document.getElementById('btn-homepage-refresh').onclick = loadHomepageContent;
+document.getElementById('btn-homepage-save').onclick = saveHomepageContent;
  </script>
   
   <script>
