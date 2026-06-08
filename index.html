@@ -77,9 +77,9 @@
       const navContainer = document.getElementById("nav-container");
       navContainer.innerHTML = html;
 
-      if (window.applyIdentityToUI) {
-        window.applyIdentityToUI();
-      }
+      setTimeout(() => {
+  if (window.applyIdentityToUI) applyIdentityToUI();
+}, 50);
 
       const hamburger = navContainer.querySelector("#hamburger-btn");
       const mobileMenu = navContainer.querySelector("#mobile-menu");
