@@ -2,7 +2,6 @@
 const WEB_APP_URL =
   "https://script.google.com/macros/s/AKfycbyTQYyErJ-TfOxdV99vC8w2PqpEEMT5o5ZIZb5CYckheDG_4USllAIM_F8vkuJcXlzG/exec";
 
-
 const DEFAULT_AVATAR = "src/assets/default-avatar.png";
 
 // -------------------------------
