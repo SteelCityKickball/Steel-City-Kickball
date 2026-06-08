@@ -1,105 +1,123 @@
-<!-- redeploy fix -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Steel City Kickball — Home</title>
+<!-- CLEAN NAV — NO SCRIPTS -->
 
-  <!-- FIXED CSS PATH + CACHE BUSTER -->
-  <link rel="stylesheet" href="/Steel-City-Kickball/src/styles/main.css?v=10">
+<nav class="navbar">
 
-  <!-- Google Identity Services -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-
-  <!-- FIXED GLOBAL IDENTITY PATH -->
-  <script src="/Steel-City-Kickball/src/identity/global-identity.js" defer></script>
-</head>
-
-<body class="home">
-
-<div class="page-content">
-
-  <!-- NAVIGATION -->
-  <div id="nav-container"></div>
-
-  <!-- HERO -->
-  <div class="hero">
-    <img src="/Steel-City-Kickball/src/assets/Amazinglogo.png" alt="Steel City Kickball Logo">
+  <!-- DESKTOP LEFT (LOGO) -->
+  <div class="nav-left desktop-only">
+    <a href="index.html" class="nav-logo">
+      <img src="src/assets/Amazinglogo.png" class="nav-logo-img" alt="Steel City Kickball Logo">
+    </a>
   </div>
 
-  <!-- GAME OF THE WEEK -->
-  <section>
-    <h2>Game of the Week</h2>
-    <img id="gotw-img" src="" alt="Game of the Week">
-    <p id="gotw-text" class="blurb"></p>
-  </section>
+  <!-- DESKTOP MENU -->
+  <ul class="nav-menu desktop-only">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="schedule.html">Schedule</a></li>
+    <li><a href="standings.html">Standings</a></li>
+    <li><a href="teams.html">Teams</a></li>
+    <li><a href="archives.html">Archives</a></li>
 
-  <!-- MVP -->
-  <section>
-    <h2>Game MVP</h2>
-    <img id="mvp-img" src="" alt="Game MVP">
-    <p id="mvp-text" class="blurb"></p>
-  </section>
+    <li class="dropdown">
+      <button class="dropdown-btn" type="button">More ▾</button>
+      <ul class="dropdown-menu">
+        <li><a href="registration.html">Registration</a></li>
+        <li><a href="rules.html">Rules</a></li>
+        <li><a href="waivers.html">Waivers</a></li>
+      </ul>
+    </li>
+  </ul>
 
-  <!-- LEAGUE UPDATES -->
-  <section class="homepage-section">
-    <h2>League Updates</h2>
-    <p id="league-updates"></p>
-  </section>
+  <!-- DESKTOP AUTH -->
+  <div class="nav-right desktop-only">
 
-  <!-- COMMISSIONER MESSAGE -->
-  <section class="homepage-section">
-    <h2>Word from the Commissioner</h2>
-    <p id="commissioner-message"></p>
-  </section>
+    <!-- Avatar + Name -->
+    <div id="nav-user" class="nav-user hidden">
+      <img id="nav-avatar" src="src/assets/default-avatar.png" class="nav-avatar">
+      <span id="nav-name"></span>
+    </div>
 
-  <!-- PHOTO STRIP -->
-  <div id="photo-strip" class="photo-strip"></div>
+    <!-- Google Sign-In -->
+    <div id="nav-google-login">
+      <div id="g_id_onload"
+           data-client_id="645103089081-ptp0jc7uurf9msh8ehuflcp9kljjsjgs.apps.googleusercontent.com"
+           data-callback="handleCredentialResponse"
+           data-auto_prompt="false">
+      </div>
 
-  <!-- ABOUT -->
-  <div class="about">
-    <p>
-      Welcome to the official home of Steel City Kickball!  
-      Check out standings, schedules, teams, and player resources.
-    </p>
+      <div class="g_id_signin"
+           data-type="standard"
+           data-size="medium"
+           data-theme="outline"
+           data-text="signin_with"
+           data-shape="rectangular"
+           data-logo_alignment="left">
+      </div>
+    </div>
+
+    <!-- Logout -->
+    <button id="nav-logout-btn" class="hidden nav-logout">Logout</button>
   </div>
 
-  <a class="button" href="standings.html">View Standings</a>
+  <!-- MOBILE BAR -->
+  <div class="mobile-bar mobile-only">
 
-</div>
+    <!-- MOBILE LOGO -->
+    <a href="index.html" class="nav-logo">
+      <img src="src/assets/Amazinglogo.png" class="nav-logo-img" alt="Steel City Kickball Logo">
+    </a>
 
-<!-- FIXED NAV FETCH PATH (NO LEADING SLASH) -->
-<script>
-  fetch("src/components/nav.html?v=14")
-    .then(res => res.text())
-    .then(html => {
-      const navContainer = document.getElementById("nav-container");
-      navContainer.innerHTML = html;
+    <!-- MOBILE AVATAR -->
+    <img id="mobile-avatar" src="src/assets/default-avatar.png" class="mobile-avatar hidden">
 
-      if (window.applyIdentityToUI) {
-        window.applyIdentityToUI();
-      }
+    <!-- HAMBURGER -->
+    <button class="hamburger" id="hamburger-btn">☰</button>
+  </div>
 
-      const hamburger = navContainer.querySelector("#hamburger-btn");
-      const mobileMenu = navContainer.querySelector("#mobile-menu");
-      if (hamburger && mobileMenu) {
-        hamburger.addEventListener("click", () => {
-          mobileMenu.classList.toggle("open");
-        });
-      }
+  <!-- MOBILE MENU -->
+  <ul class="mobile-menu" id="mobile-menu">
 
-      navContainer.querySelectorAll(".mobile-menu .dropdown-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-          btn.parentElement.classList.toggle("open");
-        });
-      });
-    })
-    .catch(err => console.error("Nav load failed:", err));
-</script>
+    <!-- MOBILE AUTH SECTION -->
+    <li id="mobile-auth-section">
 
-<!-- FIXED HOMEPAGE JS PATH -->
-<script src="/Steel-City-Kickball/src/scripts/homepage.js?v=10"></script>
+      <!-- Name -->
+      <span id="mobile-name" class="hidden"></span>
 
-</body>
-</html>
+      <!-- Google Login -->
+      <div id="mobile-google-login">
+        <div id="mobile-google-button" class="g_id_signin"
+             data-type="standard"
+             data-size="medium"
+             data-theme="outline"
+             data-text="signin_with"
+             data-shape="rectangular"
+             data-logo_alignment="left">
+        </div>
+      </div>
+
+      <!-- Logout -->
+      <button id="mobile-logout-btn" class="hidden nav-logout">Logout</button>
+
+      <!-- Profile -->
+      <a id="mobile-profile-row" class="hidden" href="src/identity/profile.html">Profile</a>
+
+    </li>
+
+    <!-- MENU LINKS -->
+    <li><a href="index.html">Home</a></li>
+    <li><a href="schedule.html">Schedule</a></li>
+    <li><a href="standings.html">Standings</a></li>
+    <li><a href="teams.html">Teams</a></li>
+    <li><a href="archives.html">Archives</a></li>
+
+    <li class="dropdown">
+      <button class="dropdown-btn" type="button">More ▾</button>
+      <ul class="dropdown-menu">
+        <li><a href="registration.html">Registration</a></li>
+        <li><a href="rules.html">Rules</a></li>
+        <li><a href="waivers.html">Waivers</a></li>
+      </ul>
+    </li>
+
+  </ul>
+
+</nav>
