@@ -3,8 +3,8 @@
 
 <nav class="navbar">
 
-  <!-- LOGO -->
-  <div class="nav-left">
+  <!-- DESKTOP LEFT (LOGO) -->
+  <div class="nav-left desktop-only">
     <a href="index.html" class="nav-logo">
       <img src="src/assets/Amazinglogo.png" class="nav-logo-img" alt="Steel City Kickball Logo">
     </a>
@@ -59,14 +59,18 @@
     <button id="nav-logout-btn" class="hidden nav-logout">Logout</button>
   </div>
 
-  <!-- MOBILE BAR (CLEANED UP) -->
+  <!-- MOBILE BAR (CLEAN + CORRECT) -->
   <div class="mobile-bar mobile-only">
 
-    <!-- ONLY LOGO + HAMBURGER ON MOBILE TOP BAR -->
+    <!-- MOBILE LOGO -->
     <a href="index.html" class="nav-logo">
       <img src="src/assets/Amazinglogo.png" class="nav-logo-img" alt="Steel City Kickball Logo">
     </a>
 
+    <!-- MOBILE AVATAR (ONLY WHEN LOGGED IN) -->
+    <img id="mobile-avatar" src="src/assets/default-avatar.png" class="mobile-avatar hidden">
+
+    <!-- HAMBURGER -->
     <button class="hamburger" id="hamburger-btn">☰</button>
   </div>
 
@@ -76,11 +80,8 @@
     <!-- MOBILE AUTH SECTION -->
     <li id="mobile-auth-section">
 
-      <!-- Avatar + Name -->
-      <div id="mobile-user" class="hidden">
-        <img id="mobile-avatar" src="src/assets/default-avatar.png" class="mobile-avatar">
-        <span id="mobile-name"></span>
-      </div>
+      <!-- Name -->
+      <span id="mobile-name" class="hidden"></span>
 
       <!-- Google Login -->
       <div id="mobile-google-login" class="hidden">
@@ -96,6 +97,9 @@
 
       <!-- Logout -->
       <button id="mobile-logout-btn" class="hidden nav-logout">Logout</button>
+
+      <!-- Profile -->
+      <a id="mobile-profile-row" class="hidden" href="src/identity/profile.html">Profile</a>
 
     </li>
 
@@ -113,10 +117,6 @@
         <li><a href="rules.html">Rules</a></li>
         <li><a href="waivers.html">Waivers</a></li>
       </ul>
-    </li>
-
-    <li id="mobile-profile-row" class="hidden">
-      <a href="src/identity/profile.html">Profile</a>
     </li>
 
   </ul>
