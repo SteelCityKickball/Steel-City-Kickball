@@ -6,13 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Steel City Kickball — Home</title>
 
-  <!-- FIXED CSS PATH + CACHE BUSTER -->
+  <!-- CSS -->
   <link rel="stylesheet" href="/Steel-City-Kickball/src/styles/main.css?v=10">
 
   <!-- Google Identity Services -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
-  <!-- FIXED GLOBAL IDENTITY PATH -->
+  <!-- Global Identity (must load BEFORE nav init) -->
   <script src="/Steel-City-Kickball/src/identity/global-identity.js" defer></script>
 </head>
 
@@ -69,9 +69,9 @@
 
 </div>
 
-<!-- FIXED NAV FETCH PATH (NO LEADING SLASH) -->
+<!-- FIXED NAV FETCH PATH (ABSOLUTE PATH REQUIRED) -->
 <script>
-  fetch("src/components/nav.html?v=14")
+  fetch("/Steel-City-Kickball/src/components/nav.html?v=14")
     .then(res => res.text())
     .then(html => {
       const navContainer = document.getElementById("nav-container");
@@ -90,13 +90,11 @@
           mobileMenu.classList.toggle("open");
         });
       }
-
-      // IMPORTANT: dropdown-btn code removed — your nav no longer uses it
     })
     .catch(err => console.error("Nav load failed:", err));
 </script>
 
-<!-- FIXED HOMEPAGE JS PATH -->
+<!-- HOMEPAGE CONTENT LOADER -->
 <script src="/Steel-City-Kickball/src/scripts/homepage.js?v=10"></script>
 
 </body>
