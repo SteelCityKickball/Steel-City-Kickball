@@ -122,3 +122,22 @@
   </ul>
 
 </nav>
+<script>
+document.getElementById("hamburger-btn").addEventListener("click", () => {
+  const menu = document.getElementById("mobile-menu");
+  menu.classList.toggle("open");
+
+  // When menu opens, render Google login if not already rendered
+  if (menu.classList.contains("open")) {
+    const mobileBtn = document.getElementById("mobile-google-button");
+
+    if (!mobileBtn.dataset.rendered) {
+      google.accounts.id.renderButton(
+        mobileBtn,
+        { theme: "outline", size: "medium" }
+      );
+      mobileBtn.dataset.rendered = "true";
+    }
+  }
+});
+</script>
