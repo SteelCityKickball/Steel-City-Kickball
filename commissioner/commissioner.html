@@ -994,10 +994,11 @@ if (btnSave) btnSave.onclick = saveRules;
       };
 
       try {
-        await fetch(WEB_APP_URL + "?action=saveHomepageContent", {
-          method: "POST",
-          body: JSON.stringify(payload)
-        });
+    await fetch(WEB_APP_URL + "?action=saveHomepageContent", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(payload)
+});
         setStatus('status-homepage', 'Saved', 'idle');
         setMeta('status-homepage-meta', 'Last saved: ' + formatTimestamp());
       } catch (err) {
