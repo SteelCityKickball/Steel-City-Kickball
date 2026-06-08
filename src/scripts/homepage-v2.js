@@ -1,5 +1,5 @@
 // Single source of truth: Apps Script Web App
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyTQYyErJ-TfOxdV99vC8w2PqpEEMT5o5ZIZb5CYckheDG_4USllAIM_F8vkuJcXlzG/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyDD60gSBwYCvkppqxW7CkcgHN4HmGQO_8Xe8dY9-6DBXHH37UqKwtv_nVLUnG0YJ14/exec";
 
 // --- GitHub helper for images (you already use this pattern) ---
 async function getLatestFromGitHub(path) {
