@@ -38,8 +38,9 @@ body::before {
 }
 
 /* MOBILE-FIRST VISIBILITY */
+/* FORCE HIDE DESKTOP ELEMENTS ON MOBILE */
 .desktop-only {
-  display: none;
+  display: none !important;
 }
 
 .mobile-only {
