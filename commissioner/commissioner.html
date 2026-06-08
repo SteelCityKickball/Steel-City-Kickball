@@ -980,10 +980,11 @@ if (btnSave) btnSave.onclick = saveRules;
       }
     }
 
-   async function saveHomepageContent() {
+async function saveHomepageContent() {
   setStatus('status-homepage', 'Saving…');
 
   const payload = {
+    action: "updateHomepage",
     CommissionerMessage: document.getElementById('hp-commissioner-message').value,
     LeagueUpdates: document.getElementById('hp-league-updates').value,
     BannerHeadline: document.getElementById('hp-banner-headline').value,
@@ -995,13 +996,12 @@ if (btnSave) btnSave.onclick = saveRules;
   };
 
   try {
-    await fetch(WEB_APP_URL + "?action=saveHomepageContent", {
+    await fetch(WEB_APP_URL + "?action=updateHomepage", {
       method: "POST",
       mode: "no-cors",
       body: JSON.stringify(payload)
     });
 
-    // We can't read the response in no-cors mode, but Apps Script WILL receive it.
     setStatus('status-homepage', 'Saved', 'idle');
     setMeta('status-homepage-meta', 'Last saved: ' + formatTimestamp());
   } catch (err) {
