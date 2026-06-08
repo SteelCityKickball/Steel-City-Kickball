@@ -77,10 +77,12 @@
       const navContainer = document.getElementById("nav-container");
       navContainer.innerHTML = html;
 
+      // Run identity AFTER nav loads
       setTimeout(() => {
-  if (window.applyIdentityToUI) applyIdentityToUI();
-}, 50);
+        if (window.applyIdentityToUI) applyIdentityToUI();
+      }, 50);
 
+      // Mobile menu toggle
       const hamburger = navContainer.querySelector("#hamburger-btn");
       const mobileMenu = navContainer.querySelector("#mobile-menu");
       if (hamburger && mobileMenu) {
@@ -89,11 +91,7 @@
         });
       }
 
-      navContainer.querySelectorAll(".mobile-menu .dropdown-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-          btn.parentElement.classList.toggle("open");
-        });
-      });
+      // IMPORTANT: dropdown-btn code removed — your nav no longer uses it
     })
     .catch(err => console.error("Nav load failed:", err));
 </script>
