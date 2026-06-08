@@ -1,0 +1,101 @@
+<!-- redeploy fix -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Steel City Kickball — Home</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/Steel-City-Kickball/src/styles/main.css?v=20">
+
+  <!-- Google Identity Services -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <!-- Global Identity -->
+  <script src="/Steel-City-Kickball/src/identity/global-identity.js?v=20" defer></script>
+</head>
+
+<body class="home">
+
+<div class="page-content">
+
+  <!-- NAVIGATION -->
+  <div id="nav-container"></div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <img src="/Steel-City-Kickball/src/assets/Amazinglogo.png" alt="Steel City Kickball Logo">
+  </div>
+
+  <!-- GAME OF THE WEEK -->
+  <section>
+    <h2>Game of the Week</h2>
+    <img id="gotw-img" src="" alt="Game of the Week">
+    <p id="gotw-text" class="blurb"></p>
+  </section>
+
+  <!-- MVP -->
+  <section>
+    <h2>Game MVP</h2>
+    <img id="mvp-img" src="" alt="Game MVP">
+    <p id="mvp-text" class="blurb"></p>
+  </section>
+
+  <!-- LEAGUE UPDATES -->
+  <section class="homepage-section">
+    <h2>League Updates</h2>
+    <p id="league-updates"></p>
+  </section>
+
+  <!-- COMMISSIONER MESSAGE -->
+  <section class="homepage-section">
+    <h2>Word from the Commissioner</h2>
+    <p id="commissioner-message"></p>
+  </section>
+
+  <!-- PHOTO STRIP -->
+  <div id="photo-strip" class="photo-strip"></div>
+
+  <!-- ABOUT -->
+  <div class="about">
+    <p>
+      Welcome to the official home of Steel City Kickball!  
+      Check out standings, schedules, teams, and player resources.
+    </p>
+  </div>
+
+  <a class="button" href="standings.html">View Standings</a>
+
+</div>
+
+<!-- FIXED NAV PATH -->
+<script>
+  fetch("/Steel-City-Kickball/src/components/nav.html?v=20")
+    .then(res => res.text())
+    .then(html => {
+      const navContainer = document.getElementById("nav-container");
+      navContainer.innerHTML = html;
+
+      // Apply login AFTER nav loads
+      setTimeout(() => {
+        if (window.applyIdentityToUI) applyIdentityToUI();
+      }, 50);
+
+      // Mobile menu toggle
+      const hamburger = navContainer.querySelector("#hamburger-btn");
+      const mobileMenu = navContainer.querySelector("#mobile-menu");
+      if (hamburger && mobileMenu) {
+        hamburger.addEventListener("click", () => {
+          mobileMenu.classList.toggle("open");
+        });
+      }
+    })
+    .catch(err => console.error("Nav load failed:", err));
+</script>
+
+<!-- HOMEPAGE CONTENT LOADER -->
+<script src="/Steel-City-Kickball/src/scripts/homepage-v2.js?v=20"></script>
+
+</body>
+</html>
