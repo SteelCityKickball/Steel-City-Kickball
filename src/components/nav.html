@@ -2,6 +2,15 @@
 
 <nav class="navbar">
 
+  <!-- GOOGLE IDENTITY INIT (must be global, not desktop-only) -->
+  <div id="g_id_onload"
+       data-client_id="645103089081-ptp0jc7uurf9msh8ehuflcp9kljjsjgs.apps.googleusercontent.com"
+       data-callback="handleCredentialResponse"
+       data-auto_prompt="false"
+       data-auto_select="false"
+       data-itp_support="false">
+  </div>
+
   <!-- DESKTOP LEFT (LOGO) -->
   <div class="nav-left desktop-only">
     <a href="index.html" class="nav-logo">
@@ -36,26 +45,23 @@
       <span id="nav-name"></span>
     </div>
 
-    <!-- Google Sign-In -->
-   <div id="g_id_onload"
-     data-client_id="645103089081-ptp0jc7uurf9msh8ehuflcp9kljjsjgs.apps.googleusercontent.com"
-     data-callback="handleCredentialResponse"
-     data-auto_prompt="false"
-     data-auto_select="false">
-</div>
-
+    <!-- Google Sign-In (wrapped so GIS cannot escape) -->
+    <div id="nav-google-login" class="google-wrapper hidden">
       <div class="g_id_signin"
            data-type="standard"
            data-size="medium"
            data-theme="outline"
            data-text="signin_with"
            data-shape="rectangular"
-           data-logo_alignment="left">
+           data-logo_alignment="left"
+           data-auto_select="false"
+           data-auto_prompt="false"
+           data-itp_support="false">
       </div>
     </div>
 
     <!-- Logout -->
-    <button id="nav-logout-btn" class="hidden nav-logout">Logout</button>
+    <button id="nav-logout-btn" class="hidden nav-logout" onclick="logout()">Logout</button>
   </div>
 
   <!-- MOBILE BAR -->
@@ -82,21 +88,23 @@
       <!-- Name -->
       <span id="mobile-name" class="hidden"></span>
 
-      <!-- Google Login -->
-      <div id="mobile-google-login">
-  <div id="mobile-google-button" class="g_id_signin"
-       data-type="standard"
-       data-size="medium"
-       data-theme="outline"
-       data-text="signin_with"
-       data-shape="rectangular"
-       data-logo_alignment="left"
-       data-auto_select="false">
-  </div>
-</div>
+      <!-- Google Login (wrapped so GIS cannot escape) -->
+      <div id="mobile-google-login" class="google-wrapper hidden">
+        <div id="mobile-google-button" class="g_id_signin"
+             data-type="standard"
+             data-size="medium"
+             data-theme="outline"
+             data-text="signin_with"
+             data-shape="rectangular"
+             data-logo_alignment="left"
+             data-auto_select="false"
+             data-auto_prompt="false"
+             data-itp_support="false">
+        </div>
+      </div>
 
       <!-- Logout -->
-      <button id="mobile-logout-btn" class="hidden nav-logout">Logout</button>
+      <button id="mobile-logout-btn" class="hidden nav-logout" onclick="logout()">Logout</button>
 
       <!-- Profile -->
       <a id="mobile-profile-row" class="hidden" href="src/identity/profile.html">Profile</a>
