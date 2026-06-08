@@ -1,13 +1,7 @@
-// -------------------------------
-// CONFIG — HOMEPAGE CONTENT CSV
-// -------------------------------
-const SHEET_CSV_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQr-ZqGFpZS9KtIZhXq0elsRssVso4HrH6fDx6ingBMo2PljxD0CeIdfPjmx4KT7zh-Rh0sildBK35V/pub?output=csv";
+// Single source of truth: Apps Script Web App
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyTQYyErJ-TfOxdV99vC8w2PqpEEMT5o5ZIZb5CYckheDG_4USllAIM_F8vkuJcXlzG/exec";
 
-
-// -------------------------------
-// GITHUB API FILE LOADER
-// -------------------------------
+// --- GitHub helper for images (you already use this pattern) ---
 async function getLatestFromGitHub(path) {
   const apiUrl = `https://api.github.com/repos/SteelCityKickball/Steel-City-Kickball/contents/${path}`;
   const response = await fetch(apiUrl);
@@ -21,55 +15,66 @@ async function getLatestFromGitHub(path) {
   return images;
 }
 
-
-// -------------------------------
-// LOAD TEXT FROM GOOGLE SHEET
-// -------------------------------
-async function loadHomepageText() {
+// --- Load text from Apps Script (Homepage sheet) ---
+async function loadHomepageContent() {
   try {
-    const res = await fetch(SHEET_CSV_URL);
-    const csv = await res.text();
+    const res = await fetch(`${WEB_APP_URL}?action=getHomepageContent`);
+    const data = await res.json();
 
-    const rows = csv.trim().split("\n").map(r => r.split(","));
+    // Commissioner Message
+    const commissionerEl = document.getElementById("commissioner-message");
+    if (commissionerEl) {
+      commissionerEl.textContent =
+        data.CommissionerMessage || "No commissioner message available.";
+    }
 
-    const data = {};
-    rows.forEach(r => {
-      const key = r[0]?.trim();
-      const value = r[1]?.trim() || "";
-      if (key) data[key] = value;
-    });
+    // League Updates
+    const updatesEl = document.getElementById("league-updates");
+    if (updatesEl) {
+      updatesEl.textContent =
+        data.LeagueUpdates || "No league updates at this time.";
+    }
 
-    document.getElementById("gotw-text").textContent =
-      data.gotw_text || "No update available.";
+    // Game of the Week
+    const gotwEl = document.getElementById("gotw-text");
+    if (gotwEl) {
+      const title = data.GOTWTitle || "";
+      const blurb = data.GOTWBlurb || "";
+      gotwEl.textContent = title && blurb ? `${title} — ${blurb}` : (title || blurb || "No update available.");
+    }
 
-    document.getElementById("mvp-text").textContent =
-      data.mvp_text || "No MVP update available.";
+    // MVP
+    const mvpEl = document.getElementById("mvp-text");
+    if (mvpEl) {
+      const name = data.MVPName || "";
+      const team = data.MVPTeam || "";
+      const blurb = data.MVPBlurb || "";
+      let header = "";
+      if (name && team) header = `${name} (${team})`;
+      else if (name) header = name;
+      else if (team) header = team;
 
-    document.getElementById("league-updates").textContent =
-      data.league_updates || "No league updates at this time.";
-
-    document.getElementById("commissioner-message").textContent =
-      data.commissioner_message || "No message from the commissioner.";
+      mvpEl.textContent = header && blurb ? `${header} — ${blurb}` : (header || blurb || "No MVP update available.");
+    }
 
   } catch (err) {
-    console.error("Error loading sheet:", err);
+    console.error("Error loading homepage content:", err);
   }
 }
 
-
-// -------------------------------
-// LOAD NEWEST GOTW + MVP IMAGES
-// -------------------------------
+// --- Load GOTW + MVP images from GitHub ---
 async function loadHomepageImages() {
   try {
     const gotw = await getLatestFromGitHub("images/gotw");
     if (gotw.length > 0) {
-      document.getElementById("gotw-img").src = gotw[0].download_url;
+      const gotwImg = document.getElementById("gotw-img");
+      if (gotwImg) gotwImg.src = gotw[0].download_url;
     }
 
     const mvp = await getLatestFromGitHub("images/mvp");
     if (mvp.length > 0) {
-      document.getElementById("mvp-img").src = mvp[0].download_url;
+      const mvpImg = document.getElementById("mvp-img");
+      if (mvpImg) mvpImg.src = mvp[0].download_url;
     }
 
   } catch (err) {
@@ -77,14 +82,12 @@ async function loadHomepageImages() {
   }
 }
 
-
-// -------------------------------
-// LOAD PHOTO STRIP
-// -------------------------------
+// --- Load photo strip from GitHub ---
 async function loadPhotoStrip() {
   try {
     const photos = await getLatestFromGitHub("images/photos");
     const strip = document.getElementById("photo-strip");
+    if (!strip) return;
 
     strip.innerHTML = "";
 
@@ -100,12 +103,9 @@ async function loadPhotoStrip() {
   }
 }
 
-
-// -------------------------------
-// INIT HOMEPAGE
-// -------------------------------
+// --- Init homepage ---
 document.addEventListener("DOMContentLoaded", () => {
-  loadHomepageText();
+  loadHomepageContent();
   loadHomepageImages();
   loadPhotoStrip();
 });
