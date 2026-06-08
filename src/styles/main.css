@@ -37,6 +37,15 @@ body::before {
   display: none; /* removed !important so JS can show elements */
 }
 
+/* GOOGLE LOGIN WRAPPER — prevents GIS from re-rendering buttons */
+.google-wrapper.hidden {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
 /* MOBILE-FIRST VISIBILITY */
 /* MOBILE: hide desktop elements */
 @media (max-width: 768px) {
