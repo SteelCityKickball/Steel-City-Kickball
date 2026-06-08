@@ -34,22 +34,20 @@ body::before {
 
 /* UTILITY */
 .hidden {
-  display: none !important;
+  display: none; /* removed !important so JS can show elements */
 }
 
 /* MOBILE-FIRST VISIBILITY */
-/* FORCE HIDE DESKTOP ELEMENTS ON MOBILE */
-.desktop-only {
-  display: none !important;
+/* MOBILE: hide desktop elements */
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none;
+  }
 }
 
+/* MOBILE: show mobile elements */
 .mobile-only {
   display: flex;
-}
-
-/* HIDE DESKTOP NAV MENU ON MOBILE */
-.nav-menu {
-  display: none;
 }
 
 /* NAVBAR */
@@ -75,6 +73,13 @@ body::before {
   list-style: none;
   gap: 20px;
   margin-left: 40px;
+}
+
+/* MOBILE: hide nav menu */
+@media (max-width: 768px) {
+  .nav-menu {
+    display: none;
+  }
 }
 
 .nav-menu a {
