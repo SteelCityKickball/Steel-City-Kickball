@@ -100,7 +100,7 @@ async function applyIdentityToUI() {
     if (check.status === "ok" && check.role === "commissioner") {
       if (!window.location.pathname.includes("/commissioner/")) {
         window.location.href =
-          "/Steel-City-Kickball/commissioner/commissioner.html";
+  "https://script.google.com/macros/s/AKfycbxsAVnNh5xD8A0ZtV7se2ux1RocrnM7ZJl4utL4lD8ID3slTkXe28lSU76HNkBkHEau/exec";
       }
     }
   } catch (e) {
