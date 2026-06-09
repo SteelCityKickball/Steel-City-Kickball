@@ -1,6 +1,6 @@
 // Your Apps Script Web App URL
 const WEB_APP_URL =
-  "https://script.google.com/macros/s/AKfycbxsAVnNh5xD8A0ZtV7se2ux1RocrnM7ZJl4utL4lD8ID3slTkXe28lSU76HNkBkHEau/exec";
+  "https://script.google.com/macros/s/AKfycbyDD60gSBwYCvkppqxW7CkcgHN4HmGQO_8Xe8dY9-6DBXHH37UqKwtv_nVLUnG0YJ14/exec";
 
 const DEFAULT_AVATAR = "src/assets/default-avatar.png";
 
