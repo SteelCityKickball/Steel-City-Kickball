@@ -70,24 +70,32 @@
 
   <script>
     async function handleCredentialResponse(response) {
-      // Decode the JWT to extract the email
-      const payload = JSON.parse(atob(response.credential.split('.')[1]));
-      const email = payload.email;
+      try {
+        // Decode Google JWT
+        const payload = JSON.parse(atob(response.credential.split('.')[1]));
+        const email = payload.email;
 
-      // Save email locally
-      localStorage.setItem("sck_user_email", email);
+        // Save email locally
+        localStorage.setItem("sck_user_email", email);
 
-      // Verify role with backend
-      const check = await fetch(
-       "https://script.google.com/macros/s/AKfycbyofNQOa8YJkRticXHtVV4p3BTscvK2qKu9kZKR9qpAu4XefGrjNcuQD818DaCyqCS4/exec?action=checkRole&email="
-        + encodeURIComponent(email)
-      ).then(r => r.json());
+        // IMPORTANT:
+        // Do NOT check role here.
+        // Do NOT redirect to Apps Script here.
+        // Do NOT call your backend here.
+        //
+        // This page runs inside Google's OAuth sandbox iframe.
+        // Your JS cannot call external URLs from inside that iframe.
+        // That is why everything was breaking.
+        //
+        // Instead: send the user back to your main site.
+        // global-identity.js will run normally there.
+        // It will check the role.
+        // It will redirect commissioners.
 
-      if (check.status === "ok") {
-       window.location.href = "https://script.google.com/macros/s/AKfycbyDD60gSBwYCvkppqxW7CkcgHN4HmGQO_8Xe8dY9-6DBXHH37UqKwtv_nVLUnG0YJ14/exec";
-      } else {
+        window.location.href = "/Steel-City-Kickball/";
+      } catch (e) {
+        console.error("Login failed:", e);
         document.getElementById("error").style.display = "block";
-        localStorage.removeItem("sck_user_email");
       }
     }
   </script>
