@@ -89,25 +89,25 @@ async function applyIdentityToUI() {
   show(mobileLogoutBtn);
   show(mobileProfileRow);
 
-  // -------------------------------
-  // COMMISSIONER REDIRECT
-  // -------------------------------
-  try {
-    const check = await fetch(
-      `${WEB_APP_URL}?action=checkRole&email=${encodeURIComponent(email)}`
-    ).then(r => r.json());
+ // -------------------------------
+// COMMISSIONER REDIRECT
+// -------------------------------
+try {
+  const check = await fetch(
+    `${WEB_APP_URL}?action=checkRole&email=${encodeURIComponent(email)}`
+  ).then(r => r.json());
 
-    if (check.status === "ok" && check.role === "commissioner") {
-      if (!window.location.pathname.includes("/commissioner/")) {
-       window.location.href =
-  "https://script.google.com/macros/s/AKfycbyDD60gSBwYCvkppqxW7CkcgHN4HmGQO_8Xe8dY9-6DBXHH37UqKwtv_nVLUnG0YJ14/exec";
-      }
+  if (check.status === "ok" && check.role === "commissioner") {
+    // Prevent redirect loops
+    if (!window.location.href.includes("script.google.com")) {
+      window.location.href =
+        "https://script.google.com/macros/s/AKfycbxsAVnNh5xD8A0ZtV7se2ux1RocrnM7ZJl4utL4lD8ID3slTkXe28lSU76HNkBkHEau/exec";
     }
-  } catch (e) {
-    console.error("Role check failed:", e);
   }
+} catch (e) {
+  console.error("Role check failed:", e);
 }
-
+  
 // -------------------------------
 // GOOGLE LOGIN CALLBACK
 // -------------------------------
