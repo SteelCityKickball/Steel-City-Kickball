@@ -587,60 +587,32 @@
       </section>
 
        <!-- RULES TAB -->
-      <section class="tab-panel" id="tab-rules">
-        <div class="panel-header">
-          <div>
-            <h2>League Rules</h2>
-            <p>Edits the live rules page using the <strong>League Rules Live</strong> sheet.</p>
-          </div>
-          <div class="panel-actions">
-            <button class="btn" id="btn-rules-refresh">
-              ⟳ Refresh from Sheet
-            </button>
-            <button class="btn btn-primary" id="btn-rules-save">
-              💾 Save Rules
-            </button>
-          </div>
-        </div>
+     <section class="tab-panel" id="tab-rules">
+  <div class="panel-header">
+    <div>
+      <h2>League Rules</h2>
+      <p>Edit all league rules in one place. This updates the live rules page.</p>
+    </div>
+    <div class="panel-actions">
+      <button class="btn" id="btn-rules-refresh">⟳ Refresh from Sheet</button>
+      <button class="btn btn-primary" id="btn-rules-save">💾 Save Rules</button>
+    </div>
+  </div>
 
-        <div class="pill-row">
-          <span class="pill">Sheet: League Rules Live</span>
-          <span class="pill">First row = headers</span>
-          <span class="pill">Each row = one rule</span>
-        </div>
+  <div style="margin-top: 8px;">
+    <textarea id="rules-textarea" style="width: 100%; height: 500px; font-size: 15px;"></textarea>
+  </div>
 
-        <div style="margin-top: 8px; overflow-x: auto;">
-          <table id="rules-table">
-            <thead>
-              <tr>
-                <th style="width: 60px;">#</th>
-                <th style="width: 140px;">Section</th>
-                <th>Rule Title</th>
-                <th>Rule Text</th>
-                <th style="width: 120px;">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="rules-tbody">
-              <!-- Filled by JS -->
-            </tbody>
-          </table>
-        </div>
-
-        <div class="panel-actions" style="margin-top: 8px;">
-          <button class="btn" id="btn-rules-add-row">＋ Add Rule</button>
-          <button class="btn btn-danger" id="btn-rules-clear-empty">🧹 Remove Empty Rows</button>
-        </div>
-
-        <div class="status-bar">
-          <div class="status-message muted" id="status-rules">
-            <span class="status-dot"></span>
-            <span>Idle</span>
-          </div>
-          <div class="status-right" id="status-rules-meta">
-            Last loaded: — • Last saved: —
-          </div>
-        </div>
-      </section>
+  <div class="status-bar">
+    <div class="status-message muted" id="status-rules">
+      <span class="status-dot"></span>
+      <span>Idle</span>
+    </div>
+    <div class="status-right" id="status-rules-meta">
+      Last loaded: — • Last saved: —
+    </div>
+  </div>
+</section>
 
       <!-- CAPTAINS TAB -->
 <section class="tab-panel" id="tab-captains">
