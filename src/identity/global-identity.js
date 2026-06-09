@@ -1,5 +1,6 @@
 // Your Apps Script Web App URL
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz64oX5Ey7bTYvmRWNsDfgOQRSDJUDTTo7B2zRr4azX1OgMTGfn1tEdp6HocRPScEF-/exec";
+const COMMISSIONER_URL = "https://script.google.com/macros/s/AKfycbyP3KMCWYE3Pkl_6NrQP5OW3VU4u5UcenvMnkk8P0OoOjlG0PTbvCfwTcdK24Gl5f2V/exec";
 
 const DEFAULT_AVATAR = "src/assets/default-avatar.png";
 
@@ -100,7 +101,7 @@ async function applyIdentityToUI() {
       // Prevent redirect loops
       if (!window.location.href.includes("script.google.com")) {
         window.location.href =
-          "https://script.google.com/macros/s/AKfycbxsAVnNh5xD8A0ZtV7se2ux1RocrnM7ZJl4utL4lD8ID3slTkXe28lSU76HNkBkHEau/exec";
+          "https://script.google.com/macros/s/AKfycbyP3KMCWYE3Pkl_6NrQP5OW3VU4u5UcenvMnkk8P0OoOjlG0PTbvCfwTcdK24Gl5f2V/exec";
       }
     }
   } catch (e) {
