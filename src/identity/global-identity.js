@@ -1,6 +1,10 @@
-// Your Apps Script Web App URL
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbywLiEP2QfSS5ntXVvJypCC6sUZy0uIPHoMIS1PxYF_TJAkZVLOqgws2F4-hW7VTEaQ/exec";
-const COMMISSIONER_URL = "https://script.google.com/macros/s/AKfycbyP3KMCWYE3Pkl_6NrQP5OW3VU4u5UcenvMnkk8P0OoOjlG0PTbvCfwTcdK24Gl5f2V/exec";
+// Your Apps Script Web App URL (backend)
+const WEB_APP_URL =
+  "https://script.google.com/macros/s/AKfycbywLiEP2QfSS5ntXVvJypCC6sUZy0uIPHoMIS1PxYF_TJAkZVLOqgws2F4-hW7VTEaQ/exec";
+
+// Commissioner dashboard hosted in GitHub Pages
+const COMMISSIONER_URL =
+  "https://steelcitykickball.github.io/Steel-City-Kickball/commissioner/commissioner.html";
 
 const DEFAULT_AVATAR = "src/assets/default-avatar.png";
 
@@ -98,16 +102,15 @@ async function applyIdentityToUI() {
     ).then(r => r.json());
 
     if (check.status === "ok" && check.role === "commissioner") {
-      // Prevent redirect loops
-      if (!window.location.href.includes("script.google.com")) {
-        window.location.href =
-          "https://script.google.com/macros/s/AKfycbyP3KMCWYE3Pkl_6NrQP5OW3VU4u5UcenvMnkk8P0OoOjlG0PTbvCfwTcdK24Gl5f2V/exec";
+      // Prevent redirect loop if already on commissioner page
+      if (!window.location.href.includes("/commissioner/commissioner.html")) {
+        window.location.href = COMMISSIONER_URL;
       }
     }
   } catch (e) {
     console.error("Role check failed:", e);
   }
-} // <-- THIS WAS THE MISSING BRACE
+}
 
 // -------------------------------
 // GOOGLE LOGIN CALLBACK
