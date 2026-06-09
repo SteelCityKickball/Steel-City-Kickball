@@ -99,8 +99,8 @@ async function applyIdentityToUI() {
 
     if (check.status === "ok" && check.role === "commissioner") {
       if (!window.location.pathname.includes("/commissioner/")) {
-        window.location.href =
-  "https://script.google.com/macros/s/AKfycbxsAVnNh5xD8A0ZtV7se2ux1RocrnM7ZJl4utL4lD8ID3slTkXe28lSU76HNkBkHEau/exec";
+       window.location.href =
+  "https://script.google.com/macros/s/AKfycbyDD60gSBwYCvkppqxW7CkcgHN4HmGQO_8Xe8dY9-6DBXHH37UqKwtv_nVLUnG0YJ14/exec";
       }
     }
   } catch (e) {
