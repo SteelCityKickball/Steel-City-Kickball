@@ -630,18 +630,19 @@ document.getElementById("btn-homepage-refresh").onclick = loadHomepageContent;
 document.getElementById("btn-homepage-save").onclick = saveHomepageContent;
 
 /* -----------------------------------------------------------
-   RULES LOAD / SAVE — EXACTLY MATCH HOMEPAGE PATTERN
+   RULES LOAD / SAVE — MATCH HOMEPAGE + ROUTER FORMAT
 ----------------------------------------------------------- */
 async function loadRules() {
   setStatus("status-rules", "Loading…");
 
-  const formData = new FormData();
-  formData.append("action", "getRules");
+  const payload = {
+    action: "getRules"
+  };
 
   try {
     const res = await fetch(WEB_APP_URL, {
       method: "POST",
-      body: formData
+      body: JSON.stringify(payload)
     });
 
     const data = await res.json();
@@ -660,14 +661,15 @@ async function saveRules() {
 
   const text = document.getElementById("rules-textarea").value;
 
-  const formData = new FormData();
-  formData.append("action", "saveRules");
-  formData.append("text", text);
+  const payload = {
+    action: "saveRules",
+    text: text
+  };
 
   try {
     await fetch(WEB_APP_URL, {
       method: "POST",
-      body: formData
+      body: JSON.stringify(payload)
     });
 
     setStatus("status-rules", "Saved", "idle");
