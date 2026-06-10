@@ -1,6 +1,6 @@
 // Your Apps Script Web App URL (backend)
 const WEB_APP_URL =
-  "https://script.google.com/macros/s/AKfycbxMeBIOOzBPdS3yS30lqJ4N6uR7HyP6Ssya-Xc5xV9PoLAAGHO2V02bFJhcm1evW8cO/exec";
+  "https://script.google.com/macros/s/AKfycbygBfW14zT3460WV-tRI4MwvN1pT_NZbxJ7GPtv3Bs_lZ7WH_fMuA7_ifpzNRzDBNyA/exec";
 
 // Commissioner dashboard hosted in GitHub Pages
 const COMMISSIONER_URL =
