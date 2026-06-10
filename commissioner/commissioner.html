@@ -630,15 +630,18 @@ document.getElementById("btn-homepage-refresh").onclick = loadHomepageContent;
 document.getElementById("btn-homepage-save").onclick = saveHomepageContent;
 
 /* -----------------------------------------------------------
-   RULES LOAD / SAVE — MATCH HOMEPAGE BEHAVIOR EXACTLY
+   RULES LOAD / SAVE — EXACTLY MATCH HOMEPAGE PATTERN
 ----------------------------------------------------------- */
 async function loadRules() {
   setStatus("status-rules", "Loading…");
 
+  const formData = new FormData();
+  formData.append("action", "getRules");
+
   try {
-    const res = await fetch(WEB_APP_URL + "?action=getRules", {
+    const res = await fetch(WEB_APP_URL, {
       method: "POST",
-      body: new FormData()   // <-- EMPTY FORMDATA (NO FIELDS)
+      body: formData
     });
 
     const data = await res.json();
@@ -657,12 +660,12 @@ async function saveRules() {
 
   const text = document.getElementById("rules-textarea").value;
 
-  // ONLY send the text — NOT the action
   const formData = new FormData();
+  formData.append("action", "saveRules");
   formData.append("text", text);
 
   try {
-    await fetch(WEB_APP_URL + "?action=saveRules", {
+    await fetch(WEB_APP_URL, {
       method: "POST",
       body: formData
     });
