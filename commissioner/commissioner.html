@@ -766,9 +766,9 @@ async function saveCaptainChanges() {
     });
 
     changes.forEach(ch => {
-      const u = allUsers.find(u => u.Email === ch.Email
-      if (u) u.UserType = ch.UserType;
-    });
+  const u = allUsers.find(u => u.Email === ch.Email);
+  if (u) u.UserType = ch.UserType;
+});
 
     pendingCaptainChanges = {};
 
