@@ -630,7 +630,7 @@ document.getElementById("btn-homepage-refresh").onclick = loadHomepageContent;
 document.getElementById("btn-homepage-save").onclick = saveHomepageContent;
 
 /* -----------------------------------------------------------
-   RULES LOAD / SAVE — MATCH HOMEPAGE BEHAVIOR
+   RULES LOAD / SAVE — MATCH HOMEPAGE BEHAVIOR EXACTLY
 ----------------------------------------------------------- */
 async function loadRules() {
   setStatus("status-rules", "Loading…");
@@ -657,8 +657,9 @@ async function saveRules() {
 
   const text = document.getElementById("rules-textarea").value;
 
+  // ONLY send the text — NOT the action
   const formData = new FormData();
-  formData.append("text", text);   // <-- ONLY TEXT, NO ACTION FIELD
+  formData.append("text", text);
 
   try {
     await fetch(WEB_APP_URL + "?action=saveRules", {
