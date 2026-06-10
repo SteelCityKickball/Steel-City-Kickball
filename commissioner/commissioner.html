@@ -613,7 +613,7 @@ async function saveHomepageContent() {
   };
 
   try {
-    await fetch(WEB_APP_URL + "?action=updateHomepage", {
+await fetch(WEB_APP_URL + "?action=updateHomepageContent", {
       method: "POST",
       body: JSON.stringify(payload)
     });
