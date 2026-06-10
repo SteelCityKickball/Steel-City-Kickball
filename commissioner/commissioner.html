@@ -630,23 +630,18 @@ document.getElementById("btn-homepage-refresh").onclick = loadHomepageContent;
 document.getElementById("btn-homepage-save").onclick = saveHomepageContent;
 
 /* -----------------------------------------------------------
-   RULES LOAD / SAVE — MATCH HOMEPAGE + ROUTER FORMAT
+   RULES LOAD / SAVE — MATCH HOMEPAGE FORMAT
 ----------------------------------------------------------- */
 async function loadRules() {
   setStatus("status-rules", "Loading…");
 
-  const payload = {
-    action: "getRules"
-  };
-
   try {
-    const res = await fetch(WEB_APP_URL, {
-      method: "POST",
-      body: JSON.stringify(payload)
-    });
-
+    // MATCHES HOMEPAGE: use GET with ?action=
+    const res = await fetch(WEB_APP_URL + "?action=getRules");
     const data = await res.json();
-    document.getElementById("rules-textarea").value = data.text || "";
+
+    // MATCHES BACKEND FIELD NAME
+    document.getElementById("rules-textarea").value = data.RulesText || "";
 
     setStatus("status-rules", "Loaded", "idle");
     setMeta("status-rules-meta", "Last loaded: " + formatTimestamp());
@@ -659,15 +654,15 @@ async function loadRules() {
 async function saveRules() {
   setStatus("status-rules", "Saving…");
 
-  const text = document.getElementById("rules-textarea").value;
+  const rulesText = document.getElementById("rules-textarea").value;
 
   const payload = {
-    action: "saveRules",
-    text: text
+    RulesText: rulesText
   };
 
   try {
-    await fetch(WEB_APP_URL, {
+    // MATCHES HOMEPAGE: use POST with ?action=
+    await fetch(WEB_APP_URL + "?action=saveRules", {
       method: "POST",
       body: JSON.stringify(payload)
     });
