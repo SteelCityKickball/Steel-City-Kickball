@@ -181,7 +181,8 @@
     }
 
     textarea,
-    input[type="text"] {
+    input[type="text"],
+    select {
       width: 100%;
       border-radius: var(--radius);
       border: 1px solid var(--border);
@@ -194,6 +195,27 @@
 
     textarea {
       min-height: 70px;
+    }
+
+    .field-group {
+      margin-bottom: 10px;
+    }
+
+    .field-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      margin-bottom: 4px;
+      opacity: 0.85;
+    }
+
+    .field-label .key {
+      font-weight: 600;
+      color: var(--text-strong);
+    }
+
+    .field-label .hint {
+      font-style: italic;
     }
 
     .status-bar {
@@ -221,15 +243,60 @@
     .status-message.error .status-dot {
       background: var(--danger);
     }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 8px 0;
+      font-size: 0.75rem;
+    }
+
+    .pill {
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      margin-top: 8px;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--border);
+      padding: 6px 8px;
+      text-align: left;
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text-strong);
+    }
+
+    @media (max-width: 800px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .status-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
   </style>
 </head>
 
 <body>
 
-<!-- ⭐ COMMISSIONER LOCKDOWN SCRIPT -->
 <script>
+  // NEW BACKEND URL
   let WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzDOIKfD7VUkTol5YmpaZPzGZX4WTE-OQSyxEbGG4xeaOjrEMUctYLK5Hp_fHjreup4/exec";
 
+  // Commissioner lock
   (async function enforceCommissionerAccess() {
     const email = localStorage.getItem("sck_user_email");
     if (!email) {
@@ -276,7 +343,7 @@
       <button class="tab-btn" data-tab="tab-settings">⚙️ Settings</button>
     </div>
 
-        <!-- ⭐ HOMEPAGE TAB -->
+    <!-- HOMEPAGE TAB -->
     <section class="tab-panel active" id="tab-homepage">
       <div class="panel-header">
         <div>
@@ -290,50 +357,71 @@
       </div>
 
       <div class="field-group">
-        <span class="key">Commissioner Message</span>
+        <div class="field-label">
+          <span class="key">Commissioner Message</span>
+          <span class="hint">Shown at top of homepage</span>
+        </div>
         <textarea id="hp-commissioner-message"></textarea>
       </div>
 
       <div class="field-group">
-        <span class="key">League Updates</span>
+        <div class="field-label">
+          <span class="key">League Updates</span>
+          <span class="hint">Short bullets or paragraph</span>
+        </div>
         <textarea id="hp-league-updates"></textarea>
       </div>
 
       <div class="field-group">
-        <span class="key">Banner Headline</span>
+        <div class="field-label">
+          <span class="key">Banner / Headline</span>
+          <span class="hint">Optional hero text</span>
+        </div>
         <input type="text" id="hp-banner-headline">
       </div>
 
-      <hr>
+      <hr style="border:0;border-top:1px solid var(--border);margin:18px 0;opacity:0.4;">
 
-      <h3 style="color:var(--accent);">Game of the Week</h3>
+      <h3 style="margin:0 0 6px;color:var(--accent);font-size:1rem;">Game of the Week</h3>
 
       <div class="field-group">
-        <span class="key">Title</span>
+        <div class="field-label">
+          <span class="key">Title</span>
+          <span class="hint">Team vs Team</span>
+        </div>
         <input type="text" id="hp-gotw-title">
       </div>
 
       <div class="field-group">
-        <span class="key">Blurb</span>
+        <div class="field-label">
+          <span class="key">Blurb</span>
+          <span class="hint">Why this matchup matters</span>
+        </div>
         <textarea id="hp-gotw-blurb"></textarea>
       </div>
 
-      <hr>
+      <hr style="border:0;border-top:1px solid var(--border);margin:18px 0;opacity:0.4;">
 
-      <h3 style="color:var(--accent);">MVP of the Week</h3>
+      <h3 style="margin:0 0 6px;color:var(--accent);font-size:1rem;">MVP of the Week</h3>
 
       <div class="field-group">
-        <span class="key">MVP Name</span>
+        <div class="field-label">
+          <span class="key">MVP Name</span>
+        </div>
         <input type="text" id="hp-mvp-name">
       </div>
 
       <div class="field-group">
-        <span class="key">MVP Team</span>
+        <div class="field-label">
+          <span class="key">MVP Team</span>
+        </div>
         <input type="text" id="hp-mvp-team">
       </div>
 
       <div class="field-group">
-        <span class="key">MVP Blurb</span>
+        <div class="field-label">
+          <span class="key">MVP Blurb</span>
+        </div>
         <textarea id="hp-mvp-blurb"></textarea>
       </div>
 
@@ -342,96 +430,180 @@
           <span class="status-dot"></span>
           <span>Idle</span>
         </div>
-        <div id="status-homepage-meta">Last loaded: — • Last saved: —</div>
+        <div class="status-right" id="status-homepage-meta">
+          Last loaded: — • Last saved: —
+        </div>
       </div>
     </section>
 
-    <!-- ⭐ RULES TAB -->
+    <!-- RULES TAB -->
     <section class="tab-panel" id="tab-rules">
       <div class="panel-header">
-        <h2>League Rules</h2>
+        <div>
+          <h2>League Rules</h2>
+          <p>Edit all league rules in one place. Updates the live rules page.</p>
+        </div>
         <div class="panel-actions">
           <button class="btn" id="btn-rules-refresh">⟳ Refresh</button>
           <button class="btn btn-primary" id="btn-rules-save">💾 Save</button>
         </div>
       </div>
 
-      <textarea id="rules-textarea" style="width:100%;height:500px;"></textarea>
+      <textarea id="rules-textarea" style="width:100%;height:500px;font-size:15px;"></textarea>
 
       <div class="status-bar">
         <div class="status-message muted" id="status-rules">
           <span class="status-dot"></span>
           <span>Idle</span>
         </div>
-        <div id="status-rules-meta">Last loaded: — • Last saved: —</div>
+        <div class="status-right" id="status-rules-meta">
+          Last loaded: — • Last saved: —
+        </div>
       </div>
     </section>
 
-    <!-- ⭐ CAPTAINS TAB -->
+    <!-- CAPTAINS TAB -->
     <section class="tab-panel" id="tab-captains">
       <div class="panel-header">
-        <h2>Captains & Roles</h2>
+        <div>
+          <h2>Captains & Roles</h2>
+          <p>Assign captains per team. Uses the SCK_Identity / Users sheet.</p>
+        </div>
         <div class="panel-actions">
-          <button class="btn" id="btn-captains-refresh">⟳ Refresh</button>
-          <button class="btn btn-primary" id="btn-captains-save">💾 Save</button>
+          <button class="btn" id="btn-captains-refresh">⟳ Refresh Roster</button>
+          <button class="btn btn-primary" id="btn-captains-save">💾 Save Changes</button>
         </div>
       </div>
 
-      <select id="captains-team-select">
-        <option value="">— Choose a team —</option>
-        <option value="Bonnies Babies">Bonnies Babies</option>
-        <option value="Gonzalez">Gonzalez</option>
-        <option value="J4K">J4K</option>
-        <option value="Kickaholics">Kickaholics</option>
-        <option value="The Club">The Club</option>
-        <option value="Warriors">Warriors</option>
-      </select>
+      <div class="field-group">
+        <div class="field-label">
+          <span class="key">Select Team</span>
+          <span class="hint">Filters roster by PrimaryTeamID</span>
+        </div>
+        <select id="captains-team-select">
+          <option value="">— Choose a team —</option>
+          <option value="Bonnies Babies">Bonnies Babies</option>
+          <option value="Gonzalez">Gonzalez</option>
+          <option value="J4K">J4K</option>
+          <option value="Kickaholics">Kickaholics</option>
+          <option value="The Club">The Club</option>
+          <option value="Warriors">Warriors</option>
+        </select>
+      </div>
 
-      <table id="captains-table">
-        <thead>
-          <tr>
-            <th>#</th><th>Nickname</th><th>Email</th><th>UserType</th><th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="captains-tbody"></tbody>
-      </table>
+      <div class="pill-row">
+        <span class="pill">Sheet: Users / SCK_Identity</span>
+        <span class="pill">Name: Nickname</span>
+        <span class="pill">Team: PrimaryTeamID</span>
+        <span class="pill">Role: UserType</span>
+      </div>
+
+      <div style="margin-top: 8px; overflow-x: auto;">
+        <table id="captains-table">
+          <thead>
+            <tr>
+              <th style="width: 40px;">#</th>
+              <th style="width: 160px;">Nickname</th>
+              <th style="width: 220px;">Email</th>
+              <th style="width: 120px;">UserType</th>
+              <th style="width: 140px;">Action</th>
+            </tr>
+          </thead>
+          <tbody id="captains-tbody">
+          </tbody>
+        </table>
+      </div>
 
       <div class="status-bar">
         <div class="status-message muted" id="status-captains">
           <span class="status-dot"></span>
           <span>Idle</span>
         </div>
-        <div id="status-captains-meta">Last loaded: — • Last saved: —</div>
+        <div class="status-right" id="status-captains-meta">
+          Last loaded: — • Last saved: —
+        </div>
       </div>
     </section>
 
-    <!-- ⭐ SETTINGS TAB -->
+    <!-- ROSTERS TAB -->
+    <section class="tab-panel" id="tab-rosters">
+      <div class="panel-header">
+        <div>
+          <h2>Rosters</h2>
+          <p>Future expansion area for roster management.</p>
+        </div>
+      </div>
+
+      <p style="opacity:0.7;">Roster tools will be added here later.</p>
+
+      <div class="status-bar">
+        <div class="status-message muted">
+          <span class="status-dot"></span>
+          <span>Idle</span>
+        </div>
+        <div class="status-right">—</div>
+      </div>
+    </section>
+
+    <!-- SUBS TAB -->
+    <section class="tab-panel" id="tab-subs">
+      <div class="panel-header">
+        <div>
+          <h2>Subs & Approvals</h2>
+          <p>Future expansion area for sub approval workflow.</p>
+        </div>
+      </div>
+
+      <p style="opacity:0.7;">Sub approval tools will be added here later.</p>
+
+      <div class="status-bar">
+        <div class="status-message muted">
+          <span class="status-dot"></span>
+          <span>Idle</span>
+        </div>
+        <div class="status-right">—</div>
+      </div>
+    </section>
+
+    <!-- SETTINGS TAB -->
     <section class="tab-panel" id="tab-settings">
       <div class="panel-header">
-        <h2>Settings</h2>
+        <div>
+          <h2>Settings</h2>
+          <p>Configure backend connection and test connectivity.</p>
+        </div>
         <div class="panel-actions">
           <button class="btn" id="btn-settings-test">🔌 Test Connection</button>
         </div>
       </div>
 
-      <input type="text" id="settings-webapp-url"
-             value="https://script.google.com/macros/s/AKfycbzDOIKfD7VUkTol5YmpaZPzGZX4WTE-OQSyxEbGG4xeaOjrEMUctYLK5Hp_fHjreup4/exec">
+      <div class="field-group">
+        <div class="field-label">
+          <span class="key">Backend URL</span>
+          <span class="hint">Used for all data operations</span>
+        </div>
+        <input type="text" id="settings-webapp-url"
+               value="https://script.google.com/macros/s/AKfycbzDOIKfD7VUkTol5YmpaZPzGZX4WTE-OQSyxEbGG4xeaOjrEMUctYLK5Hp_fHjreup4/exec">
+        <p style="font-size:0.8rem;opacity:0.7;margin-top:4px;">
+          This value is only used in your browser (not stored anywhere).
+        </p>
+      </div>
 
       <div class="status-bar">
         <div class="status-message muted" id="status-settings">
           <span class="status-dot"></span>
           <span>Idle</span>
         </div>
-        <div id="status-settings-meta">Connection: unknown</div>
+        <div class="status-right" id="status-settings-meta">
+          Connection: unknown
+        </div>
       </div>
     </section>
   </div>
 </div>
 
 <script>
-/* -----------------------------------------------------------
-   STATUS HELPERS
------------------------------------------------------------ */
+/* STATUS HELPERS */
 function setStatus(id, msg, type = "idle") {
   const el = document.getElementById(id);
   if (!el) return;
@@ -448,9 +620,7 @@ function formatTimestamp() {
   return new Date().toLocaleString();
 }
 
-/* -----------------------------------------------------------
-   HOMEPAGE LOAD / SAVE
------------------------------------------------------------ */
+/* HOMEPAGE LOAD / SAVE */
 async function loadHomepageContent() {
   setStatus("status-homepage", "Loading…");
   try {
@@ -466,7 +636,7 @@ async function loadHomepageContent() {
     document.getElementById("hp-mvp-team").value             = data.MVPTeam || "";
     document.getElementById("hp-mvp-blurb").value            = data.MVPBlurb || "";
 
-    setStatus("status-homepage", "Loaded");
+    setStatus("status-homepage", "Loaded", "idle");
     setMeta("status-homepage-meta", "Last loaded: " + formatTimestamp());
   } catch (err) {
     console.error(err);
@@ -485,4 +655,244 @@ async function saveHomepageContent() {
     GOTWTitle:           document.getElementById("hp-gotw-title").value,
     GOTWBlurb:           document.getElementById("hp-gotw-blurb").value,
     MVPName:             document.getElementById("hp-mvp-name").value,
-    MVPTeam:             document.getElementById
+    MVPTeam:             document.getElementById("hp-mvp-team").value,
+    MVPBlurb:            document.getElementById("hp-mvp-blurb").value
+  };
+
+  try {
+    await fetch(WEB_APP_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    setStatus("status-homepage", "Saved", "idle");
+    setMeta("status-homepage-meta", "Last saved: " + formatTimestamp());
+  } catch (err) {
+    console.error(err);
+    setStatus("status-homepage", "Error saving", "error");
+  }
+}
+
+document.getElementById("btn-homepage-refresh").onclick = loadHomepageContent;
+document.getElementById("btn-homepage-save").onclick    = saveHomepageContent;
+
+/* RULES LOAD / SAVE */
+async function loadRules() {
+  setStatus("status-rules", "Loading…");
+
+  try {
+    const res = await fetch(WEB_APP_URL + "?action=getRules");
+    const data = await res.json();
+
+    // backend returns { text }
+    document.getElementById("rules-textarea").value = data.text || "";
+
+    setStatus("status-rules", "Loaded", "idle");
+    setMeta("status-rules-meta", "Last loaded: " + formatTimestamp());
+  } catch (err) {
+    console.error(err);
+    setStatus("status-rules", "Error loading", "error");
+  }
+}
+
+async function saveRules() {
+  setStatus("status-rules", "Saving…");
+
+  const rulesText = document.getElementById("rules-textarea").value;
+
+  const payload = {
+    action: "saveRules",
+    text: rulesText
+  };
+
+  try {
+    await fetch(WEB_APP_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    setStatus("status-rules", "Saved", "idle");
+    setMeta("status-rules-meta", "Last saved: " + formatTimestamp());
+  } catch (err) {
+    console.error(err);
+    setStatus("status-rules", "Error saving", "error");
+  }
+}
+
+document.getElementById("btn-rules-refresh").onclick = loadRules;
+document.getElementById("btn-rules-save").onclick    = saveRules;
+
+/* CAPTAINS LOAD / SAVE */
+let allUsers = [];
+let pendingCaptainChanges = {};
+
+function renderCaptainsForTeam(teamId) {
+  const tbody = document.getElementById("captains-tbody");
+  tbody.innerHTML = "";
+
+  const filtered = allUsers.filter(u => u.PrimaryTeamID === teamId);
+
+  filtered.forEach((u, idx) => {
+    const currentType = pendingCaptainChanges[u.Email] || u.UserType || "";
+    const isCaptain = currentType.toLowerCase() === "captain";
+    const isCommissioner = ["commissioner", "admin"].includes(currentType.toLowerCase());
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${idx + 1}</td>
+      <td>${u.Nickname || ""}</td>
+      <td>${u.Email || ""}</td>
+      <td>${currentType || ""}</td>
+      <td>
+        ${
+          isCommissioner
+            ? `<span class="pill" style="background:rgba(102,252,241,0.15);color:var(--accent);">Commissioner</span>`
+            : isCaptain
+              ? `<button class="btn btn-danger" data-email="${u.Email}" data-action="remove-captain">Remove Captain</button>`
+              : `<button class="btn" data-email="${u.Email}" data-action="make-captain">Make Captain</button>`
+        }
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  tbody.querySelectorAll("button[data-email]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const email = btn.getAttribute("data-email");
+      const action = btn.getAttribute("data-action");
+      const user = allUsers.find(u => u.Email === email);
+      if (!user) return;
+
+      const baseType = user.UserType || "Player";
+
+      if (action === "make-captain") {
+        pendingCaptainChanges[email] = "Captain";
+      } else if (action === "remove-captain") {
+        pendingCaptainChanges[email] = baseType === "Captain" ? "Player" : baseType;
+      }
+
+      renderCaptainsForTeam(teamId);
+    });
+  });
+}
+
+async function loadUsersForCaptains() {
+  setStatus("status-captains", "Loading…");
+  try {
+    const res = await fetch(WEB_APP_URL + "?action=getUsers");
+    const data = await res.json();
+
+    allUsers = data.users || [];
+    pendingCaptainChanges = {};
+
+    setStatus("status-captains", "Loaded", "idle");
+    setMeta("status-captains-meta", "Last loaded: " + formatTimestamp());
+
+    const teamSelect = document.getElementById("captains-team-select");
+    if (teamSelect.value) renderCaptainsForTeam(teamSelect.value);
+  } catch (err) {
+    console.error(err);
+    setStatus("status-captains", "Error loading", "error");
+  }
+}
+
+async function saveCaptainChanges() {
+  const changes = Object.entries(pendingCaptainChanges).map(([email, newUserType]) => ({
+    Email: email,
+    UserType: newUserType
+  }));
+
+  if (!changes.length) {
+    setStatus("status-captains", "No changes to save", "idle");
+    return;
+  }
+
+  setStatus("status-captains", "Saving…");
+
+  const payload = {
+    action: "updateCaptainStatus",
+    changes
+  };
+
+  try {
+    await fetch(WEB_APP_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    changes.forEach(ch => {
+      const u = allUsers.find(u => u.Email === ch.Email);
+      if (u) u.UserType = ch.UserType;
+    });
+
+    pendingCaptainChanges = {};
+
+    setStatus("status-captains", "Saved", "idle");
+    setMeta("status-captains-meta", "Last saved: " + formatTimestamp());
+
+    const teamSelect = document.getElementById("captains-team-select");
+    if (teamSelect.value) renderCaptainsForTeam(teamSelect.value);
+  } catch (err) {
+    console.error(err);
+    setStatus("status-captains", "Error saving", "error");
+  }
+}
+
+document.getElementById("btn-captains-refresh").onclick = loadUsersForCaptains;
+document.getElementById("btn-captains-save").onclick    = saveCaptainChanges;
+
+document.getElementById("captains-team-select").addEventListener("change", e => {
+  if (!e.target.value) {
+    document.getElementById("captains-tbody").innerHTML = "";
+    return;
+  }
+  renderCaptainsForTeam(e.target.value);
+});
+
+/* SETTINGS TEST */
+document.getElementById("btn-settings-test").onclick = async () => {
+  setStatus("status-settings", "Testing…");
+  try {
+    const urlInput = document.getElementById("settings-webapp-url");
+    const testUrl = urlInput.value || WEB_APP_URL;
+
+    const res = await fetch(testUrl + "?action=ping");
+    const data = await res.json();
+
+    if (data.success) {
+      setStatus("status-settings", "Connected", "idle");
+      setMeta("status-settings-meta", "Connection OK • " + formatTimestamp());
+    } else {
+      throw new Error("Ping failed");
+    }
+  } catch (err) {
+    console.error(err);
+    setStatus("status-settings", "Failed", "error");
+    setMeta("status-settings-meta", "Connection failed");
+  }
+};
+
+/* TAB SWITCHING */
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.tab).classList.add("active");
+  });
+});
+
+/* INITIAL LOAD */
+window.onload = () => {
+  loadHomepageContent();
+  loadRules();
+  loadUsersForCaptains();
+};
+</script>
+
+</body>
+</html>
