@@ -77,10 +77,15 @@
       const navContainer = document.getElementById("nav-container");
       navContainer.innerHTML = html;
 
-      // Apply login AFTER nav loads
+      /* ⭐ Run identity IMMEDIATELY (fixes commissioner redirect) */
+      if (window.applyIdentityToUI) {
+        applyIdentityToUI();
+      }
+
+      /* ⭐ Run identity AGAIN after nav loads (ensures UI updates) */
       setTimeout(() => {
         if (window.applyIdentityToUI) applyIdentityToUI();
-      }, 50);
+      }, 300);
 
       // Mobile menu toggle
       const hamburger = navContainer.querySelector("#hamburger-btn");
