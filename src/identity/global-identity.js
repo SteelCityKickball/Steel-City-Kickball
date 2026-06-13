@@ -1,6 +1,8 @@
-// REQUIRED: Backend URL must be defined BEFORE any fetch calls
-const WEB_APP_URL =
-  "https://script.google.com/macros/s/AKfycbzBnN9NKYpJftTSuITRhCfOS7I79TfxUQPwk0zVI1reZS9UWLCsKoox8hIgxjZ_FqB1/exec";
+// top of global-identity.js
+// Safe accessor: prefer window.WEB_APP_URL if set by the page, otherwise fall back to this URL.
+function getWebAppUrl() {
+  return window.WEB_APP_URL || "https://script.google.com/macros/s/AKfycbzBnN9NKYpJftTSuITRhCfOS7I79TfxUQPwk0zVI1reZS9UWLCsKoox8hIgxjZ_FqB1/exec";
+}
 
 // Commissioner dashboard hosted in GitHub Pages
 const COMMISSIONER_URL =
