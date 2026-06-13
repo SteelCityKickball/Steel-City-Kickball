@@ -59,8 +59,8 @@ async function applyIdentityToUI() {
   let profile = null;
   try {
     const res = await fetch(
-      `${WEB_APP_URL}?action=getProfile&email=${encodeURIComponent(email)}`
-    );
+  `${getWebAppUrl()}?action=getProfile&email=${encodeURIComponent(email)}`
+);
     profile = await res.json();
   } catch (e) {
     console.error("Profile fetch failed:", e);
@@ -100,8 +100,8 @@ async function applyIdentityToUI() {
   // -------------------------------
   try {
     const check = await fetch(
-      `${WEB_APP_URL}?action=checkRole&email=${encodeURIComponent(email)}`
-    ).then(r => r.json());
+  `${getWebAppUrl()}?action=checkRole&email=${encodeURIComponent(email)}`
+).then(r => r.json());
 
     if (check.status === "ok" && check.role === "commissioner") {
       if (!window.location.href.includes("/commissioner/commissioner.html")) {
