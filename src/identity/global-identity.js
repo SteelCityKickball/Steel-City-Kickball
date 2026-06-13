@@ -1,3 +1,7 @@
+// REQUIRED: Backend URL must be defined BEFORE any fetch calls
+const WEB_APP_URL =
+  "https://script.google.com/macros/s/AKfycbzBnN9NKYpJftTSuITRhCfOS7I79TfxUQPwk0zVI1reZS9UWLCsKoox8hIgxjZ_FqB1/exec";
+
 // Commissioner dashboard hosted in GitHub Pages
 const COMMISSIONER_URL =
   "https://steelcitykickball.github.io/Steel-City-Kickball/commissioner/commissioner.html";
@@ -98,7 +102,6 @@ async function applyIdentityToUI() {
     ).then(r => r.json());
 
     if (check.status === "ok" && check.role === "commissioner") {
-      // Prevent redirect loop if already on commissioner page
       if (!window.location.href.includes("/commissioner/commissioner.html")) {
         window.location.href = COMMISSIONER_URL;
       }
